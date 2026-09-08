@@ -283,6 +283,9 @@ h1 { font-size: 22px; font-weight: 700; }
 .dialogue-text { font-size: 15px; line-height: 1.8; }
 #st-feedback { margin-top: 16px; }
 #st-key { font-size: 14px; }
+.filled-sentence { color: var(--green); font-weight: 600; }
+.filled-sentence .tap-word { color: inherit; }
+#st-tap-hint { margin: -6px 0 8px; }
 #st-key .key-phrase { font-weight: 700; color: var(--primary); }
 
 /* 実力分析 */

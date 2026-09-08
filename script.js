@@ -951,7 +951,57 @@ const SITUATION_BANK = [
 // 会話練習のキーフレーズを辞書へ登録（Flash Card追加時に意味を引けるように）
 for (const s of SITUATION_BANK) addDictEntry(s.key[0], s.key[1], s.key[2]);
 
+// 会話練習に登場する語の補助辞書（タップで意味を表示するため）
+const SITUATION_SUPPLEMENT = {
+  "xin lỗi": ["ごめんなさい、すみません", "表現"], "cảm ơn": ["ありがとう", "表現"],
+  "điện thoại": ["電話", "名詞"], "đồng hồ": ["時計", "名詞"], "cửa sổ": ["窓", "名詞"],
+  "giúp đỡ": ["助ける、手伝う", "動詞"], "một chút": ["ちょっと、少し", "表現"],
+  "bao giờ": ["いつ", "表現"], "chưa bao giờ": ["一度も～ない", "表現"],
+  "phở bò": ["牛肉フォー", "名詞"], "hôm qua": ["昨日", "名詞"],
+  "ai": "誰", "bàn": "テーブル・机", "bò": "牛", "bảy": "7（数字）", "bận": ["忙しい", "形容詞"],
+  "cháu": "孫・私（目上の人に対する自称）", "chút": "少し（một chút）", "còn": "まだ～ある・残っている",
+  "cậu": "君（親しい友達への呼称）", "dài": ["長い", "形容詞"], "dạ": "はい（丁寧な返事）",
+  "dạy": ["教える", "動詞"], "hùng": "フン（人名）", "hỏng": ["壊れた、故障した", "形容詞"],
+  "hồ": "湖・（đồng hồ）時計", "khác": ["他の、違う", "形容詞"], "khỏe": ["元気な、健康な", "形容詞"],
+  "lúc": "～時に・とき", "lỗi": "過ち（xin lỗi＝ごめんなさい）", "mấy": "いくつ・何（数を尋ねる）",
+  "nhẹ": ["軽い", "形容詞"], "nấu": ["料理する、煮る", "動詞"], "nắng": "日差し・晴れ",
+  "qua": "過ぎる・渡る（hôm qua＝昨日）", "rảnh": ["暇な、手が空いている", "形容詞"],
+  "sao": "どうして・なぜ", "sổ": "ノート・（cửa sổ）窓", "thoại": "（điện thoại）電話",
+  "thăm": ["訪ねる、見舞う", "動詞"], "thế": "そんなに・～なの？（文末）", "việc": "仕事・こと",
+  "xanh": "青・緑", "đen": "黒", "đêm": "夜・～泊", "đấy": "～だよ（文末詞）",
+  "đồng": "（đồng hồ）時計・ドン（通貨）", "đỡ": "（giúp đỡ）助ける", "đừng": "～しないで（禁止）",
+  "ơn": "恩（cảm ơn＝ありがとう）", "ạ": "～です・ます（丁寧の文末詞）", "ấy": "その・あの（人）",
+};
+for (const [word, value] of Object.entries(SITUATION_SUPPLEMENT)) {
+  if (Array.isArray(value)) addDictEntry(word, value[0], value[1]);
+  else addDictEntry(word, value, "");
+}
+
 const situation = { questions: [], index: 0, correct: 0, wrong: [], answered: false };
+
+// 会話文の描画。interactive=trueで空欄を正解文で埋め、全単語をタップ可能にする
+function renderSituationDialogue(q, interactive) {
+  $("st-dialogue").innerHTML = q.d
+    .map(([speaker, text]) => {
+      let content;
+      if (!interactive) {
+        content = escapeHtml(text).replace(/_{2,}/g, '<span class="blank">？</span>');
+      } else {
+        const segments = text.split(/_{2,}/);
+        content =
+          segments.length > 1
+            ? segments
+                .map(interactiveHtml)
+                .join(`<span class="filled-sentence">${interactiveHtml(q.c[q.a])}</span>`)
+            : interactiveHtml(text);
+      }
+      return `<div class="dialogue-line">
+        <span class="dialogue-speaker">${escapeHtml(speaker)}</span>
+        <span class="dialogue-text">${content}</span>
+      </div>`;
+    })
+    .join("");
+}
 
 function startSituation() {
   situation.questions = shuffle(SITUATION_BANK).slice(0, 8);
@@ -976,14 +1026,8 @@ function renderSituationQuestion() {
   $("st-progress-fill").style.width =
     (situation.index / situation.questions.length) * 100 + "%";
 
-  $("st-dialogue").innerHTML = q.d
-    .map(
-      ([speaker, text]) => `<div class="dialogue-line">
-        <span class="dialogue-speaker">${escapeHtml(speaker)}</span>
-        <span class="dialogue-text">${escapeHtml(text).replace(/_{2,}/g, '<span class="blank">？</span>')}</span>
-      </div>`,
-    )
-    .join("");
+  renderSituationDialogue(q, false);
+  $("st-tap-hint").classList.add("hidden");
 
   const letters = ["A", "B", "C", "D"];
   $("st-choices").innerHTML = "";
@@ -1030,6 +1074,14 @@ function answerSituation(selectedIndex) {
     }
   });
 
+  // 会話文と選択肢をタップ可能にする（単語の意味表示＋Flash Card追加）
+  renderSituationDialogue(q, true);
+  document.querySelectorAll("#st-choices .choice").forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    btn.children[1].innerHTML = interactiveHtml(q.c[i]);
+  });
+  $("st-tap-hint").classList.remove("hidden");
+
   const letters = ["A", "B", "C", "D"];
   const banner = $("st-banner");
   banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
@@ -1071,13 +1123,28 @@ function finishSituation() {
   $("st-wrong-list").innerHTML = situation.wrong
     .map(
       (w) =>
-        `<li><span class="word">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
     )
     .join("");
   window.scrollTo(0, 0);
 }
 
 $("btn-start-situation").addEventListener("click", startSituation);
+
+// 回答後：会話文・選択肢・結果画面の単語タップで意味を表示
+$("st-dialogue").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span && situation.answered) openWordPopup(span.dataset.word);
+});
+$("st-choices").addEventListener("click", (e) => {
+  if (!situation.answered) return;
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+$("st-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 $("st-next").addEventListener("click", () => {
   if (situation.index + 1 < situation.questions.length) {
     situation.index++;
