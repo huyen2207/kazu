@@ -314,6 +314,35 @@ h1 { font-size: 22px; font-weight: 700; }
 .notice-box p { font-size: 14px; line-height: 1.9; }
 .question-card p { font-size: 15px; font-weight: 600; }
 
+/* 並べ替え練習（Sentence Builder） */
+.builder-hint-card { padding: 12px 16px; }
+.bd-jp { font-size: 14px; color: var(--muted); }
+.builder-answer {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 66px; background: var(--card);
+  border: 2px dashed #c7d2fe; border-radius: 10px;
+  padding: 12px; margin-bottom: 14px;
+}
+.builder-answer:empty::before {
+  content: "ここに語をタップして並べる";
+  color: #a5b4fc; font-size: 13px; align-self: center;
+}
+.builder-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+.tile {
+  background: var(--card); border: 2px solid var(--border); border-radius: 8px;
+  padding: 8px 14px; font-size: 15px; cursor: pointer; font-family: inherit;
+  transition: border-color 0.15s, background 0.15s, opacity 0.15s;
+}
+.tile:hover { border-color: #a5b4fc; background: var(--primary-light); }
+.builder-answer .tile { border-color: var(--primary); background: var(--primary-light); }
+.tile.used { opacity: 0.25; pointer-events: none; }
+.builder-actions { margin-top: 4px; }
+.bd-sentence { font-size: 17px; line-height: 1.9; margin-bottom: 8px; }
+.exp-grammar-inline { background: #f9fafb; border: none; padding: 12px 14px; margin: 0; }
+.exp-grammar-inline .pattern { font-weight: 700; margin-right: 8px; }
+#bd-feedback { margin-top: 16px; }
+#bd-speak { margin-bottom: 4px; }
+
 /* 実力分析 */
 .analysis-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .readiness-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

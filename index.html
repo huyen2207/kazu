@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=11" />
 </head>
 <body>
   <header class="site-header">
@@ -66,6 +66,7 @@
         <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
         <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）</button>
         <button id="btn-start-reading" class="btn btn-secondary btn-lg">📰 文章読解（お知らせ・文を読んで答える）</button>
+        <button id="btn-start-builder" class="btn btn-secondary btn-lg">🧩 並べ替え練習（語を並べて文を作る）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -322,6 +323,59 @@
       </div>
     </section>
 
+    <!-- 並べ替え練習画面（Sentence Builder） -->
+    <section id="screen-builder" class="screen hidden">
+      <div id="bd-question">
+        <div class="progress-row">
+          <span>問題 <strong id="bd-current">1</strong> / <span id="bd-total">8</span></span>
+          <span>正解 <span id="bd-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="bd-progress-fill" class="progress-fill"></div></div>
+
+        <p class="sub st-lead">語を正しい順に並べて文を作ってください</p>
+        <div class="card builder-hint-card"><p id="bd-jp" class="bd-jp"></p></div>
+
+        <div id="bd-answer" class="builder-answer"></div>
+        <div id="bd-pool" class="builder-pool"></div>
+
+        <div class="cta-row builder-actions">
+          <button id="bd-check" class="btn btn-primary" disabled>答え合わせ</button>
+          <button id="bd-reset" class="btn btn-secondary">リセット</button>
+        </div>
+
+        <div id="bd-feedback" class="hidden">
+          <div id="bd-banner" class="feedback-banner"></div>
+          <div class="card explanation">
+            <h3>正解の文</h3>
+            <p id="bd-sentence" class="bd-sentence"></p>
+            <button id="bd-speak" class="speak-btn" type="button">🔊 文を聞く</button>
+            <h3>文法</h3>
+            <div class="card exp-grammar-inline">
+              <p><span id="bd-pattern" class="pattern"></span><span id="bd-pattern-jp" class="muted"></span></p>
+              <p id="bd-grammar-exp" class="muted"></p>
+            </div>
+          </div>
+          <button id="bd-next" class="btn btn-primary btn-block">次の問題へ</button>
+        </div>
+      </div>
+
+      <div id="bd-result" class="hidden">
+        <div class="card result-card">
+          <h2>並べ替え練習の結果</h2>
+          <p class="result-score"><span id="bd-result-correct">0</span><span class="result-total"> / <span id="bd-result-total">0</span></span></p>
+          <p class="sub" id="bd-result-note"></p>
+        </div>
+        <div id="bd-wrong-wrap" class="card hidden">
+          <h3>間違えた文法（Flash Cardに追加済み）</h3>
+          <ul id="bd-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="bd-again" class="btn btn-primary">もう一度並べ替え練習</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
+    </section>
+
     <!-- 実力分析画面 -->
     <section id="screen-analysis" class="screen hidden">
       <div class="page-head">
@@ -461,6 +515,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>

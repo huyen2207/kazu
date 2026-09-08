@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading", "builder"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -1429,6 +1429,278 @@ $("pg-text-final").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("pg-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+
+/* ---------------------------------------------------------------------------
+   並べ替え練習（Sentence Builder）— 語を並べて文を作る（16問）
+   w: 正解順のタイル / alt: 許容される別の語順（自然なベトナム語の範囲）
+   g: [文法パターン, 日本語の意味, 解説] / key: 間違えたときFlash Cardへ追加する語
+--------------------------------------------------------------------------- */
+const BUILDER_BANK = [
+  {
+    w: ["Vì", "hôm nay", "tôi", "bận", "nên", "không", "đi."],
+    alt: [["Vì", "tôi", "bận", "hôm nay", "nên", "không", "đi."], ["Hôm nay", "vì", "tôi", "bận", "nên", "không", "đi."]],
+    jp: "今日は忙しいので行きません。",
+    g: ["Vì A nên B", "AなのでB", "理由と結果をつなぐ最重要パターン。Vìの後に理由、nênの後に結果を置きます。"],
+    key: ["vì ~ nên ~", "～なので…（理由）", "文型"], cat: "文法",
+  },
+  {
+    w: ["Nếu", "trời mưa", "thì", "tôi", "sẽ", "ở nhà."],
+    jp: "もし雨なら、私は家にいます。",
+    g: ["Nếu A thì B", "AならB", "条件を表すパターン。Nếuの後に条件、thìの後に結果を置きます。"],
+    key: ["nếu ~ thì ~", "もし～なら…", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "rửa tay", "trước khi", "ăn cơm."],
+    jp: "私はご飯を食べる前に手を洗います。",
+    g: ["trước khi + 動詞", "～する前に", "trước khiの後ろには動詞句を置きます。「trước khi ăn cơm＝ご飯を食べる前に」。"],
+    key: ["trước khi", "～する前に", "文型"], cat: "文法",
+  },
+  {
+    w: ["Sau khi", "tan làm,", "tôi", "thường", "đi", "siêu thị."],
+    alt: [["Tôi", "thường", "đi", "siêu thị", "sau khi", "tan làm,"]],
+    jp: "仕事が終わった後、私はよくスーパーへ行きます。",
+    g: ["sau khi + 動詞", "～した後で", "sau khiの後ろに動詞句。trước khi（～する前に）とペアで覚えましょう。"],
+    key: ["sau khi", "～した後で", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "đang", "học", "tiếng Việt."],
+    jp: "私はベトナム語を勉強しています。",
+    g: ["đang + 動詞", "～している（進行）", "動詞の前にđangを置くと「今～している最中」を表します。"],
+    key: ["đang", "～している（進行）", "文型"], cat: "文法",
+  },
+  {
+    w: ["Ngày mai", "tôi", "phải", "dậy", "sớm."],
+    alt: [["Tôi", "phải", "dậy", "sớm", "ngày mai."]],
+    jp: "明日、私は早く起きなければなりません。",
+    g: ["phải + 動詞", "～しなければならない", "義務を表します。動詞の前にphảiを置きます。"],
+    key: ["phải", "～しなければならない", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "muốn", "uống", "một cốc", "cà phê."],
+    jp: "私はコーヒーを1杯飲みたいです。",
+    g: ["muốn + 動詞", "～したい", "希望を表します。muốn uống＝飲みたい。"],
+    key: ["muốn", "～したい", "文型"], cat: "文法",
+  },
+  {
+    w: ["Chúng ta", "nên", "đặt", "phòng", "trước."],
+    jp: "私たちは先に部屋を予約したほうがいいです。",
+    g: ["nên + 動詞", "～したほうがいい", "アドバイスを表します。文末のtrướcは「前もって」。"],
+    key: ["nên", "～したほうがいい", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "đến", "bưu điện", "để", "gửi thư."],
+    jp: "私は手紙を送るために郵便局へ行きます。",
+    g: ["動詞 + để + 動詞", "～するために…する", "目的を表すパターン。đểの後ろに目的の動作を置きます。"],
+    key: ["để", "～するために", "文型"], cat: "文法",
+  },
+  {
+    w: ["Món này", "ngon", "nhưng", "hơi", "cay."],
+    jp: "この料理はおいしいけれど、少し辛いです。",
+    g: ["A nhưng B", "AだがB（逆接）", "前後を対比させる接続詞です。hơi＝少し。"],
+    key: ["nhưng", "しかし、～だが", "文型"], cat: "文法",
+  },
+  {
+    w: ["Em ấy", "vừa", "ăn", "vừa", "xem tivi."],
+    jp: "その子は食べながらテレビを観ています。",
+    g: ["vừa A vừa B", "AしながらB", "2つの動作を同時に行うことを表します。vừaを2回使うのがポイント。"],
+    key: ["vừa ~ vừa ~", "～しながら…", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "đã", "ăn cơm", "rồi."],
+    jp: "私はもうご飯を食べました。",
+    g: ["đã + 動詞 + rồi", "もう～した（完了）", "đãとrồiで動詞をはさんで完了を表します。"],
+    key: ["đã ~ rồi", "もう～した（完了）", "文型"], cat: "文法",
+  },
+  {
+    w: ["Anh ấy", "có thể", "nói", "tiếng Nhật."],
+    jp: "彼は日本語を話すことができます。",
+    g: ["có thể + 動詞", "～できる", "可能を表します。動詞の前にcó thểを置きます。"],
+    key: ["có thể", "～できる", "文型"], cat: "文法",
+  },
+  {
+    w: ["Khi", "rảnh,", "tôi", "thường", "đọc sách."],
+    alt: [["Tôi", "thường", "đọc sách", "khi", "rảnh,"]],
+    jp: "暇なとき、私はよく本を読みます。",
+    g: ["khi + 動詞/形容詞", "～するとき", "khiの後ろに状況を置きます。khi rảnh＝暇なとき。"],
+    key: ["khi", "～するとき", "文型"], cat: "文法",
+  },
+  {
+    w: ["Trời", "càng ngày", "càng", "lạnh."],
+    jp: "日ごとにますます寒くなっています。",
+    g: ["càng ngày càng ~", "ますます～", "変化がどんどん進むことを表します。càng ngày càng lạnh＝日に日に寒くなる。"],
+    key: ["càng ngày càng", "ますます～", "文型"], cat: "文法",
+  },
+  {
+    w: ["Cuối tuần này", "tôi", "định", "đi", "Hà Nội."],
+    alt: [["Tôi", "định", "đi", "Hà Nội", "cuối tuần này."]],
+    jp: "今週末、私はハノイへ行くつもりです。",
+    g: ["định + 動詞", "～するつもり", "予定・つもりを表します。動詞の前にđịnhを置きます。"],
+    key: ["định", "～するつもり", "動詞"], cat: "文法",
+  },
+];
+
+for (const b of BUILDER_BANK) addDictEntry(b.key[0], b.key[1], b.key[2]);
+
+const builder = { questions: [], index: 0, correct: 0, wrong: [], placed: [], answered: false };
+
+// 語順の比較キー（大文字小文字・句読点を無視）
+function builderKey(tiles) {
+  return tiles.join(" ").toLowerCase().normalize("NFC").replace(/[.,!?]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function startBuilder() {
+  builder.questions = shuffle(BUILDER_BANK).slice(0, 8);
+  builder.index = 0;
+  builder.correct = 0;
+  builder.wrong = [];
+  showScreen("builder");
+  $("bd-question").classList.remove("hidden");
+  $("bd-result").classList.add("hidden");
+  renderBuilderQuestion();
+}
+
+function renderBuilderQuestion() {
+  window.scrollTo(0, 0);
+  const q = builder.questions[builder.index];
+  builder.answered = false;
+  builder.placed = [];
+  // タイルは毎回シャッフル（正解順と同じにならないよう再試行）
+  let pool = shuffle(q.w);
+  if (builderKey(pool) === builderKey(q.w)) pool = shuffle(q.w.slice().reverse());
+  builder.pool = pool;
+
+  $("bd-current").textContent = builder.index + 1;
+  $("bd-total").textContent = builder.questions.length;
+  $("bd-correct-count").textContent = builder.correct;
+  $("bd-progress-fill").style.width = (builder.index / builder.questions.length) * 100 + "%";
+  $("bd-jp").textContent = `日本語：「${q.jp}」`;
+  $("bd-feedback").classList.add("hidden");
+  renderBuilderTiles();
+}
+
+function renderBuilderTiles() {
+  // 回答エリア（タップで戻す）
+  $("bd-answer").innerHTML = "";
+  builder.placed.forEach((tileIndex, position) => {
+    const btn = document.createElement("button");
+    btn.className = "tile";
+    btn.textContent = builder.pool[tileIndex];
+    btn.addEventListener("click", () => {
+      if (builder.answered) return;
+      builder.placed.splice(position, 1);
+      renderBuilderTiles();
+    });
+    $("bd-answer").appendChild(btn);
+  });
+
+  // タイル置き場（タップで追加）
+  $("bd-pool").innerHTML = "";
+  builder.pool.forEach((word, tileIndex) => {
+    const btn = document.createElement("button");
+    btn.className = "tile" + (builder.placed.includes(tileIndex) ? " used" : "");
+    btn.textContent = word;
+    btn.addEventListener("click", () => {
+      if (builder.answered || builder.placed.includes(tileIndex)) return;
+      builder.placed.push(tileIndex);
+      renderBuilderTiles();
+    });
+    $("bd-pool").appendChild(btn);
+  });
+
+  $("bd-check").disabled = builder.placed.length !== builder.pool.length;
+}
+
+function checkBuilder() {
+  const q = builder.questions[builder.index];
+  const answerTiles = builder.placed.map((i) => builder.pool[i]);
+  const answerKey = builderKey(answerTiles);
+  const acceptable = [q.w, ...(q.alt || [])].map(builderKey);
+  const isCorrect = acceptable.includes(answerKey);
+  builder.answered = true;
+  if (isCorrect) builder.correct++;
+  else builder.wrong.push({ word: q.key[0], meaning: q.key[1], selected: answerTiles.join(" ") });
+
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+  if (!isCorrect) addWordToFlashcards(q.key[0]);
+  saveStore();
+
+  const banner = $("bd-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent = isCorrect
+    ? "正解です！"
+    : `不正解… あなたの答え：${answerTiles.join(" ")}`;
+
+  const sentence = q.w.join(" ").replace(/\s+([.,!?])/g, "$1");
+  $("bd-sentence").innerHTML = interactiveHtml(sentence);
+  builder.sentence = sentence;
+  $("bd-pattern").textContent = q.g[0];
+  $("bd-pattern-jp").textContent = `「${q.g[1]}」`;
+  $("bd-grammar-exp").textContent = q.g[2];
+  $("bd-next").textContent =
+    builder.index + 1 < builder.questions.length ? "次の問題へ" : "結果を見る";
+  $("bd-feedback").classList.remove("hidden");
+  $("bd-correct-count").textContent = builder.correct;
+  $("bd-check").disabled = true;
+}
+
+function finishBuilder() {
+  store.sessions.push({
+    at: nowIso(),
+    mode: "builder",
+    total: builder.questions.length,
+    correct: builder.correct,
+    wrong: builder.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("bd-question").classList.add("hidden");
+  $("bd-result").classList.remove("hidden");
+  $("bd-result-correct").textContent = builder.correct;
+  $("bd-result-total").textContent = builder.questions.length;
+  $("bd-result-note").textContent = `正答率 ${Math.round((builder.correct / builder.questions.length) * 100)}%`;
+  $("bd-wrong-wrap").classList.toggle("hidden", builder.wrong.length === 0);
+  $("bd-wrong-list").innerHTML = builder.wrong
+    .map(
+      (w) =>
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-builder").addEventListener("click", startBuilder);
+$("bd-check").addEventListener("click", () => {
+  if (!builder.answered) checkBuilder();
+});
+$("bd-reset").addEventListener("click", () => {
+  if (builder.answered) return;
+  builder.placed = [];
+  renderBuilderTiles();
+});
+$("bd-next").addEventListener("click", () => {
+  if (builder.index + 1 < builder.questions.length) {
+    builder.index++;
+    renderBuilderQuestion();
+  } else {
+    finishBuilder();
+  }
+});
+$("bd-again").addEventListener("click", startBuilder);
+$("bd-speak").addEventListener("click", () => {
+  if (builder.sentence) speak(builder.sentence, $("bd-speak"));
+});
+$("bd-sentence").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+$("bd-wrong-list").addEventListener("click", (e) => {
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
