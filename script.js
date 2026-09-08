@@ -5312,6 +5312,187 @@ $("wp-add").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------------
+   学習データのバックアップ（エクスポート／インポート／リセット）
+   データはこの端末のlocalStorageにしか無いため、持ち出しと復元の手段を用意する。
+--------------------------------------------------------------------------- */
+let pendingImport = null; // 読み込み済みバックアップ（上書き／マージの選択待ち）
+
+function showSettingsMessage(message, kind) {
+  const el = $("settings-message");
+  el.textContent = message;
+  el.className = "settings-message " + kind; // ok / ng
+}
+
+// store は const なので、中身を入れ替える形で反映する
+function applyStore(next) {
+  for (const key of Object.keys(store)) delete store[key];
+  Object.assign(store, next);
+  renderLevelControl();
+  renderSpeedControls();
+  renderHome();
+}
+
+/* --- エクスポート --- */
+function exportStore() {
+  const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const fileName = `kazu-backup-${todayStr()}.json`;
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0); // クリック直後に解放するとDLが中断される環境がある
+  showSettingsMessage(`バックアップ「${fileName}」を保存しました。`, "ok");
+}
+
+/* --- インポート --- */
+// KAZUのバックアップとして読めるかを確認する。読めない場合はnullを返し、既存データには触らない。
+function parseBackup(text) {
+  let data = null;
+  try {
+    data = JSON.parse(text);
+  } catch (_) {
+    return null;
+  }
+  if (!isPlainObject(data)) return null;
+  const looksLikeStore =
+    isPlainObject(data.vocab) ||
+    isPlainObject(data.answered) ||
+    isPlainObject(data.days) ||
+    Array.isArray(data.sessions);
+  if (!looksLikeStore) return null;
+  return migrate(data); // 版の違うバックアップもここで今の版に合わせる
+}
+
+// 語彙：学習回数は合算し、進み具合は「進んでいるほう」を採る
+function mergeVocabRecord(cur, inc) {
+  const curSeen = cur.lastReviewedAt || cur.firstSeenAt || "";
+  const incSeen = inc.lastReviewedAt || inc.firstSeenAt || "";
+  const newer = incSeen >= curSeen ? inc : cur;
+  return {
+    ...cur,
+    ...inc,
+    exposureCount: cur.exposureCount + inc.exposureCount,
+    wrongCount: cur.wrongCount + inc.wrongCount,
+    consecutiveCorrect: Math.max(cur.consecutiveCorrect, inc.consecutiveCorrect),
+    consecutiveWrong: Math.max(cur.consecutiveWrong, inc.consecutiveWrong),
+    masteryScore: Math.max(cur.masteryScore, inc.masteryScore),
+    status: newer.status,
+    firstSeenAt: cur.firstSeenAt < inc.firstSeenAt ? cur.firstSeenAt : inc.firstSeenAt,
+    // 復習期限は早いほうを採る（復習漏れを作らない）
+    nextReviewAt: cur.nextReviewAt < inc.nextReviewAt ? cur.nextReviewAt : inc.nextReviewAt,
+  };
+}
+
+// マージ：語彙・回答・日別記録は数を合算し、セッションは日時(at)で重複排除する
+function mergeStores(base, incoming) {
+  const merged = { ...base, version: SCHEMA_VERSION };
+
+  merged.vocab = { ...base.vocab };
+  for (const [key, inc] of Object.entries(incoming.vocab)) {
+    const cur = merged.vocab[key];
+    merged.vocab[key] = cur ? mergeVocabRecord(cur, inc) : inc;
+  }
+
+  merged.answered = { ...base.answered };
+  for (const [sentence, inc] of Object.entries(incoming.answered)) {
+    const cur = merged.answered[sentence];
+    merged.answered[sentence] = cur
+      ? { ...cur, count: cur.count + inc.count, correct: cur.correct + inc.correct }
+      : inc;
+  }
+
+  merged.days = { ...base.days };
+  for (const [day, inc] of Object.entries(incoming.days)) {
+    const cur = merged.days[day];
+    merged.days[day] = cur
+      ? { ...cur, questions: cur.questions + inc.questions, correct: cur.correct + inc.correct }
+      : inc;
+  }
+
+  const byAt = new Map();
+  for (const s of [...base.sessions, ...incoming.sessions]) byAt.set(s.at, s);
+  merged.sessions = [...byAt.values()].sort((a, b) => (a.at < b.at ? -1 : a.at > b.at ? 1 : 0)).slice(-200);
+
+  return merged;
+}
+
+function openImportDialog(backup) {
+  $("import-summary").textContent =
+    `語彙 ${Object.keys(backup.vocab).length}語 / 学習履歴 ${backup.sessions.length}回 / ` +
+    `学習日 ${Object.keys(backup.days).length}日 のバックアップです。`;
+  $("import-overlay").classList.remove("hidden");
+}
+
+function closeImportDialog() {
+  $("import-overlay").classList.add("hidden");
+  pendingImport = null;
+}
+
+function applyImport(mode) {
+  if (!pendingImport) return;
+  const next = mode === "merge" ? mergeStores(store, pendingImport) : pendingImport;
+  closeImportDialog();
+  applyStore(next);
+  saveStore();
+  showSettingsMessage(
+    `バックアップを${mode === "merge" ? "今のデータと合わせて" : "上書きで"}読み込みました。` +
+      `語彙 ${Object.keys(store.vocab).length}語 / 学習履歴 ${store.sessions.length}回。`,
+    "ok",
+  );
+}
+
+/* --- リセット --- */
+function resetStore() {
+  const ok = window.confirm(
+    "この端末の学習データがすべて消えます。よろしいですか？\nバックアップを保存していない場合、元に戻せません。",
+  );
+  if (!ok) return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (_) { /* 消せなくても画面上のデータは初期化する */ }
+  applyStore(emptyStore());
+  showSettingsMessage("学習データを削除しました。", "ok");
+}
+
+/* --- 操作 --- */
+$("btn-export").addEventListener("click", exportStore);
+$("btn-reset").addEventListener("click", resetStore);
+$("btn-import").addEventListener("click", () => $("import-file").click());
+
+$("import-file").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  e.target.value = ""; // 同じファイルを続けて選び直せるようにする
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const backup = parseBackup(String(reader.result));
+    if (!backup) {
+      showSettingsMessage(
+        "このファイルはKAZUのバックアップとして読み込めませんでした。学習データはそのままです。",
+        "ng",
+      );
+      return;
+    }
+    pendingImport = backup;
+    openImportDialog(backup);
+  };
+  reader.onerror = () => {
+    showSettingsMessage("ファイルを読み込めませんでした。学習データはそのままです。", "ng");
+  };
+  reader.readAsText(file);
+});
+
+$("import-merge").addEventListener("click", () => applyImport("merge"));
+$("import-replace").addEventListener("click", () => applyImport("replace"));
+$("import-cancel").addEventListener("click", closeImportDialog);
+$("import-overlay").addEventListener("click", (e) => {
+  if (e.target === $("import-overlay")) closeImportDialog();
+});
+
+/* ---------------------------------------------------------------------------
    ナビゲーション
 --------------------------------------------------------------------------- */
 document.querySelectorAll("[data-nav]").forEach((el) => {

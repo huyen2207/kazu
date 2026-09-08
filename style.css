@@ -98,6 +98,17 @@ h1 { font-size: 22px; font-weight: 700; }
 .btn-secondary:hover:not(:disabled) { background: #f9fafb; }
 .btn-lg { padding: 13px 22px; font-size: 15px; }
 .btn-block { display: block; width: 100%; margin-top: 14px; }
+.btn-danger { background: var(--card); color: var(--red); border: 1px solid #fecaca; }
+.btn-danger:hover:not(:disabled) { background: var(--red-bg); }
+
+/* 学習データ（バックアップ・復元・削除） */
+.settings-card { margin-top: 8px; }
+.settings-note { font-size: 13px; color: var(--muted); }
+.settings-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.settings-actions .btn { flex: 1 1 160px; }
+.settings-message { font-size: 13px; border-radius: 8px; padding: 10px 12px; margin-top: 12px; }
+.settings-message.ok { background: var(--green-bg); color: #166534; }
+.settings-message.ng { background: var(--red-bg); color: #991b1b; }
 
 .vocab-status { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; font-size: 12px; color: var(--muted); }
 .vocab-status span { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; }
