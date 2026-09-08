@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading", "builder"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading", "builder", "sentlisten"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え", sentListening: "文の聴解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -2176,6 +2176,189 @@ $("ls-next").addEventListener("click", () => {
   }
 });
 $("ls-again").addEventListener("click", startListening);
+
+/* ---------------------------------------------------------------------------
+   文の聴解 — 文を聞いて正しい意味（日本語訳）を選ぶ
+   出題は語彙クイズの検証済み47文（空欄を正解で埋めた文＋日本語訳）を再利用。
+   Distractorは同じトピックの他の文の訳を優先して選ぶ。
+--------------------------------------------------------------------------- */
+function sentListenBank() {
+  return QUESTION_BANK.map((q) => ({
+    sentence: q.sentence.replace(/_{2,}/, q.choices.find((c) => c.id === q.correctChoice).text),
+    translationJP: q.translationJP,
+    targetVocabulary: q.targetVocabulary,
+    category: q.category,
+  }));
+}
+
+const sentListen = { questions: [], index: 0, correct: 0, wrong: [], answered: false };
+
+function startSentListen() {
+  const bank = sentListenBank();
+  const picked = shuffle(bank).slice(0, 8);
+  sentListen.questions = picked.map((item) => {
+    // 同じトピックの訳を優先してDistractorに使う（雰囲気が似て紛らわしくなる）
+    const others = bank.filter((o) => o.translationJP !== item.translationJP);
+    const sameCat = shuffle(others.filter((o) => o.category === item.category));
+    const rest = shuffle(others.filter((o) => o.category !== item.category));
+    const distractors = [...sameCat, ...rest].slice(0, 3).map((o) => o.translationJP);
+    return { ...item, choices: shuffle([item.translationJP, ...distractors]) };
+  });
+  sentListen.index = 0;
+  sentListen.correct = 0;
+  sentListen.wrong = [];
+  showScreen("sentlisten");
+  $("sl-question").classList.remove("hidden");
+  $("sl-result").classList.add("hidden");
+  renderSentListenQuestion();
+}
+
+function renderSentListenQuestion() {
+  window.scrollTo(0, 0);
+  const q = sentListen.questions[sentListen.index];
+  sentListen.answered = false;
+
+  $("sl-current").textContent = sentListen.index + 1;
+  $("sl-total").textContent = sentListen.questions.length;
+  $("sl-correct-count").textContent = sentListen.correct;
+  $("sl-progress-fill").style.width =
+    (sentListen.index / sentListen.questions.length) * 100 + "%";
+
+  const letters = ["A", "B", "C", "D"];
+  $("sl-choices").innerHTML = "";
+  q.choices.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.dataset.index = i;
+    btn.innerHTML = `<span class="choice-id">${letters[i]}</span><span>${escapeHtml(text)}</span><span class="verdict"></span>`;
+    btn.addEventListener("click", () => {
+      if (!sentListen.answered) answerSentListen(i);
+    });
+    $("sl-choices").appendChild(btn);
+  });
+
+  $("sl-feedback").classList.add("hidden");
+  // 文をゆっくり読み上げる（自動再生がブロックされても🔊で再生できる）
+  speakSlow(q.sentence, $("sl-play"));
+}
+
+// 文の聴解用：単語再生より少しゆっくり
+function speakSlow(text, button) {
+  if (!("speechSynthesis" in window) || !text) return;
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "vi-VN";
+  if (viVoice) utterance.voice = viVoice;
+  utterance.rate = 0.75;
+  if (button) {
+    button.classList.add("speaking");
+    const done = () => button.classList.remove("speaking");
+    utterance.onend = done;
+    utterance.onerror = done;
+  }
+  speechSynthesis.speak(utterance);
+}
+
+function answerSentListen(selectedIndex) {
+  const q = sentListen.questions[sentListen.index];
+  const isCorrect = q.choices[selectedIndex] === q.translationJP;
+  sentListen.answered = true;
+  if (isCorrect) sentListen.correct++;
+  else {
+    const entry = lookupWord(q.targetVocabulary);
+    sentListen.wrong.push({
+      word: q.targetVocabulary,
+      meaning: entry ? entry.meaningJP : "",
+      selected: q.choices[selectedIndex],
+    });
+  }
+
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+  if (!isCorrect) addWordToFlashcards(q.targetVocabulary);
+  saveStore();
+
+  document.querySelectorAll("#sl-choices .choice").forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    if (q.choices[i] === q.translationJP) {
+      btn.classList.add("correct");
+      btn.querySelector(".verdict").textContent = "正解";
+    } else if (i === selectedIndex) {
+      btn.classList.add("wrong");
+      btn.querySelector(".verdict").textContent = "不正解";
+    } else {
+      btn.classList.add("dimmed");
+    }
+  });
+
+  const banner = $("sl-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent = isCorrect ? "正解です！" : "不正解…";
+  $("sl-sentence").innerHTML = interactiveHtml(q.sentence);
+  $("sl-meaning").textContent = q.translationJP;
+  $("sl-added-note").classList.toggle("hidden", isCorrect);
+  $("sl-next").textContent =
+    sentListen.index + 1 < sentListen.questions.length ? "次の問題へ" : "結果を見る";
+  $("sl-feedback").classList.remove("hidden");
+  $("sl-correct-count").textContent = sentListen.correct;
+}
+
+function finishSentListen() {
+  store.sessions.push({
+    at: nowIso(),
+    mode: "sentListening",
+    total: sentListen.questions.length,
+    correct: sentListen.correct,
+    wrong: sentListen.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("sl-question").classList.add("hidden");
+  $("sl-result").classList.remove("hidden");
+  $("sl-result-correct").textContent = sentListen.correct;
+  $("sl-result-total").textContent = sentListen.questions.length;
+  $("sl-result-note").textContent = `正答率 ${Math.round((sentListen.correct / sentListen.questions.length) * 100)}%`;
+  $("sl-wrong-wrap").classList.toggle("hidden", sentListen.wrong.length === 0);
+  $("sl-wrong-list").innerHTML = sentListen.wrong
+    .map(
+      (w) =>
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">${w.meaning ? `（${escapeHtml(w.meaning)}）` : ""}</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-sentlisten").addEventListener("click", () => {
+  if (!("speechSynthesis" in window)) {
+    alert("お使いのブラウザは音声再生に対応していないため、文の聴解を利用できません。");
+    return;
+  }
+  startSentListen();
+});
+$("sl-play").addEventListener("click", () => {
+  const q = sentListen.questions[sentListen.index];
+  if (q) speakSlow(q.sentence, $("sl-play"));
+});
+$("sl-next").addEventListener("click", () => {
+  if (sentListen.index + 1 < sentListen.questions.length) {
+    sentListen.index++;
+    renderSentListenQuestion();
+  } else {
+    finishSentListen();
+  }
+});
+$("sl-again").addEventListener("click", startSentListen);
+$("sl-sentence").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+$("sl-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 
 /* ---------------------------------------------------------------------------
    実力分析（CEFR A2目安・語彙分野のみ）

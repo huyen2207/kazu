@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=12" />
 </head>
 <body>
   <header class="site-header">
@@ -67,6 +67,7 @@
         <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）</button>
         <button id="btn-start-reading" class="btn btn-secondary btn-lg">📰 文章読解（お知らせ・文を読んで答える）</button>
         <button id="btn-start-builder" class="btn btn-secondary btn-lg">🧩 並べ替え練習（語を並べて文を作る）</button>
+        <button id="btn-start-sentlisten" class="btn btn-secondary btn-lg">🔉 文の聴解（文を聞いて意味を選ぶ）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -376,6 +377,54 @@
       </div>
     </section>
 
+    <!-- 文の聴解画面（文を聞いて意味を選ぶ） -->
+    <section id="screen-sentlisten" class="screen hidden">
+      <div id="sl-question">
+        <div class="progress-row">
+          <span>問題 <strong id="sl-current">1</strong> / <span id="sl-total">8</span></span>
+          <span>正解 <span id="sl-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="sl-progress-fill" class="progress-fill"></div></div>
+
+        <div class="card center listen-card">
+          <p class="sub">文を聞いて、正しい意味を選んでください</p>
+          <button id="sl-play" class="listen-play" type="button" aria-label="再生">🔊</button>
+          <p class="hint">ボタンをタップすると何度でも再生できます（少しゆっくり読み上げます）</p>
+        </div>
+
+        <div id="sl-choices" class="choices"></div>
+
+        <div id="sl-feedback" class="hidden">
+          <div id="sl-banner" class="feedback-banner"></div>
+          <div class="card">
+            <h3 class="fb-label">読み上げた文</h3>
+            <p id="sl-sentence" class="bd-sentence"></p>
+            <p class="hint">単語をタップすると意味を確認できます</p>
+            <h3 class="fb-label">意味</h3>
+            <p id="sl-meaning"></p>
+            <p id="sl-added-note" class="hint hidden">✓ 聞き取れなかった文の重要語彙をFlash Cardに追加しました</p>
+          </div>
+          <button id="sl-next" class="btn btn-primary btn-block">次の問題へ</button>
+        </div>
+      </div>
+
+      <div id="sl-result" class="hidden">
+        <div class="card result-card">
+          <h2>文の聴解の結果</h2>
+          <p class="result-score"><span id="sl-result-correct">0</span><span class="result-total"> / <span id="sl-result-total">0</span></span></p>
+          <p class="sub" id="sl-result-note"></p>
+        </div>
+        <div id="sl-wrong-wrap" class="card hidden">
+          <h3>聞き取れなかった文の語彙（Flash Cardに追加済み）</h3>
+          <ul id="sl-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="sl-again" class="btn btn-primary">もう一度文の聴解</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
+    </section>
+
     <!-- 実力分析画面 -->
     <section id="screen-analysis" class="screen hidden">
       <div class="page-head">
@@ -515,6 +564,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>

@@ -343,6 +343,11 @@ h1 { font-size: 22px; font-weight: 700; }
 #bd-feedback { margin-top: 16px; }
 #bd-speak { margin-bottom: 4px; }
 
+/* 文の聴解 */
+.fb-label { font-size: 12px; font-weight: 600; color: var(--muted); margin: 10px 0 4px; }
+.fb-label:first-child { margin-top: 0; }
+#sl-meaning { font-size: 14px; font-weight: 600; }
+
 /* 実力分析 */
 .analysis-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .readiness-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
