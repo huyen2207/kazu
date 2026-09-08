@@ -255,6 +255,22 @@ h1 { font-size: 22px; font-weight: 700; }
 .word-popup-added { font-size: 13px; color: var(--green); font-weight: 600; margin-top: 10px; text-align: center; }
 .word-popup .btn-block { margin-top: 14px; }
 
+/* 聴解練習 */
+.listen-card { padding: 26px 18px; }
+.listen-play {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 34px; cursor: pointer; margin: 14px auto 6px; display: block;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+.listen-play:hover { background: var(--primary-dark); }
+.listen-play:active { transform: scale(0.95); }
+.listen-play.speaking { background: var(--green); box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35); }
+.ls-word { font-size: 20px; font-weight: 700; color: var(--primary); }
+#ls-meaning { font-size: 14px; margin-top: 4px; }
+#ls-feedback { margin-top: 16px; }
+
 /* 実力分析 */
 .analysis-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .readiness-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

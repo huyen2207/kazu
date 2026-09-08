@@ -61,6 +61,7 @@
       <div class="cta-row">
         <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>クイズを始める</button>
         <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
+        <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -134,6 +135,51 @@
       </div>
 
       <ul id="history-list" class="history-list"></ul>
+    </section>
+
+    <!-- 聴解練習画面 -->
+    <section id="screen-listening" class="screen hidden">
+      <div id="ls-question">
+        <div class="progress-row">
+          <span>問題 <strong id="ls-current">1</strong> / <span id="ls-total">10</span></span>
+          <span>正解 <span id="ls-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="ls-progress-fill" class="progress-fill"></div></div>
+
+        <div class="card center listen-card">
+          <p class="sub">音声を聞いて、正しい単語を選んでください</p>
+          <button id="ls-play" class="listen-play" type="button" aria-label="再生">🔊</button>
+          <p class="hint">ボタンをタップすると何度でも再生できます</p>
+        </div>
+
+        <div id="ls-choices" class="choices"></div>
+
+        <div id="ls-feedback" class="hidden">
+          <div id="ls-banner" class="feedback-banner"></div>
+          <div class="card">
+            <p id="ls-word" class="ls-word"></p>
+            <p id="ls-meaning"></p>
+            <p id="ls-added-note" class="hint hidden">✓ 聞き取れなかった語としてFlash Cardに追加しました</p>
+          </div>
+          <button id="ls-next" class="btn btn-primary btn-block">次の問題へ</button>
+        </div>
+      </div>
+
+      <div id="ls-result" class="hidden">
+        <div class="card result-card">
+          <h2>聴解練習の結果</h2>
+          <p class="result-score"><span id="ls-result-correct">0</span><span class="result-total"> / <span id="ls-result-total">0</span></span></p>
+          <p class="sub" id="ls-result-note"></p>
+        </div>
+        <div id="ls-wrong-wrap" class="card hidden">
+          <h3>聞き取れなかった語（Flash Cardに追加済み）</h3>
+          <ul id="ls-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="ls-again" class="btn btn-primary">もう一度聴解練習</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
     </section>
 
     <!-- 実力分析画面 -->

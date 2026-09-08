@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -795,6 +795,222 @@ $("fc-controls").addEventListener("click", (e) => {
     showScreen("fc-done");
   }
 });
+
+/* ---------------------------------------------------------------------------
+   聴解練習 — 音声を聞いて正しい単語を選ぶ
+   Distractorは「音が近い語」を自動選定する：
+   声調・母音記号を除いた綴り（đau/đâu/đầu→dau、tắt/tất→tat）が同じ語を最優先し、
+   次に編集距離の近い語を選ぶ。日本人学習者が聞き分けにくい組み合わせになる。
+--------------------------------------------------------------------------- */
+
+// 声調記号・母音記号を除いたASCII形（音の骨格）
+function foldVietnamese(s) {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "d")
+    .toLowerCase();
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      cur[j] = Math.min(
+        prev[j] + 1,
+        cur[j - 1] + 1,
+        prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+// 音の近さスコア（小さいほど似ている）
+function soundSimilarity(a, b) {
+  const fa = foldVietnamese(a), fb = foldVietnamese(b);
+  let score;
+  if (fa === fb) score = 0; // 声調・母音記号だけが違う（最も紛らわしい）
+  else {
+    const d = levenshtein(fa, fb);
+    if (d === 1) score = 1;
+    else if (d === 2 && fa[0] === fb[0]) score = 2;
+    else if (fa[0] === fb[0] && Math.abs(fa.length - fb.length) <= 1) score = 3.5;
+    else score = 4 + d * 0.1;
+  }
+  // 音節数（単語数）が違うと聞き分けやすいのでペナルティ
+  if (a.split(" ").length !== b.split(" ").length) score += 2;
+  return score;
+}
+
+// 辞書全体から音の近い語を選ぶ
+function getSoundAlikes(word, count) {
+  const key = norm(word);
+  return Object.keys(DICTIONARY)
+    .filter((k) => k !== key && !/^\d+$/.test(k))
+    .map((k) => ({ k, score: soundSimilarity(key, k) + Math.random() * 0.3 }))
+    .sort((x, y) => x.score - y.score)
+    .slice(0, count)
+    .map((x) => DICTIONARY[x.k].word);
+}
+
+// 出題対象：問題バンクの重要語彙（意味・品詞が揃っている語）
+function listeningAnswerPool() {
+  const pool = new Map();
+  for (const q of QUESTION_BANK) {
+    for (const v of q.vocabulary) {
+      const k = norm(v.word);
+      if (!pool.has(k) && !/^\d+$/.test(k)) {
+        pool.set(k, { word: v.word, meaningJP: v.meaningJP, partOfSpeech: v.partOfSpeech });
+      }
+    }
+  }
+  return [...pool.values()];
+}
+
+const listening = { questions: [], index: 0, correct: 0, wrong: [], answered: false };
+
+function startListening() {
+  const pool = shuffle(listeningAnswerPool());
+  listening.questions = pool.slice(0, 10).map((entry) => {
+    const choices = shuffle([entry.word, ...getSoundAlikes(entry.word, 3)]);
+    return { entry, choices };
+  });
+  listening.index = 0;
+  listening.correct = 0;
+  listening.wrong = [];
+  showScreen("listening");
+  $("ls-question").classList.remove("hidden");
+  $("ls-result").classList.add("hidden");
+  renderListeningQuestion();
+}
+
+function renderListeningQuestion() {
+  window.scrollTo(0, 0);
+  const q = listening.questions[listening.index];
+  listening.answered = false;
+
+  $("ls-current").textContent = listening.index + 1;
+  $("ls-total").textContent = listening.questions.length;
+  $("ls-correct-count").textContent = listening.correct;
+  $("ls-progress-fill").style.width =
+    (listening.index / listening.questions.length) * 100 + "%";
+
+  const letters = ["A", "B", "C", "D"];
+  $("ls-choices").innerHTML = "";
+  q.choices.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.dataset.word = text;
+    btn.innerHTML = `<span class="choice-id">${letters[i]}</span><span>${escapeHtml(text)}</span><span class="verdict"></span>`;
+    btn.addEventListener("click", () => {
+      if (listening.answered) openWordPopup(text);
+      else answerListening(text);
+    });
+    $("ls-choices").appendChild(btn);
+  });
+
+  $("ls-feedback").classList.add("hidden");
+  // 出題音声を再生（ブラウザが自動再生を止めた場合は🔊ボタンで再生できる）
+  speak(q.entry.word, $("ls-play"));
+}
+
+function answerListening(selectedText) {
+  const q = listening.questions[listening.index];
+  const isCorrect = norm(selectedText) === norm(q.entry.word);
+  listening.answered = true;
+  if (isCorrect) listening.correct++;
+  else listening.wrong.push({ word: q.entry.word, meaning: q.entry.meaningJP, selected: selectedText });
+
+  // 今日の学習量に加算
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+
+  // 聞き取れなかった語はFlash Cardへ（復習候補）
+  if (!isCorrect) addWordToFlashcards(q.entry.word);
+  saveStore();
+
+  document.querySelectorAll("#ls-choices .choice").forEach((btn) => {
+    const word = btn.dataset.word;
+    if (norm(word) === norm(q.entry.word)) {
+      btn.classList.add("correct");
+      btn.querySelector(".verdict").textContent = "正解";
+    } else if (word === selectedText) {
+      btn.classList.add("wrong");
+      btn.querySelector(".verdict").textContent = "不正解";
+    } else {
+      btn.classList.add("dimmed");
+    }
+  });
+
+  const banner = $("ls-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent = isCorrect ? "正解です！" : "不正解…";
+  $("ls-word").textContent =
+    q.entry.word + (q.entry.partOfSpeech ? `〔${q.entry.partOfSpeech}〕` : "");
+  $("ls-meaning").textContent = q.entry.meaningJP;
+  $("ls-added-note").classList.toggle("hidden", isCorrect);
+  $("ls-next").textContent =
+    listening.index + 1 < listening.questions.length ? "次の問題へ" : "結果を見る";
+  $("ls-feedback").classList.remove("hidden");
+  $("ls-correct-count").textContent = listening.correct;
+}
+
+function finishListening() {
+  // 学習履歴へ保存（学習履歴画面から間違えた語を復習できる）
+  store.sessions.push({
+    at: nowIso(),
+    mode: "listening",
+    total: listening.questions.length,
+    correct: listening.correct,
+    wrong: listening.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("ls-question").classList.add("hidden");
+  $("ls-result").classList.remove("hidden");
+  $("ls-result-correct").textContent = listening.correct;
+  $("ls-result-total").textContent = listening.questions.length;
+  $("ls-result-note").textContent = `正答率 ${Math.round((listening.correct / listening.questions.length) * 100)}%`;
+  $("ls-wrong-wrap").classList.toggle("hidden", listening.wrong.length === 0);
+  $("ls-wrong-list").innerHTML = listening.wrong
+    .map(
+      (w) =>
+        `<li><span class="word">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-listening").addEventListener("click", () => {
+  if (!("speechSynthesis" in window)) {
+    alert("お使いのブラウザは音声再生に対応していないため、聴解練習を利用できません。");
+    return;
+  }
+  startListening();
+});
+$("ls-play").addEventListener("click", () => {
+  const q = listening.questions[listening.index];
+  if (q) speak(q.entry.word, $("ls-play"));
+});
+$("ls-next").addEventListener("click", () => {
+  if (listening.index + 1 < listening.questions.length) {
+    listening.index++;
+    renderListeningQuestion();
+  } else {
+    finishListening();
+  }
+});
+$("ls-again").addEventListener("click", startListening);
 
 /* ---------------------------------------------------------------------------
    実力分析（CEFR A2目安・語彙分野のみ）
