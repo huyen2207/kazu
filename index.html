@@ -14,6 +14,7 @@
         <button data-nav="home">ホーム</button>
         <button data-nav="flashcards">フラッシュカード</button>
         <button data-nav="history">学習履歴</button>
+        <button data-nav="analysis">実力分析</button>
       </nav>
     </div>
   </header>
@@ -133,6 +134,65 @@
       </div>
 
       <ul id="history-list" class="history-list"></ul>
+    </section>
+
+    <!-- 実力分析画面 -->
+    <section id="screen-analysis" class="screen hidden">
+      <div class="page-head">
+        <div>
+          <h1>実力分析</h1>
+          <p class="sub">CEFR A2（語彙）を目安にした、現在の学習データの分析です。</p>
+        </div>
+      </div>
+
+      <div id="analysis-empty" class="card center hidden">
+        <p>まだ分析できるデータがありません。まずはクイズを数回解いてみましょう。</p>
+        <button class="btn btn-primary" data-nav="home">クイズを始める</button>
+      </div>
+
+      <div id="analysis-body">
+        <!-- 準備度スコア -->
+        <div class="card">
+          <div class="readiness-head">
+            <div>
+              <h2 class="analysis-title">A2語彙 準備度スコア</h2>
+              <p class="sub">このアプリの出題範囲（A2基礎語彙）における到達度の目安です</p>
+            </div>
+            <p class="readiness-score"><span id="rd-score">0</span><span class="readiness-max">/100</span></p>
+          </div>
+          <div class="factor-list">
+            <div class="factor"><span class="factor-label">直近の正答率（40点満点）</span><div class="factor-bar"><div id="rd-bar-acc" class="factor-fill"></div></div><span id="rd-val-acc" class="factor-val"></span></div>
+            <div class="factor"><span class="factor-label">語彙の定着度（30点満点）</span><div class="factor-bar"><div id="rd-bar-mastery" class="factor-fill"></div></div><span id="rd-val-mastery" class="factor-val"></span></div>
+            <div class="factor"><span class="factor-label">出題範囲のカバー率（20点満点）</span><div class="factor-bar"><div id="rd-bar-coverage" class="factor-fill"></div></div><span id="rd-val-coverage" class="factor-val"></span></div>
+            <div class="factor"><span class="factor-label">学習の継続性（10点満点）</span><div class="factor-bar"><div id="rd-bar-stability" class="factor-fill"></div></div><span id="rd-val-stability" class="factor-val"></span></div>
+          </div>
+          <p class="analysis-note">※ このスコアは語彙分野のみの参考値です。実際の試験には聴解・読解・文法も含まれるため、合否を予測するものではありません。</p>
+        </div>
+
+        <!-- 今週のアドバイス -->
+        <div class="card">
+          <h2 class="analysis-title">今週のアドバイス</h2>
+          <ol id="advice-list" class="advice-list"></ol>
+        </div>
+
+        <!-- トピック別 -->
+        <div class="card">
+          <h2 class="analysis-title">トピック別の正答率</h2>
+          <div id="category-bars" class="stat-bars"></div>
+        </div>
+
+        <!-- 難易度別 -->
+        <div class="card">
+          <h2 class="analysis-title">難易度別の正答率</h2>
+          <div id="difficulty-bars" class="stat-bars"></div>
+        </div>
+
+        <!-- 混同ペア -->
+        <div class="card">
+          <h2 class="analysis-title">よく混同している語</h2>
+          <ul id="analysis-confusions" class="confusion-list"></ul>
+        </div>
+      </div>
     </section>
 
     <!-- フラッシュカード画面 -->

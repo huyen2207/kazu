@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -240,6 +240,7 @@ function showScreen(name) {
   window.scrollTo(0, 0);
   if (name === "home") renderHome();
   if (name === "history") renderHistory();
+  if (name === "analysis") renderAnalysis();
 }
 
 function escapeHtml(text) {
@@ -794,6 +795,218 @@ $("fc-controls").addEventListener("click", (e) => {
     showScreen("fc-done");
   }
 });
+
+/* ---------------------------------------------------------------------------
+   実力分析（CEFR A2目安・語彙分野のみ）
+   すべて決定論的なルールで計算する。合否予測ではなく参考値として提示する。
+--------------------------------------------------------------------------- */
+
+function computeAnalysis() {
+  const questionMeta = new Map(QUESTION_BANK.map((q) => [q.sentence, q]));
+
+  // トピック別・難易度別の正答率
+  const byCategory = {};
+  const byDifficulty = { easy: { c: 0, n: 0 }, normal: { c: 0, n: 0 }, hard: { c: 0, n: 0 } };
+  let answeredTotal = 0;
+  for (const [sentence, rec] of Object.entries(store.answered)) {
+    const q = questionMeta.get(sentence);
+    if (!q) continue;
+    answeredTotal += rec.count;
+    const cat = (byCategory[q.category] = byCategory[q.category] || { c: 0, n: 0 });
+    cat.n += rec.count;
+    cat.c += rec.correct;
+    byDifficulty[q.difficulty].n += rec.count;
+    byDifficulty[q.difficulty].c += rec.correct;
+  }
+
+  // ① 直近の正答率（直近5セッション）
+  const recentSessions = store.sessions.slice(-5);
+  const recentTotal = recentSessions.reduce((s, x) => s + x.total, 0);
+  const recentCorrect = recentSessions.reduce((s, x) => s + x.correct, 0);
+  const accuracy = recentTotal > 0 ? recentCorrect / recentTotal : 0;
+
+  // ② 語彙の定着度（出会った正解語彙のmasteryScore平均）
+  const targetWords = new Set(QUESTION_BANK.map((q) => norm(q.targetVocabulary)));
+  const encountered = Object.entries(store.vocab).filter(([k]) => targetWords.has(k));
+  const masteryAvg =
+    encountered.length > 0
+      ? encountered.reduce((s, [, v]) => s + (v.masteryScore || 0), 0) / encountered.length / 100
+      : 0;
+
+  // ③ 出題範囲のカバー率（正解語彙47語のうち何語に出会ったか）
+  const coverage = encountered.length / targetWords.size;
+
+  // ④ 学習の継続性（直近7日のうち学習した日数）
+  let activeDays = 0;
+  for (const [day, rec] of Object.entries(store.days)) {
+    const diff = (Date.now() - new Date(day).getTime()) / DAY_MS;
+    if (diff >= 0 && diff < 7 && rec.questions > 0) activeDays++;
+  }
+  const stability = activeDays / 7;
+
+  const factors = {
+    accuracy: { ratio: accuracy, points: accuracy * 40, max: 40 },
+    mastery: { ratio: masteryAvg, points: masteryAvg * 30, max: 30 },
+    coverage: { ratio: coverage, points: coverage * 20, max: 20 },
+    stability: { ratio: stability, points: stability * 10, max: 10 },
+  };
+  const readiness = Math.round(
+    factors.accuracy.points + factors.mastery.points + factors.coverage.points + factors.stability.points,
+  );
+
+  // 混同ペア（学習履歴の誤答から集計）
+  const pairCounts = {};
+  for (const session of store.sessions) {
+    for (const w of session.wrong) {
+      if (!w.selected) continue;
+      const key = norm(w.word) + "|" + norm(w.selected);
+      const entry = (pairCounts[key] = pairCounts[key] || { target: w.word, selected: w.selected, count: 0 });
+      entry.count++;
+    }
+  }
+  const confusions = Object.values(pairCounts).sort((a, b) => b.count - a.count).slice(0, 5);
+
+  return { answeredTotal, byCategory, byDifficulty, factors, readiness, confusions, activeDays, encountered, targetWords };
+}
+
+// ルールベースのアドバイス生成：最も効果の高い3つを選ぶ
+function buildAdvice(a) {
+  const advice = [];
+  const pct = (x) => Math.round(x * 100);
+
+  // 1. 繰り返し混同しているペア
+  const repeated = a.confusions.filter((p) => p.count >= 2);
+  if (repeated.length > 0) {
+    const p = repeated[0];
+    advice.push(
+      `「${p.target}」と「${p.selected}」を${p.count}回混同しています。この2語の違いを比較して覚えるのが最も効果的です。学習履歴からこのペアをFlash Cardで復習しましょう。`,
+    );
+  }
+
+  // 2. 弱いトピック（3問以上解いて正答率60%未満）
+  const weakCats = Object.entries(a.byCategory)
+    .filter(([, v]) => v.n >= 3 && v.c / v.n < 0.6)
+    .sort((x, y) => x[1].c / x[1].n - y[1].c / y[1].n);
+  if (weakCats.length > 0) {
+    const [name, v] = weakCats[0];
+    advice.push(
+      `トピック「${name}」の正答率が${pct(v.c / v.n)}%と低めです（${v.n}問中${v.c}問正解）。このトピックの語彙を重点的に復習しましょう。`,
+    );
+  }
+
+  // 3. 難易度の傾向
+  const de = a.byDifficulty.easy, dn = a.byDifficulty.normal, dh = a.byDifficulty.hard;
+  if (de.n >= 3 && de.c / de.n < 0.7) {
+    advice.push(
+      `基礎レベル（easy）の正答率が${pct(de.c / de.n)}%です。まずは基本語彙の定着を優先しましょう。New Modeより復習（Flash Card）を増やすのがおすすめです。`,
+    );
+  } else if (dh.n >= 3 && dh.c / dh.n < 0.5 && dn.n >= 3 && dn.c / dn.n >= 0.7) {
+    advice.push(
+      `上級寄りの問題（hard）の正答率が${pct(dh.c / dh.n)}%です。基礎はできているので、コロケーション（語の組み合わせ）と類義語の使い分けを意識すると点が伸びます。`,
+    );
+  }
+
+  // 4. 復習の滞留
+  const dueCount = dueVocabList().length;
+  if (dueCount >= 5) {
+    advice.push(
+      `復習待ちの語彙が${dueCount}語たまっています。新しい問題より先にFlash Cardで復習を消化すると、忘却を防げます。`,
+    );
+  }
+
+  // 5. 学習の継続性
+  if (a.activeDays < 3 && store.sessions.length >= 2) {
+    advice.push(
+      `直近7日間の学習日数は${a.activeDays}日です。1日5問でもよいので、毎日続けると記憶の定着が大きく変わります。`,
+    );
+  }
+
+  // 6. カバー率
+  if (a.factors.coverage.ratio < 0.5) {
+    advice.push(
+      `まだ出題範囲の${pct(a.factors.coverage.ratio)}%しか学習していません。New Modeで新しい語彙に出会う回数を増やしましょう。`,
+    );
+  }
+
+  // フォールバック
+  if (advice.length === 0) {
+    advice.push("よいペースで学習できています。Randomモードで新規と復習のバランスを保ちながら続けましょう。");
+  }
+  return advice.slice(0, 3);
+}
+
+function accuracyBarClass(ratio) {
+  return ratio >= 0.8 ? "good" : ratio >= 0.6 ? "mid" : "bad";
+}
+
+function renderAnalysis() {
+  const a = computeAnalysis();
+  const hasData = a.answeredTotal >= 5;
+  $("analysis-empty").classList.toggle("hidden", hasData);
+  $("analysis-body").classList.toggle("hidden", !hasData);
+  if (!hasData) return;
+
+  // 準備度スコア
+  $("rd-score").textContent = a.readiness;
+  const setFactor = (key, factor) => {
+    $(`rd-bar-${key}`).style.width = `${factor.ratio * 100}%`;
+    $(`rd-val-${key}`).textContent = `${Math.round(factor.points)}/${factor.max}`;
+  };
+  setFactor("acc", a.factors.accuracy);
+  setFactor("mastery", a.factors.mastery);
+  setFactor("coverage", a.factors.coverage);
+  setFactor("stability", a.factors.stability);
+
+  // アドバイス
+  $("advice-list").innerHTML = buildAdvice(a)
+    .map((text) => `<li>${escapeHtml(text)}</li>`)
+    .join("");
+
+  // トピック別（正答率の低い順）
+  const cats = Object.entries(a.byCategory).sort(
+    (x, y) => x[1].c / x[1].n - y[1].c / y[1].n,
+  );
+  $("category-bars").innerHTML = cats
+    .map(([name, v]) => {
+      const ratio = v.c / v.n;
+      return `<div class="stat-bar-row">
+        <span class="stat-bar-label">${escapeHtml(name)}</span>
+        <div class="stat-bar-track"><div class="stat-bar-fill ${accuracyBarClass(ratio)}" style="width:${Math.max(3, ratio * 100)}%"></div></div>
+        <span class="stat-bar-val">${Math.round(ratio * 100)}%（${v.n}問）</span>
+      </div>`;
+    })
+    .join("");
+
+  // 難易度別
+  const diffLabels = { easy: "Easy（基礎）", normal: "Normal（標準）", hard: "Hard（上位）" };
+  $("difficulty-bars").innerHTML = ["easy", "normal", "hard"]
+    .map((key) => {
+      const v = a.byDifficulty[key];
+      if (v.n === 0) {
+        return `<div class="stat-bar-row"><span class="stat-bar-label">${diffLabels[key]}</span><div class="stat-bar-track"></div><span class="stat-bar-val">未出題</span></div>`;
+      }
+      const ratio = v.c / v.n;
+      return `<div class="stat-bar-row">
+        <span class="stat-bar-label">${diffLabels[key]}</span>
+        <div class="stat-bar-track"><div class="stat-bar-fill ${accuracyBarClass(ratio)}" style="width:${Math.max(3, ratio * 100)}%"></div></div>
+        <span class="stat-bar-val">${Math.round(ratio * 100)}%（${v.n}問）</span>
+      </div>`;
+    })
+    .join("");
+
+  // 混同ペア
+  $("analysis-confusions").innerHTML =
+    a.confusions.length === 0
+      ? '<li><span class="pair">まだ混同の記録はありません</span></li>'
+      : a.confusions
+          .map(
+            (p) => `<li>
+        <span class="pair">${escapeHtml(p.target)}<span class="arrow">↔</span>${escapeHtml(p.selected)}</span>
+        <span class="count">${p.count}回</span>
+      </li>`,
+          )
+          .join("");
+}
 
 /* ---------------------------------------------------------------------------
    単語の意味ポップアップ + Flash Card追加
