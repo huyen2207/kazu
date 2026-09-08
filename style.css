@@ -271,6 +271,20 @@ h1 { font-size: 22px; font-weight: 700; }
 #ls-meaning { font-size: 14px; margin-top: 4px; }
 #ls-feedback { margin-top: 16px; }
 
+/* 会話練習 */
+.st-lead { margin-bottom: 8px; }
+.dialogue-card { padding: 16px 18px; }
+.dialogue-line { display: flex; gap: 10px; padding: 6px 0; }
+.dialogue-speaker {
+  flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--primary);
+  background: var(--primary-light); border-radius: 999px; padding: 3px 10px;
+  height: fit-content; margin-top: 2px;
+}
+.dialogue-text { font-size: 15px; line-height: 1.8; }
+#st-feedback { margin-top: 16px; }
+#st-key { font-size: 14px; }
+#st-key .key-phrase { font-weight: 700; color: var(--primary); }
+
 /* 実力分析 */
 .analysis-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .readiness-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

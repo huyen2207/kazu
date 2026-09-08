@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -795,6 +795,298 @@ $("fc-controls").addEventListener("click", (e) => {
     showScreen("fc-done");
   }
 });
+
+/* ---------------------------------------------------------------------------
+   会話練習 — 場面に合う文を選ぶ（16問・正解位置A/B/C/D各4問）
+   d: 会話（[話者, セリフ]）/ c: 選択肢 / a: 正解index / t: 日本語訳 /
+   e: 解説 / ce: 選択肢解説 / key: [キーフレーズ, 意味, 品詞] / cat: トピック
+--------------------------------------------------------------------------- */
+const SITUATION_BANK = [
+  {
+    d: [["Nam", "Ngày mai mình chuyển nhà. Cậu có rảnh không?"], ["Minh", "Có. ______"]],
+    c: ["Mình sẽ đến giúp cậu.", "Mình đã chuyển nhà rồi.", "Cậu không được đến.", "Mình không biết nhà."],
+    a: 0,
+    t: "ナム「明日引っ越しなんだ。時間ある？」 ミン「あるよ。（手伝いに行くよ。）」",
+    e: "「rảnh không?（暇？）」と聞くのは手伝いを頼みたいからです。「Có（あるよ）」と答えた後に自然に続くのは、助けを申し出る文です。",
+    ce: ["「手伝いに行くよ」— 質問の意図に合った申し出で正解です。", "「もう引っ越したよ」— 引っ越すのはナムなので場面に合いません。", "「君は来てはいけない」— 失礼で会話の流れに合いません。", "「家を知らないよ」—「Có」と言った直後の返事として不自然です。"],
+    key: ["chuyển nhà", "引っ越す", "動詞句"], cat: "家", dif: "normal",
+  },
+  {
+    d: [["店員", "Anh chị muốn gọi món gì ạ?"], ["Khách", "______"]],
+    c: ["Tôi không thích nhà hàng này.", "Cho tôi hai bát phở bò.", "Quán này đóng cửa rồi.", "Tôi sẽ nấu phở."],
+    a: 1,
+    t: "店員「何をご注文なさいますか？」 客「（牛肉フォーを2杯ください。）」",
+    e: "注文を聞かれたら「Cho tôi ~（～をください）」で答えるのが定番です。",
+    ce: ["「この店は好きじゃない」— 注文の返事になっていません。", "「Cho tôi ~（～ください）」で注文していて正解です。", "「この店はもう閉まった」— 客のセリフとして場面に合いません。", "「私がフォーを作ります」— 注文の場面に合いません。"],
+    key: ["Cho tôi ~", "～をください", "表現"], cat: "レストラン", dif: "easy",
+  },
+  {
+    d: [["Người lạ", "Xin lỗi, cho tôi hỏi bưu điện ở đâu ạ?"], ["Bạn", "______"]],
+    c: ["Tôi cũng không có tiền.", "Tôi thích gửi thư lắm.", "Anh đi thẳng rồi rẽ phải là thấy.", "Ngày mai tôi sẽ đi bưu điện."],
+    a: 2,
+    t: "見知らぬ人「すみません、郵便局はどこですか？」 あなた「（まっすぐ行って右に曲がると見えますよ。）」",
+    e: "道を聞かれたら「đi thẳng（まっすぐ）」「rẽ phải/trái（右／左に曲がる）」で案内します。",
+    ce: ["「私もお金がない」— 質問と関係ありません。", "「手紙を送るのが好き」— 場所の質問に答えていません。", "道順を答えていて正解です。", "「明日郵便局に行く」— 場所を聞かれた返事になっていません。"],
+    key: ["cho tôi hỏi", "お尋ねしますが", "表現"], cat: "道案内", dif: "easy",
+  },
+  {
+    d: [["Lan", "Sao cậu đến muộn thế?"], ["Hoa", "______"]],
+    c: ["Cậu đến sớm quá đấy.", "Mình không bao giờ đến muộn.", "Ngày mai mình sẽ đến muộn hơn.", "Xin lỗi, xe buýt của mình bị hỏng."],
+    a: 3,
+    t: "ラン「どうしてこんなに遅れたの？」 ホア「（ごめん、バスが故障しちゃって。）」",
+    e: "「Sao ~?（どうして？）」と理由を聞かれているので、謝罪＋理由で答えるのが自然です。",
+    ce: ["「君は早く来すぎ」— 責任転嫁で会話に合いません。", "「絶対遅刻しない」— 今遅刻している場面と矛盾します。", "「明日はもっと遅れる」— 理由を聞かれた返事として不自然です。", "謝って理由（バスの故障）を説明していて正解です。"],
+    key: ["bị hỏng", "故障する、壊れる", "動詞句"], cat: "交通", dif: "normal",
+  },
+  {
+    d: [["A", "Alo, cho mình gặp Hùng được không?"], ["B", "______"]],
+    c: ["Hùng đang ra ngoài, bạn gọi lại sau nhé.", "Mình không có điện thoại.", "Hùng rất thích gọi điện.", "Bạn đừng gặp Hùng."],
+    a: 0,
+    t: "A「もしもし、フンさんをお願いできますか？」 B「（フンは今外出中です。後でかけ直してくださいね。）」",
+    e: "電話で本人が不在のとき、「đang ra ngoài（外出中）」＋「gọi lại sau（後でかけ直して）」が定番の応答です。",
+    ce: ["不在を伝えてかけ直しを頼んでいて正解です。", "「電話を持っていない」— 電話中の発言として矛盾します。", "「フンは電話が好き」— 取り次ぎの返事になっていません。", "「会わないで」— 失礼で場面に合いません。"],
+    key: ["gọi lại sau", "後でかけ直す", "表現"], cat: "電話", dif: "normal",
+  },
+  {
+    d: [["Khách", "Chị ơi, chiếc áo này có màu khác không?"], ["Nhân viên", "______"]],
+    c: ["Chị ấy không mặc áo này.", "Dạ có, còn màu xanh và màu đen ạ.", "Áo này rất đắt tiền ạ.", "Cửa hàng sắp đóng cửa ạ."],
+    a: 1,
+    t: "客「すみません、このシャツは他の色はありますか？」 店員「（はい、青と黒がございます。）」",
+    e: "「màu khác（他の色）」を聞かれたので、ある色を答えるのが正しい応対です。",
+    ce: ["「彼女はこの服を着ない」— 誰の話か不明で場面に合いません。", "在庫の色を具体的に答えていて正解です。", "「とても高い」— 色の質問に答えていません。", "「もうすぐ閉店」— 質問と関係ありません。"],
+    key: ["màu", "色", "名詞"], cat: "買い物", dif: "easy",
+  },
+  {
+    d: [["Mẹ", "Trời sắp mưa đấy, con định đi đâu?"], ["Con", "______"]],
+    c: ["Hôm qua trời cũng mưa.", "Con ghét trời nắng.", "Con ra siêu thị một chút, con sẽ mang ô.", "Mưa thì con bị ướt."],
+    a: 2,
+    t: "母「もうすぐ雨よ、どこへ行くつもり？」 子「（ちょっとスーパーに行ってくる。傘を持っていくよ。）」",
+    e: "「đi đâu?（どこへ？）」と聞かれているので行き先を答え、「雨」の心配には「mang ô（傘を持つ）」で応えるのが自然です。",
+    ce: ["「昨日も雨だった」— 行き先を答えていません。", "「晴れが嫌い」— 質問に答えていません。", "行き先＋傘を持つことを伝えていて正解です。", "「雨なら濡れる」— 行き先の返事になっていません。"],
+    key: ["sắp", "もうすぐ～する", "副詞"], cat: "天気", dif: "normal",
+  },
+  {
+    d: [["Bác sĩ", "Anh bị làm sao?"], ["Bệnh nhân", "______"]],
+    c: ["Tôi rất khỏe, cảm ơn bác sĩ.", "Bác sĩ có mệt không?", "Bệnh viện này đẹp quá.", "Tôi bị đau bụng từ sáng nay."],
+    a: 3,
+    t: "医者「どうしましたか？」 患者「（今朝からお腹が痛いんです。）」",
+    e: "診察で「bị làm sao?（どうしました？）」と聞かれたら、症状を「bị + 症状」で伝えます。",
+    ce: ["「とても元気」— 診察に来た場面と矛盾します。", "「先生は疲れていますか」— 症状を聞かれた返事になっていません。", "「病院がきれい」— 場面に合いません。", "症状と始まった時期を伝えていて正解です。"],
+    key: ["bị đau bụng", "お腹が痛い", "表現"], cat: "病院", dif: "easy",
+  },
+  {
+    d: [["Mai", "Tối nay đi xem phim với mình không?"], ["Linh", "______"]],
+    c: ["Xin lỗi, tối nay mình phải làm bài tập.", "Bộ phim này dài hai tiếng.", "Rạp ở gần nhà mình.", "Mình rất thích ăn phở."],
+    a: 0,
+    t: "マイ「今夜一緒に映画を観に行かない？」 リン「（ごめん、今夜は宿題をしなきゃいけないんだ。）」",
+    e: "誘いを断るときは「Xin lỗi（ごめん）」＋理由が丁寧で自然です。",
+    ce: ["謝って理由を伝えて断っていて正解です。", "「映画は2時間」— 誘いへの返事になっていません。", "「映画館は家の近く」— 行くかどうか答えていません。", "「フォーが好き」— 場面と関係ありません。"],
+    key: ["phải làm bài tập", "宿題をしなければならない", "表現"], cat: "約束", dif: "normal",
+  },
+  {
+    d: [["Lễ tân", "Anh đã đặt phòng chưa ạ?"], ["Khách", "______"]],
+    c: ["Phòng này rộng quá.", "Rồi, tôi đã đặt hai đêm từ hôm nay.", "Tôi không thích khách sạn.", "Ngày mai tôi sẽ trả phòng."],
+    a: 1,
+    t: "フロント「ご予約はお済みですか？」 客「（はい、今日から2泊で予約しています。）」",
+    e: "「đã ~ chưa?（もう～しましたか？）」には「Rồi（はい、もう）」または「Chưa（まだ）」で答えます。",
+    ce: ["「部屋が広い」— まだ部屋に入っていない場面で不自然です。", "「Rồi＋予約内容」で答えていて正解です。", "「ホテルが嫌い」— チェックインの場面に合いません。", "「明日チェックアウトする」— 予約の質問に答えていません。"],
+    key: ["đã ~ chưa?", "もう～しましたか？", "文型"], cat: "ホテル", dif: "normal",
+  },
+  {
+    d: [["Nam", "Cảm ơn cậu đã giúp mình nhé."], ["Long", "______"]],
+    c: ["Cậu phải cảm ơn mình nhiều hơn.", "Mình chưa bao giờ giúp ai.", "Không có gì đâu.", "Giúp đỡ rất là khó."],
+    a: 2,
+    t: "ナム「手伝ってくれてありがとうね。」 ロン「（どういたしまして。）」",
+    e: "お礼を言われたら「Không có gì（どういたしまして）」と返すのが定番です。",
+    ce: ["「もっと感謝すべき」— 恩着せがましく不自然です。", "「誰も助けたことがない」— 今助けた場面と矛盾します。", "お礼への定番の返事で正解です。", "「助けるのは難しい」— お礼への返事として不自然です。"],
+    key: ["Không có gì", "どういたしまして", "表現"], cat: "日常生活", dif: "easy",
+  },
+  {
+    d: [["Hà", "Mấy giờ chúng ta gặp nhau?"], ["Tuấn", "______"]],
+    c: ["Chúng ta gặp ở quán cà phê.", "Mình gặp cậu hôm qua rồi.", "Đồng hồ của mình mới lắm.", "Bảy giờ tối nhé, đừng đến muộn."],
+    a: 3,
+    t: "ハー「何時に会う？」 トゥアン「（夜7時ね。遅れないでね。）」",
+    e: "「Mấy giờ?（何時？）」と時間を聞かれているので、時刻を答えます。場所を答えるAは引っかけです。",
+    ce: ["「カフェで会う」— 場所の答えで、時間を聞かれた質問に合いません。", "「昨日会った」— これからの約束の話に合いません。", "「時計が新しい」— 質問と関係ありません。", "時刻を答えていて正解です。"],
+    key: ["Mấy giờ?", "何時？", "表現"], cat: "約束", dif: "hard",
+  },
+  {
+    d: [["Cô giáo", "Hôm qua sao em nghỉ học?"], ["Học sinh", "______"]],
+    c: ["Dạ, em bị sốt nên phải ở nhà ạ.", "Dạ, em rất thích đi học ạ.", "Dạ, cô dạy hay lắm ạ.", "Dạ, ngày mai em sẽ nghỉ ạ."],
+    a: 0,
+    t: "先生「昨日どうして学校を休んだの？」 生徒「（熱が出て家にいなければならなかったんです。）」",
+    e: "理由を聞かれているので「bị sốt（熱が出た）nên（だから）～」と理由を説明します。",
+    ce: ["理由（発熱）を説明していて正解です。", "「学校が好き」— 休んだ理由になっていません。", "「先生の授業は面白い」— 質問に答えていません。", "「明日休みます」— 昨日の理由を聞かれた返事に合いません。"],
+    key: ["bị sốt", "熱が出る", "表現"], cat: "学校", dif: "easy",
+  },
+  {
+    d: [["Bà", "Túi này nặng quá…"], ["Cháu", "______"]],
+    c: ["Bà mua túi mới đi ạ.", "Để cháu mang giúp bà ạ.", "Túi của cháu nhẹ lắm ạ.", "Bà đừng mang túi nữa ạ."],
+    a: 1,
+    t: "おばあさん「このかばん、重いわ…」 孫「（僕が持ってあげますよ。）」",
+    e: "困っている人には「Để + 人 + 動詞（～にやらせて）」で助けを申し出ます。「Để cháu mang giúp（僕が持ちますよ）」が自然です。",
+    ce: ["「新しいかばんを買って」— 今の困りごとの解決になっていません。", "手伝いを申し出ていて正解です。", "「僕のかばんは軽い」— おばあさんの助けになりません。", "「もう持たないで」— 突き放した言い方で不自然です。"],
+    key: ["Để cháu ~", "私が～しますよ（申し出）", "文型"], cat: "家族", dif: "normal",
+  },
+  {
+    d: [["Khách", "Ở đây còn chỗ ngồi không ạ?"], ["Nhân viên", "______"]],
+    c: ["Cà phê ở đây ngon lắm ạ.", "Anh uống gì cũng được ạ.", "Dạ còn, anh ngồi bàn bên cửa sổ nhé.", "Quán mở cửa lúc 7 giờ ạ."],
+    a: 2,
+    t: "客「ここ、まだ席はありますか？」 店員「（はい、ございます。窓際の席へどうぞ。）」",
+    e: "「còn ~ không?（まだ～ありますか？）」には「Dạ còn（はい、あります）」と答えて案内します。",
+    ce: ["「コーヒーが美味しい」— 席の質問に答えていません。", "「何を飲んでもいい」— 質問と噛み合いません。", "席があると答えて案内していて正解です。", "「開店は7時」— すでに店にいる場面に合いません。"],
+    key: ["chỗ ngồi", "席、座る場所", "名詞"], cat: "カフェ", dif: "easy",
+  },
+  {
+    d: [["Bình", "Cuối tuần này cậu định làm gì?"], ["An", "______"]],
+    c: ["Cuối tuần trước mình bận lắm.", "Cậu làm việc nhiều quá đấy.", "Hôm nay là thứ tư rồi.", "Mình định đi Hà Nội thăm ông bà."],
+    a: 3,
+    t: "ビン「今週末は何をするつもり？」 アン「（ハノイへ祖父母に会いに行くつもりだよ。）」",
+    e: "「định làm gì?（何をするつもり？）」には「Mình định ~（～するつもり）」で予定を答えます。",
+    ce: ["「先週末は忙しかった」— 過去の話で、今週末の質問に合いません。", "「働きすぎだよ」— 質問への返事になっていません。", "「今日は水曜日」— 予定を聞かれた返事に合いません。", "「định + 動詞」で予定を答えていて正解です。"],
+    key: ["định", "～するつもり", "動詞"], cat: "旅行", dif: "normal",
+  },
+];
+
+// 会話練習のキーフレーズを辞書へ登録（Flash Card追加時に意味を引けるように）
+for (const s of SITUATION_BANK) addDictEntry(s.key[0], s.key[1], s.key[2]);
+
+const situation = { questions: [], index: 0, correct: 0, wrong: [], answered: false };
+
+function startSituation() {
+  situation.questions = shuffle(SITUATION_BANK).slice(0, 8);
+  situation.index = 0;
+  situation.correct = 0;
+  situation.wrong = [];
+  situation.answered = false;
+  showScreen("situation");
+  $("st-question").classList.remove("hidden");
+  $("st-result").classList.add("hidden");
+  renderSituationQuestion();
+}
+
+function renderSituationQuestion() {
+  window.scrollTo(0, 0);
+  const q = situation.questions[situation.index];
+  situation.answered = false;
+
+  $("st-current").textContent = situation.index + 1;
+  $("st-total").textContent = situation.questions.length;
+  $("st-correct-count").textContent = situation.correct;
+  $("st-progress-fill").style.width =
+    (situation.index / situation.questions.length) * 100 + "%";
+
+  $("st-dialogue").innerHTML = q.d
+    .map(
+      ([speaker, text]) => `<div class="dialogue-line">
+        <span class="dialogue-speaker">${escapeHtml(speaker)}</span>
+        <span class="dialogue-text">${escapeHtml(text).replace(/_{2,}/g, '<span class="blank">？</span>')}</span>
+      </div>`,
+    )
+    .join("");
+
+  const letters = ["A", "B", "C", "D"];
+  $("st-choices").innerHTML = "";
+  q.c.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.dataset.index = i;
+    btn.innerHTML = `<span class="choice-id">${letters[i]}</span><span>${escapeHtml(text)}</span><span class="verdict"></span>`;
+    btn.addEventListener("click", () => {
+      if (!situation.answered) answerSituation(i);
+    });
+    $("st-choices").appendChild(btn);
+  });
+
+  $("st-feedback").classList.add("hidden");
+}
+
+function answerSituation(selectedIndex) {
+  const q = situation.questions[situation.index];
+  const isCorrect = selectedIndex === q.a;
+  situation.answered = true;
+  if (isCorrect) situation.correct++;
+  else situation.wrong.push({ word: q.key[0], meaning: q.key[1], selected: q.c[selectedIndex] });
+
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+
+  // 間違えた場面のキーフレーズをFlash Cardへ
+  if (!isCorrect) addWordToFlashcards(q.key[0]);
+  saveStore();
+
+  document.querySelectorAll("#st-choices .choice").forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    if (i === q.a) {
+      btn.classList.add("correct");
+      btn.querySelector(".verdict").textContent = "正解";
+    } else if (i === selectedIndex) {
+      btn.classList.add("wrong");
+      btn.querySelector(".verdict").textContent = "不正解";
+    } else {
+      btn.classList.add("dimmed");
+    }
+  });
+
+  const letters = ["A", "B", "C", "D"];
+  const banner = $("st-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent =
+    (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[q.a]}. ${q.c[q.a]}`;
+
+  $("st-translation").textContent = q.t;
+  $("st-explanation").textContent = q.e;
+  $("st-choice-exp").innerHTML = q.ce
+    .map(
+      (text, i) =>
+        `<li class="${i === q.a ? "is-correct" : ""}"><strong>${letters[i]}.</strong>${escapeHtml(text)}</li>`,
+    )
+    .join("");
+  $("st-key").innerHTML = `<span class="key-phrase">${escapeHtml(q.key[0])}</span>${q.key[2] ? `〔${escapeHtml(q.key[2])}〕` : ""} ＝ ${escapeHtml(q.key[1])}`;
+  $("st-next").textContent =
+    situation.index + 1 < situation.questions.length ? "次の問題へ" : "結果を見る";
+  $("st-feedback").classList.remove("hidden");
+  $("st-correct-count").textContent = situation.correct;
+}
+
+function finishSituation() {
+  store.sessions.push({
+    at: nowIso(),
+    mode: "situation",
+    total: situation.questions.length,
+    correct: situation.correct,
+    wrong: situation.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("st-question").classList.add("hidden");
+  $("st-result").classList.remove("hidden");
+  $("st-result-correct").textContent = situation.correct;
+  $("st-result-total").textContent = situation.questions.length;
+  $("st-result-note").textContent = `正答率 ${Math.round((situation.correct / situation.questions.length) * 100)}%`;
+  $("st-wrong-wrap").classList.toggle("hidden", situation.wrong.length === 0);
+  $("st-wrong-list").innerHTML = situation.wrong
+    .map(
+      (w) =>
+        `<li><span class="word">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-situation").addEventListener("click", startSituation);
+$("st-next").addEventListener("click", () => {
+  if (situation.index + 1 < situation.questions.length) {
+    situation.index++;
+    renderSituationQuestion();
+  } else {
+    finishSituation();
+  }
+});
+$("st-again").addEventListener("click", startSituation);
 
 /* ---------------------------------------------------------------------------
    聴解練習 — 音声を聞いて正しい単語を選ぶ

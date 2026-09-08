@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=6" />
+  <link rel="stylesheet" href="style.css?v=7" />
 </head>
 <body>
   <header class="site-header">
@@ -63,6 +63,7 @@
         <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>クイズを始める</button>
         <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
         <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
+        <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -178,6 +179,49 @@
         </div>
         <div class="cta-row">
           <button id="ls-again" class="btn btn-primary">もう一度聴解練習</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 会話練習画面（場面に合う文を選ぶ） -->
+    <section id="screen-situation" class="screen hidden">
+      <div id="st-question">
+        <div class="progress-row">
+          <span>問題 <strong id="st-current">1</strong> / <span id="st-total">8</span></span>
+          <span>正解 <span id="st-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="st-progress-fill" class="progress-fill"></div></div>
+
+        <p class="sub st-lead">会話の場面に合う文を選んでください</p>
+        <div class="card dialogue-card" id="st-dialogue"></div>
+
+        <div id="st-choices" class="choices"></div>
+
+        <div id="st-feedback" class="hidden">
+          <div id="st-banner" class="feedback-banner"></div>
+          <div class="card explanation">
+            <h3>日本語訳</h3><p id="st-translation"></p>
+            <h3>解説</h3><p id="st-explanation"></p>
+            <h3>選択肢の解説</h3><ul id="st-choice-exp" class="exp-choice-list"></ul>
+            <div id="st-key-wrap"><h3>キーフレーズ</h3><p id="st-key"></p></div>
+          </div>
+          <button id="st-next" class="btn btn-primary btn-block">次の問題へ</button>
+        </div>
+      </div>
+
+      <div id="st-result" class="hidden">
+        <div class="card result-card">
+          <h2>会話練習の結果</h2>
+          <p class="result-score"><span id="st-result-correct">0</span><span class="result-total"> / <span id="st-result-total">0</span></span></p>
+          <p class="sub" id="st-result-note"></p>
+        </div>
+        <div id="st-wrong-wrap" class="card hidden">
+          <h3>間違えた場面のキーフレーズ（Flash Cardに追加済み）</h3>
+          <ul id="st-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="st-again" class="btn btn-primary">もう一度会話練習</button>
           <button class="btn btn-secondary" data-nav="home">ホームへ</button>
         </div>
       </div>
@@ -322,6 +366,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
