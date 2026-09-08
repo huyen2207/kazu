@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=15" />
+  <link rel="stylesheet" href="style.css?v=16" />
 </head>
 <body>
   <header class="site-header">
@@ -21,6 +21,9 @@
   </header>
 
   <main class="container">
+
+    <!-- 保存データの読み書きに失敗したときの警告（script.js から表示する） -->
+    <p id="storage-warning" class="storage-warning hidden"></p>
 
     <!-- ホーム画面 -->
     <section id="screen-home" class="screen">
@@ -581,6 +584,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>

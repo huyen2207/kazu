@@ -11,22 +11,168 @@ const QUESTION_BANK = [{"sentence":"Vì căn phòng quá bừa bộn, tôi phả
 
 /* ---------------------------------------------------------------------------
    永続化（localStorage）
+   保存データは version 付きで持ち、読み込み時に migrate() で段階的に変換する。
+   スキーマを変えたら SCHEMA_VERSION を上げ、MIGRATIONS に変換を1つ足すこと。
+   変換の分岐は MIGRATIONS の1か所だけにまとめる（あちこちで補完しない）。
 --------------------------------------------------------------------------- */
 const STORAGE_KEY = "kazu-static-v1";
+const BROKEN_STORAGE_KEY = "kazu-static-v1-broken"; // 読み取れなかったデータの退避先
+const SCHEMA_VERSION = 2;
+const VOCAB_STATUSES = ["new", "learning", "forgotten", "unsure", "reviewing", "mastered"];
+
+const isPlainObject = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+const numOr = (x, fallback) => (typeof x === "number" && Number.isFinite(x) ? x : fallback);
+const strOr = (x, fallback) => (typeof x === "string" ? x : fallback);
+
+function emptyStore() {
+  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [] };
+}
+
+// 保存・読み込みの失敗を画面に出す（黙って失敗させない）
+function showStorageWarning(message) {
+  const el = document.getElementById("storage-warning");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.remove("hidden");
+}
+
+/* --- レコードの既定値：フィールドが欠けた古いデータを補う ---
+   nowIso() はこの下で定義しているが、関数宣言なので読み込み時点で呼び出せる。 */
+
+// 語彙レコード：クイズ・Flash Card・実力分析が参照するフィールドをすべて揃える
+function normalizeVocabRecord(key, value) {
+  const v = isPlainObject(value) ? value : {};
+  return {
+    ...v,
+    word: strOr(v.word, key),
+    meaningJP: strOr(v.meaningJP, ""),
+    partOfSpeech: strOr(v.partOfSpeech, ""),
+    example: strOr(v.example, ""),
+    exampleJP: strOr(v.exampleJP, ""),
+    collocations: Array.isArray(v.collocations) ? v.collocations : [],
+    status: VOCAB_STATUSES.includes(v.status) ? v.status : "new",
+    masteryScore: Math.max(0, Math.min(100, numOr(v.masteryScore, 0))),
+    exposureCount: Math.max(0, numOr(v.exposureCount, 0)),
+    consecutiveCorrect: Math.max(0, numOr(v.consecutiveCorrect, 0)),
+    consecutiveWrong: Math.max(0, numOr(v.consecutiveWrong, 0)),
+    wrongCount: Math.max(0, numOr(v.wrongCount, 0)),
+    firstSeenAt: strOr(v.firstSeenAt, nowIso()),
+    // 復習期限が無い語は今日の復習対象にする（黙って復習から漏れるのを防ぐ）
+    nextReviewAt: strOr(v.nextReviewAt, nowIso()),
+  };
+}
+
+function normalizeVocab(vocab) {
+  const out = {};
+  if (!isPlainObject(vocab)) return out;
+  for (const [key, value] of Object.entries(vocab)) out[key] = normalizeVocabRecord(key, value);
+  return out;
+}
+
+// 回答履歴：{ count, correct } が数値であることを保証する
+function normalizeAnswered(answered) {
+  const out = {};
+  if (!isPlainObject(answered)) return out;
+  for (const [sentence, rec] of Object.entries(answered)) {
+    const r = isPlainObject(rec) ? rec : {};
+    out[sentence] = { ...r, count: Math.max(0, numOr(r.count, 0)), correct: Math.max(0, numOr(r.correct, 0)) };
+  }
+  return out;
+}
+
+// 日別記録：ストリークと実力分析が参照する { questions, correct } を保証する
+function normalizeDays(days) {
+  const out = {};
+  if (!isPlainObject(days)) return out;
+  for (const [day, rec] of Object.entries(days)) {
+    const r = isPlainObject(rec) ? rec : {};
+    out[day] = { ...r, questions: Math.max(0, numOr(r.questions, 0)), correct: Math.max(0, numOr(r.correct, 0)) };
+  }
+  return out;
+}
+
+// 学習履歴：実力分析が session.wrong を必ず走査するため、配列であることを保証する
+function normalizeSessions(sessions) {
+  if (!Array.isArray(sessions)) return [];
+  return sessions.filter(isPlainObject).map((s) => ({
+    ...s,
+    at: strOr(s.at, ""),
+    mode: strOr(s.mode, ""),
+    total: Math.max(0, numOr(s.total, 0)),
+    correct: Math.max(0, numOr(s.correct, 0)),
+    wrong: Array.isArray(s.wrong) ? s.wrong.filter(isPlainObject) : [],
+  }));
+}
+
+/* --- 移行処理 ---
+   キーは「変換前のversion」。1つ実行するたびに version が1つ上がる。
+   スキーマを変えたら、ここに次のversionのエントリを1つ足す。 */
+const MIGRATIONS = {
+  // 1 → 2: version を持たなかった時代のデータ。
+  //   入れ物（answered / vocab / days / sessions）と、各レコードに欠けている
+  //   フィールド（wrongCount / consecutiveCorrect / masteryScore など）を既定値で補う。
+  1: (s) => ({
+    ...s,
+    answered: normalizeAnswered(s.answered),
+    vocab: normalizeVocab(s.vocab),
+    days: normalizeDays(s.days),
+    sessions: normalizeSessions(s.sessions),
+  }),
+};
+
+function migrate(data) {
+  // version が無いデータ＝version 1（このフィールドを導入する前の保存データ）
+  let s = { ...data, version: Math.max(1, Math.floor(numOr(data.version, 1))) };
+  while (s.version < SCHEMA_VERSION && MIGRATIONS[s.version]) {
+    s = MIGRATIONS[s.version](s);
+    s.version += 1;
+  }
+  // 想定より新しいversion（将来版で保存されたデータ）でも起動だけはできるようにする
+  if (!isPlainObject(s.answered)) s.answered = {};
+  if (!isPlainObject(s.vocab)) s.vocab = {};
+  if (!isPlainObject(s.days)) s.days = {};
+  if (!Array.isArray(s.sessions)) s.sessions = [];
+  return s;
+}
 
 function loadStore() {
+  let raw = null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (_) { /* 壊れたデータは初期化する */ }
-  return { answered: {}, vocab: {}, days: {}, sessions: [] };
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch (_) {
+    // localStorage自体が使えない（プライベートモードなど）
+    showStorageWarning("このブラウザでは学習データを保存できません（プライベートモードの可能性があります）。今回の学習は記録されません。");
+    return emptyStore();
+  }
+  if (!raw) return emptyStore();
+
+  let parsed = null;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_) { /* 壊れたデータとして下で扱う */ }
+
+  if (!isPlainObject(parsed)) {
+    // 初期化する前に元データを退避しておく（あとから復旧できるようにする）
+    try {
+      localStorage.setItem(BROKEN_STORAGE_KEY, raw);
+    } catch (_) { /* 退避できなくても起動は続ける */ }
+    showStorageWarning(
+      `保存データを読み取れなかったため、学習記録を初期化しました。元のデータは復旧用に「${BROKEN_STORAGE_KEY}」として残しています。`,
+    );
+    return emptyStore();
+  }
+  return migrate(parsed);
 }
+
 function saveStore() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  } catch (_) {
+    showStorageWarning("学習データを保存できませんでした。ブラウザの空き容量が足りないか、プライベートモードの可能性があります。このままでは今回の学習が記録されません。");
+  }
 }
+
 const store = loadStore();
-// 旧バージョンのデータにはsessionsが無いため補完する
-if (!Array.isArray(store.sessions)) store.sessions = [];
 
 const DAY_MS = 86400000;
 function todayStr(offset = 0) {
