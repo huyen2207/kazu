@@ -61,3 +61,30 @@ FAILの問題は破棄してGeneratorへ戻す。**問題数より問題の品�
 - Review（簡易SRS）
 - Learning History
 - Statistics / Dashboard（Today / Last 7 Days / Total・学習ストリーク）
+
+## 学習データの保存とマイグレーション（静的版）
+
+静的版（`index.html` / `script.js` / `style.css`）は、学習データを localStorage の
+`kazu-static-v1` キーに1つのJSONとして保存する。
+
+```
+{ version, answered, vocab, days, sessions, level, speechSpeed }
+```
+
+読み込み時の流れは `script.js` の「永続化（localStorage）」ブロックにまとまっている。
+
+1. `loadStore()` が保存データを読む
+2. JSONとして読めない場合は、初期化する前に元データを `kazu-static-v1-broken` へ退避する
+3. 読めた場合は `migrate()` を通す。`version` が無いデータは version 1 とみなす
+4. `migrate()` は `MIGRATIONS`（キー＝変換前のversion）を1段ずつ適用し、`SCHEMA_VERSION` まで上げる
+
+**スキーマを変えるときにやること**
+
+- `SCHEMA_VERSION` を1つ上げる
+- `MIGRATIONS` に「変換前のversion」をキーにした変換関数を1つ足す
+
+変換の分岐は `MIGRATIONS` の1か所だけに置く。読み込み後にあちこちでフィールドを補完しない。
+語彙レコードの既定値は `normalizeVocabRecord()` にまとめてあるので、フィールドを増やしたときは
+ここにも既定値を足す。
+
+保存に失敗した場合（容量超過・プライベートモードなど）は、画面上部に警告を表示する。

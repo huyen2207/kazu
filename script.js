@@ -1,4 +1,4 @@
-/* KAZU 静的版 — 問題データ（A2:47問 / B1:26問 / B2:24問はエンジン内） */
+/* KAZU 静的版 — 問題データ（A2はこの行のQUESTION_BANK＋エンジン内A2_EXTRA。B1/B2はエンジン内） */
 const QUESTION_BANK = [{"sentence":"Vì căn phòng quá bừa bộn, tôi phải ______ lại đồ đạc trước khi khách đến.","choices":[{"id":"A","text":"sắp xếp"},{"id":"B","text":"chuẩn bị"},{"id":"C","text":"xây dựng"},{"id":"D","text":"trang bị"}],"correctChoice":"A","targetVocabulary":"sắp xếp","translationJP":"部屋があまりにも散らかっているので、お客さんが来る前に家具や持ち物を整理しなければなりません。","explanationJP":"「散らかっている（bừa bộn）」部屋を片付ける文脈なので、「整理する・並べ直す」を意味する sắp xếp が正解です。「sắp xếp lại đồ đạc（持ち物を整理し直す）」は非常によく使われる組み合わせです。","choiceExplanations":[{"choice":"A","explanationJP":"sắp xếp＝整理する・並べる。散らかった物を片付ける文脈にぴったりで、正解です。"},{"choice":"B","explanationJP":"chuẩn bị＝準備する。「đồ đạc（持ち物）を準備し直す」は不自然で、散らかった状態を直す意味になりません。"},{"choice":"C","explanationJP":"xây dựng＝建設する・築く。建物や組織に使う語で、家具には使えません。"},{"choice":"D","explanationJP":"trang bị＝装備する。設備や道具を備え付ける意味で、片付けの文脈には合いません。"}],"vocabulary":[{"word":"sắp xếp","meaningJP":"整理する、並べる","partOfSpeech":"動詞","explanationJP":"物・時間・予定などを整った状態にすること。"},{"word":"bừa bộn","meaningJP":"散らかっている","partOfSpeech":"形容詞"},{"word":"đồ đạc","meaningJP":"家具、持ち物","partOfSpeech":"名詞"}],"grammar":[{"pattern":"trước khi + 動詞","meaningJP":"～する前に","explanationJP":"「trước khi khách đến」で「お客さんが来る前に」という意味になります。","example":"Tôi rửa tay trước khi ăn cơm.","exampleJP":"私はご飯を食べる前に手を洗います。"}],"collocations":[{"expression":"sắp xếp đồ đạc","meaningJP":"持ち物を整理する"},{"expression":"sắp xếp thời gian","meaningJP":"時間をやりくりする"},{"expression":"sắp xếp công việc","meaningJP":"仕事を段取りする"}],"level":"A2","difficulty":"normal","category":"部屋"},{"sentence":"Trời hôm nay rất lạnh, con nhớ ______ áo khoác trước khi ra ngoài nhé.","choices":[{"id":"A","text":"mang"},{"id":"B","text":"mặc"},{"id":"C","text":"đeo"},{"id":"D","text":"đội"}],"correctChoice":"B","targetVocabulary":"mặc","translationJP":"今日はとても寒いから、外に出る前に上着を着るのを忘れないでね。","explanationJP":"服（áo khoác＝上着）を身につけるときは mặc を使います。ベトナム語では身につける物によって動詞が変わります：服は mặc、帽子は đội、メガネ・アクセサリーは đeo、靴やカバンは mang です。","choiceExplanations":[{"choice":"A","explanationJP":"mang＝（靴・カバンなどを）身につける、持っていく。服には使いません。"},{"choice":"B","explanationJP":"mặc＝（服を）着る。áo khoác（上着）に使う正しい動詞です。"},{"choice":"C","explanationJP":"đeo＝（メガネ・時計・アクセサリーを）身につける。服には使いません。"},{"choice":"D","explanationJP":"đội＝（帽子を）かぶる。頭にのせる物にだけ使います。"}],"vocabulary":[{"word":"mặc","meaningJP":"（服を）着る","partOfSpeech":"動詞","explanationJP":"シャツ・ズボン・上着など、体に着る服に使う。"},{"word":"áo khoác","meaningJP":"上着、コート","partOfSpeech":"名詞"},{"word":"ra ngoài","meaningJP":"外に出る","partOfSpeech":"動詞句"}],"grammar":[{"pattern":"nhớ + 動詞 + nhé","meaningJP":"～するのを忘れないでね","explanationJP":"相手に優しく注意・依頼するときの表現。文末の nhé で柔らかい調子になります。","example":"Nhớ gọi điện cho mẹ nhé.","exampleJP":"お母さんに電話するのを忘れないでね。"}],"collocations":[{"expression":"mặc áo khoác","meaningJP":"上着を着る"},{"expression":"mặc quần áo","meaningJP":"服を着る"}],"level":"A2","difficulty":"normal","category":"天気"},{"sentence":"Chữ trên bảng nhỏ quá, tôi phải ______ kính mới đọc được.","choices":[{"id":"A","text":"mặc"},{"id":"B","text":"đội"},{"id":"C","text":"đeo"},{"id":"D","text":"cầm"}],"correctChoice":"C","targetVocabulary":"đeo","translationJP":"黒板の字が小さすぎるので、メガネをかけないと読めません。","explanationJP":"kính（メガネ）を身につけるときは đeo を使います。「đeo kính（メガネをかける）」は決まった組み合わせで、mặc（服）や đội（帽子）は使えません。","choiceExplanations":[{"choice":"A","explanationJP":"mặc は服を着るときの動詞で、メガネには使えません。"},{"choice":"B","explanationJP":"đội は帽子をかぶるときの動詞で、メガネには使えません。"},{"choice":"C","explanationJP":"đeo＝（メガネ・時計などを）身につける。đeo kính が正しい組み合わせです。"},{"choice":"D","explanationJP":"cầm＝手に持つ。メガネを手に持つだけでは「かけて読む」意味になりません。"}],"vocabulary":[{"word":"đeo","meaningJP":"（メガネ・時計・アクセサリーを）身につける","partOfSpeech":"動詞"},{"word":"kính","meaningJP":"メガネ","partOfSpeech":"名詞"},{"word":"bảng","meaningJP":"黒板、ボード","partOfSpeech":"名詞"}],"grammar":[{"pattern":"phải + 動詞 + mới + 動詞 + được","meaningJP":"～してはじめて…できる","explanationJP":"「đeo kính mới đọc được」で「メガネをかけてはじめて読める」という意味になります。","example":"Phải học chăm chỉ mới thi đỗ được.","exampleJP":"一生懸命勉強してはじめて試験に受かります。"}],"collocations":[{"expression":"đeo kính","meaningJP":"メガネをかける"},{"expression":"đeo đồng hồ","meaningJP":"腕時計をつける"}],"level":"A2","difficulty":"normal","category":"学校"},{"sentence":"Cô giáo giảng lại hai lần nên bây giờ tôi đã ______ bài này rồi.","choices":[{"id":"A","text":"biết"},{"id":"B","text":"nhớ"},{"id":"C","text":"học"},{"id":"D","text":"hiểu"}],"correctChoice":"D","targetVocabulary":"hiểu","translationJP":"先生が2回説明し直してくれたので、今はもうこの課を理解しました。","explanationJP":"「先生が説明し直した結果」なので、「内容を理解する」を意味する hiểu が正解です。「hiểu bài（授業内容を理解する）」は決まった言い方です。biết は「情報・事実を知っている」で、説明を聞いて内容が分かるという文脈には hiểu が合います。","choiceExplanations":[{"choice":"A","explanationJP":"biết＝（情報・事実を）知っている。説明を聞いて内容が分かるという意味にはなりません。"},{"choice":"B","explanationJP":"nhớ＝覚えている、思い出す。「説明し直したので覚えた」よりも「理解した」が自然な流れです。"},{"choice":"C","explanationJP":"học＝学ぶ、勉強する。「đã học bài này rồi」だと「もう勉強した」となり、説明を聞いて分かったという文脈に合いません。"},{"choice":"D","explanationJP":"hiểu＝理解する。hiểu bài は「授業を理解する」の定番表現で正解です。"}],"vocabulary":[{"word":"hiểu","meaningJP":"理解する","partOfSpeech":"動詞","explanationJP":"内容や意味が分かること。biết（知っている）との違いに注意。"},{"word":"giảng","meaningJP":"講義する、説明する","partOfSpeech":"動詞"},{"word":"bài","meaningJP":"課、レッスン","partOfSpeech":"名詞"}],"grammar":[{"pattern":"đã + 動詞 + rồi","meaningJP":"もう～した","explanationJP":"完了を表す基本パターン。đã と rồi で動詞をはさみます。","example":"Tôi đã ăn cơm rồi.","exampleJP":"私はもうご飯を食べました。"}],"collocations":[{"expression":"hiểu bài","meaningJP":"授業（の内容）を理解する"},{"expression":"hiểu ý","meaningJP":"意図を理解する"}],"level":"A2","difficulty":"hard","category":"学校"},{"sentence":"Tối nay cả nhà tôi sẽ cùng nhau ______ một bộ phim mới ở rạp.","choices":[{"id":"A","text":"xem"},{"id":"B","text":"nhìn"},{"id":"C","text":"thấy"},{"id":"D","text":"ngắm"}],"correctChoice":"A","targetVocabulary":"xem","translationJP":"今晩、家族みんなで映画館へ新しい映画を観に行きます。","explanationJP":"映画・テレビ・試合など「内容を楽しむために観る」ときは xem を使います。「xem phim（映画を観る）」は決まった組み合わせです。nhìn は「視線を向ける」、thấy は「目に入る・見える」で、鑑賞の意味はありません。","choiceExplanations":[{"choice":"A","explanationJP":"xem＝（映画・テレビなどを）観る。xem phim は定番の組み合わせで正解です。"},{"choice":"B","explanationJP":"nhìn＝視線を向ける、見つめる。映画を鑑賞する意味にはなりません。"},{"choice":"C","explanationJP":"thấy＝見える、目に入る。意識して鑑賞する意味はありません。"},{"choice":"D","explanationJP":"ngắm＝（景色・美しいものを）眺める。映画には使いません。"}],"vocabulary":[{"word":"xem","meaningJP":"（映画・テレビを）観る","partOfSpeech":"動詞","explanationJP":"nhìn（視線を向ける）・thấy（見える）との使い分けが重要。"},{"word":"bộ phim","meaningJP":"映画（1本）","partOfSpeech":"名詞"},{"word":"rạp","meaningJP":"映画館","partOfSpeech":"名詞"}],"grammar":[{"pattern":"sẽ + 動詞","meaningJP":"～するだろう（未来）","explanationJP":"未来のことを表す基本パターンです。","example":"Ngày mai tôi sẽ đi Hà Nội.","exampleJP":"明日私はハノイへ行きます。"}],"collocations":[{"expression":"xem phim","meaningJP":"映画を観る"},{"expression":"xem tivi","meaningJP":"テレビを観る"},{"expression":"xem bóng đá","meaningJP":"サッカーを観る"}],"level":"A2","difficulty":"normal","category":"趣味"},{"sentence":"Tôi tìm mãi mà không ______ chìa khóa đâu cả.","choices":[{"id":"A","text":"nhìn"},{"id":"B","text":"thấy"},{"id":"C","text":"xem"},{"id":"D","text":"ngắm"}],"correctChoice":"B","targetVocabulary":"thấy","translationJP":"ずっと探しているのに、鍵がどこにも見つかりません。","explanationJP":"「探した結果、見つかる・目に入る」ことを表すのは thấy です。「tìm mãi mà không thấy（探しても見つからない）」は日常でよく使う表現です。nhìn・xem は「見る動作」を表し、「見つかる」という結果の意味はありません。","choiceExplanations":[{"choice":"A","explanationJP":"nhìn＝視線を向ける。「探しても視線を向けない」となり意味が通りません。"},{"choice":"B","explanationJP":"thấy＝見える、見つかる。tìm（探す）の結果を表す動詞で正解です。"},{"choice":"C","explanationJP":"xem＝（内容を）観る。探し物が「見つかる」という意味はありません。"},{"choice":"D","explanationJP":"ngắm＝眺める。鑑賞の動詞で、この文脈には合いません。"}],"vocabulary":[{"word":"thấy","meaningJP":"見える、見つかる","partOfSpeech":"動詞","explanationJP":"「tìm thấy」で「見つける」。結果を表す点が nhìn との違い。"},{"word":"tìm","meaningJP":"探す","partOfSpeech":"動詞"},{"word":"chìa khóa","meaningJP":"鍵","partOfSpeech":"名詞"}],"grammar":[{"pattern":"動詞 + mãi mà không ...","meaningJP":"ずっと～しているのに…ない","explanationJP":"mãi は「ずっと・いつまでも」。mà で逆接をつなぎ、「いくら～しても…ない」という気持ちを表します。","example":"Tôi gọi mãi mà anh ấy không nghe máy.","exampleJP":"ずっと電話しているのに彼は出ません。"}],"collocations":[{"expression":"tìm thấy","meaningJP":"見つける"},{"expression":"không thấy đâu cả","meaningJP":"どこにも見当たらない"}],"level":"A2","difficulty":"hard","category":"日常生活"},{"sentence":"Mỗi sáng, tôi thường vừa uống cà phê vừa ______ nhạc.","choices":[{"id":"A","text":"hát"},{"id":"B","text":"nói"},{"id":"C","text":"nghe"},{"id":"D","text":"xem"}],"correctChoice":"C","targetVocabulary":"nghe","translationJP":"毎朝、私はよくコーヒーを飲みながら音楽を聴きます。","explanationJP":"「nghe nhạc（音楽を聴く）」は決まった組み合わせです。コーヒーを飲みながらする行動として自然なのは「聴く」ことです。hát（歌う）は文法的には入りますが、「nhạc を歌う」とは言わず、「hát một bài hát（歌を歌う）」のように使います。","choiceExplanations":[{"choice":"A","explanationJP":"hát＝歌う。「hát nhạc」という組み合わせは不自然で、hát bài hát（歌を歌う）と言います。"},{"choice":"B","explanationJP":"nói＝話す。nhạc（音楽）を目的語に取れません。"},{"choice":"C","explanationJP":"nghe＝聴く。nghe nhạc は「音楽を聴く」の定番表現で正解です。"},{"choice":"D","explanationJP":"xem＝観る。音楽は目で観るものではないので合いません。"}],"vocabulary":[{"word":"nghe","meaningJP":"聞く、聴く","partOfSpeech":"動詞"},{"word":"nhạc","meaningJP":"音楽","partOfSpeech":"名詞"},{"word":"cà phê","meaningJP":"コーヒー","partOfSpeech":"名詞"}],"grammar":[{"pattern":"vừa A vừa B","meaningJP":"AしながらBする","explanationJP":"2つの動作を同時にすることを表す基本パターンです。","example":"Em ấy vừa ăn vừa xem tivi.","exampleJP":"その子は食べながらテレビを観ています。"}],"collocations":[{"expression":"nghe nhạc","meaningJP":"音楽を聴く"},{"expression":"nghe điện thoại","meaningJP":"電話に出る"}],"level":"A2","difficulty":"easy","category":"趣味"},{"sentence":"Tôi ra bưu điện để ______ một bức thư cho gia đình ở Nhật.","choices":[{"id":"A","text":"nhận"},{"id":"B","text":"đưa"},{"id":"C","text":"chuyển"},{"id":"D","text":"gửi"}],"correctChoice":"D","targetVocabulary":"gửi","translationJP":"日本にいる家族へ手紙を送るために郵便局へ行きます。","explanationJP":"郵便局から手紙や荷物を送るときは gửi を使います。「gửi thư（手紙を送る）」「gửi hàng（荷物を送る）」は定番の組み合わせです。nhận は「受け取る」で方向が逆になります。","choiceExplanations":[{"choice":"A","explanationJP":"nhận＝受け取る。送る側の行動ではないので、文脈と逆です。"},{"choice":"B","explanationJP":"đưa＝手渡す。目の前の人に直接渡すときの動詞で、郵便で送る意味はありません。"},{"choice":"C","explanationJP":"chuyển＝移す、転送する。郵便局側が行う配送には使いますが、差出人の行動としては gửi が自然です。"},{"choice":"D","explanationJP":"gửi＝送る。gửi thư（手紙を送る）は定番表現で正解です。"}],"vocabulary":[{"word":"gửi","meaningJP":"送る","partOfSpeech":"動詞"},{"word":"bưu điện","meaningJP":"郵便局","partOfSpeech":"名詞"},{"word":"bức thư","meaningJP":"手紙（1通）","partOfSpeech":"名詞"}],"grammar":[{"pattern":"動詞 + để + 動詞","meaningJP":"～するために…する","explanationJP":"để は目的を表します。「ra bưu điện để gửi thư＝手紙を送るために郵便局へ行く」。","example":"Tôi học tiếng Việt để làm việc ở Việt Nam.","exampleJP":"私はベトナムで働くためにベトナム語を勉強しています。"}],"collocations":[{"expression":"gửi thư","meaningJP":"手紙を送る"},{"expression":"gửi hàng","meaningJP":"荷物を送る"},{"expression":"gửi email","meaningJP":"メールを送る"}],"level":"A2","difficulty":"normal","category":"郵便局"},{"sentence":"Trước khi đi du lịch Việt Nam, tôi đến ngân hàng để ______ tiền yên sang tiền Việt.","choices":[{"id":"A","text":"đổi"},{"id":"B","text":"mua"},{"id":"C","text":"gửi"},{"id":"D","text":"vay"}],"correctChoice":"A","targetVocabulary":"đổi","translationJP":"ベトナム旅行の前に、円をベトナムドンに両替するため銀行へ行きます。","explanationJP":"お金をある通貨から別の通貨に替えるのは đổi（替える・交換する）です。「đổi tiền（両替する）」「đổi A sang B（AをBに替える）」の形で覚えましょう。","choiceExplanations":[{"choice":"A","explanationJP":"đổi＝替える、交換する。đổi tiền は「両替する」の定番表現で正解です。"},{"choice":"B","explanationJP":"mua＝買う。「tiền yên を買う」という言い方はこの文型（sang tiền Việt）に合いません。"},{"choice":"C","explanationJP":"gửi＝送る、預ける。gửi tiền は「送金する・預金する」で、両替の意味はありません。"},{"choice":"D","explanationJP":"vay＝借りる。vay tiền は「お金を借りる」で文脈に合いません。"}],"vocabulary":[{"word":"đổi","meaningJP":"替える、交換する","partOfSpeech":"動詞","explanationJP":"đổi tiền（両替）、đổi chỗ（席を替わる）など幅広く使う。"},{"word":"ngân hàng","meaningJP":"銀行","partOfSpeech":"名詞"},{"word":"tiền","meaningJP":"お金","partOfSpeech":"名詞"}],"grammar":[{"pattern":"đổi A sang B","meaningJP":"AをBに替える","explanationJP":"sang は変化の方向を表します。両替や乗り換えの場面で使います。","example":"Tôi muốn đổi đô la sang tiền Việt.","exampleJP":"ドルをベトナムドンに替えたいです。"}],"collocations":[{"expression":"đổi tiền","meaningJP":"両替する"},{"expression":"đổi chỗ","meaningJP":"場所・席を替わる"}],"level":"A2","difficulty":"easy","category":"銀行"},{"sentence":"Vì tháng sau là mùa du lịch, chúng tôi nên ______ phòng khách sạn trước.","choices":[{"id":"A","text":"thuê"},{"id":"B","text":"đặt"},{"id":"C","text":"mượn"},{"id":"D","text":"mua"}],"correctChoice":"B","targetVocabulary":"đặt","translationJP":"来月は旅行シーズンなので、先にホテルの部屋を予約したほうがいいです。","explanationJP":"「trước（前もって）」があるので、「予約する」を意味する đặt が正解です。「đặt phòng（部屋を予約する）」「đặt vé（チケットを予約する）」は旅行で必須の表現です。thuê は「（お金を払って）借りる」で、予約の意味はありません。","choiceExplanations":[{"choice":"A","explanationJP":"thuê＝賃借りする。実際に泊まるときの行為で、「前もって予約する」意味にはなりません。"},{"choice":"B","explanationJP":"đặt＝予約する。đặt phòng trước（先に部屋を予約する）で正解です。"},{"choice":"C","explanationJP":"mượn＝（無料で）借りる。ホテルの部屋には使いません。"},{"choice":"D","explanationJP":"mua＝買う。部屋を購入することになり文脈に合いません。"}],"vocabulary":[{"word":"đặt","meaningJP":"予約する、注文する","partOfSpeech":"動詞","explanationJP":"đặt phòng・đặt vé・đặt bàn など予約全般に使う。"},{"word":"khách sạn","meaningJP":"ホテル","partOfSpeech":"名詞"},{"word":"mùa du lịch","meaningJP":"旅行シーズン","partOfSpeech":"名詞"}],"grammar":[{"pattern":"nên + 動詞","meaningJP":"～したほうがいい","explanationJP":"アドバイスや提案を表す基本パターンです。","example":"Bạn nên ngủ sớm.","exampleJP":"早く寝たほうがいいですよ。"}],"collocations":[{"expression":"đặt phòng","meaningJP":"部屋を予約する"},{"expression":"đặt vé","meaningJP":"チケットを予約する"},{"expression":"đặt bàn","meaningJP":"（レストランの）席を予約する"}],"level":"A2","difficulty":"normal","category":"ホテル"},{"sentence":"Chúng ta ______ hai bát phở và một đĩa nem rán nhé.","choices":[{"id":"A","text":"nói"},{"id":"B","text":"mời"},{"id":"C","text":"gọi"},{"id":"D","text":"hỏi"}],"correctChoice":"C","targetVocabulary":"gọi","translationJP":"フォーを2杯と揚げ春巻きを1皿注文しましょう。","explanationJP":"レストランで料理を注文するときは gọi（呼ぶ→注文する）を使います。「gọi món（料理を注文する）」は外食で必ず使う表現です。","choiceExplanations":[{"choice":"A","explanationJP":"nói＝話す。料理名を目的語にして「注文する」意味にはなりません。"},{"choice":"B","explanationJP":"mời＝招待する、勧める。人を目的語に取る動詞で、料理の注文には使いません。"},{"choice":"C","explanationJP":"gọi＝注文する。gọi món / gọi phở のように使う定番表現で正解です。"},{"choice":"D","explanationJP":"hỏi＝尋ねる。質問する意味で、注文にはなりません。"}],"vocabulary":[{"word":"gọi","meaningJP":"呼ぶ、注文する","partOfSpeech":"動詞","explanationJP":"レストランでの注文にも、人を呼ぶときにも使う。"},{"word":"bát","meaningJP":"お椀、杯（丼物の類別詞）","partOfSpeech":"名詞"},{"word":"nem rán","meaningJP":"揚げ春巻き","partOfSpeech":"名詞"}],"grammar":[{"pattern":"文 + nhé","meaningJP":"～しましょうね、～してね","explanationJP":"誘いや軽い提案・確認を表す文末詞です。","example":"Mai gặp nhau nhé.","exampleJP":"明日会いましょうね。"}],"collocations":[{"expression":"gọi món","meaningJP":"料理を注文する"},{"expression":"gọi điện","meaningJP":"電話をかける"}],"level":"A2","difficulty":"normal","category":"レストラン"},{"sentence":"Chiếc áo này bị rách nên tôi muốn mang đến cửa hàng để ______ lại.","choices":[{"id":"A","text":"đưa"},{"id":"B","text":"gửi"},{"id":"C","text":"bán"},{"id":"D","text":"trả"}],"correctChoice":"D","targetVocabulary":"trả","translationJP":"このシャツは破れているので、店に持って行って返品したいです。","explanationJP":"商品を店に返すのは trả（返す）です。「trả lại（返品する・返す）」の形でよく使います。破れている（bị rách）という理由から、返品の文脈だと分かります。","choiceExplanations":[{"choice":"A","explanationJP":"đưa＝手渡す。「đưa lại」だと返品の意味が出ません。"},{"choice":"B","explanationJP":"gửi＝送る、預ける。店に持って行く文脈なので送る必要がなく、不自然です。"},{"choice":"C","explanationJP":"bán＝売る。自分が店に商品を売ることになり、文脈に合いません。"},{"choice":"D","explanationJP":"trả＝返す。trả lại で「返品する」となり正解です。"}],"vocabulary":[{"word":"trả","meaningJP":"返す、支払う","partOfSpeech":"動詞","explanationJP":"trả lại（返品する）、trả tiền（お金を払う）の2つの使い方が重要。"},{"word":"rách","meaningJP":"破れている","partOfSpeech":"形容詞"},{"word":"cửa hàng","meaningJP":"店","partOfSpeech":"名詞"}],"grammar":[{"pattern":"bị + 動詞/形容詞","meaningJP":"～される、～してしまう（望ましくないこと）","explanationJP":"bị rách で「破れてしまっている」という被害・マイナスの意味を表します。","example":"Xe của tôi bị hỏng.","exampleJP":"私の車は壊れてしまいました。"}],"collocations":[{"expression":"trả lại","meaningJP":"返品する、返す"},{"expression":"trả tiền","meaningJP":"お金を払う"}],"level":"A2","difficulty":"normal","category":"買い物"},{"sentence":"Chị ơi, tôi có thể ______ chiếc váy này trước khi mua không?","choices":[{"id":"A","text":"thử"},{"id":"B","text":"mặc"},{"id":"C","text":"dùng"},{"id":"D","text":"xem"}],"correctChoice":"A","targetVocabulary":"thử","translationJP":"すみません、このワンピースを買う前に試着してもいいですか？","explanationJP":"「買う前に（trước khi mua）」試すのは thử（試す・試着する）です。「thử quần áo（服を試着する）」「mặc thử（着てみる）」のように使います。単に mặc だけだと「着る」で、「試しに」のニュアンスが出ません。","choiceExplanations":[{"choice":"A","explanationJP":"thử＝試す。買う前に試着するという文脈にぴったりで正解です。"},{"choice":"B","explanationJP":"mặc＝着る。「買う前に着てもいいですか」は不自然で、thử または mặc thử と言います。"},{"choice":"C","explanationJP":"dùng＝使う。服を「使う」は不自然です。"},{"choice":"D","explanationJP":"xem＝見る。すでに商品を見ている場面なので、「買う前に見る」は不自然です。"}],"vocabulary":[{"word":"thử","meaningJP":"試す、試着する","partOfSpeech":"動詞","explanationJP":"動詞の後ろに付けて「～してみる」（ăn thử＝食べてみる）としても使う。"},{"word":"chiếc váy","meaningJP":"ワンピース、スカート","partOfSpeech":"名詞"}],"grammar":[{"pattern":"có thể + 動詞 + không?","meaningJP":"～してもいいですか、～できますか","explanationJP":"許可を求めるときの基本パターンです。","example":"Tôi có thể ngồi ở đây không?","exampleJP":"ここに座ってもいいですか？"}],"collocations":[{"expression":"thử quần áo","meaningJP":"服を試着する"},{"expression":"ăn thử","meaningJP":"食べてみる"}],"level":"A2","difficulty":"normal","category":"買い物"},{"sentence":"Cuối tuần này siêu thị ______ giá nhiều mặt hàng nên rất đông khách.","choices":[{"id":"A","text":"tăng"},{"id":"B","text":"giảm"},{"id":"C","text":"bán"},{"id":"D","text":"đổi"}],"correctChoice":"B","targetVocabulary":"giảm","translationJP":"今週末、スーパーは多くの商品を値下げするので、とても混んでいます。","explanationJP":"「お客さんが多い（đông khách）」理由になるのは「値下げする（giảm giá）」です。giảm giá はセールの場面で必ず出てくる表現です。tăng giá（値上げする）では客が増える理由になりません。","choiceExplanations":[{"choice":"A","explanationJP":"tăng＝上げる。値上げするとお客さんが増える理由にならず、文脈に合いません。"},{"choice":"B","explanationJP":"giảm＝下げる。giảm giá（値下げする）で混雑の理由になり正解です。"},{"choice":"C","explanationJP":"bán＝売る。「bán giá」という組み合わせは使いません。"},{"choice":"D","explanationJP":"đổi＝替える。「đổi giá」は不自然な組み合わせです。"}],"vocabulary":[{"word":"giảm","meaningJP":"減らす、下げる","partOfSpeech":"動詞","explanationJP":"giảm giá（値下げ）、giảm cân（減量）などで使う。"},{"word":"siêu thị","meaningJP":"スーパーマーケット","partOfSpeech":"名詞"},{"word":"đông","meaningJP":"混んでいる、（人が）多い","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"文 + nên + 文","meaningJP":"～なので…","explanationJP":"原因と結果をつなぐ基本パターンです。","example":"Trời mưa nên tôi ở nhà.","exampleJP":"雨なので家にいます。"}],"collocations":[{"expression":"giảm giá","meaningJP":"値下げする、セールする"},{"expression":"đông khách","meaningJP":"客が多い"}],"level":"A2","difficulty":"easy","category":"買い物"},{"sentence":"Dạo này tôi hay bị đau đầu nên ngày mai sẽ đi ______ ở bệnh viện.","choices":[{"id":"A","text":"chữa"},{"id":"B","text":"xem"},{"id":"C","text":"khám"},{"id":"D","text":"hỏi"}],"correctChoice":"C","targetVocabulary":"khám","translationJP":"最近よく頭痛がするので、明日病院へ診察を受けに行きます。","explanationJP":"病院で医者に診てもらうのは khám（診察する・受診する）です。「đi khám（診察を受けに行く）」「khám bệnh（診察する）」は病院の場面の必須表現です。chữa は「治療する」で、まず診てもらう段階には合いません。","choiceExplanations":[{"choice":"A","explanationJP":"chữa＝治療する。診断がまだの段階では khám（診察）が自然で、đi chữa という言い方はしません。"},{"choice":"B","explanationJP":"xem＝見る、観る。医療の受診の意味はありません。"},{"choice":"C","explanationJP":"khám＝診察を受ける。đi khám は「受診しに行く」の定番表現で正解です。"},{"choice":"D","explanationJP":"hỏi＝尋ねる。病院で質問するだけの意味になり不自然です。"}],"vocabulary":[{"word":"khám","meaningJP":"診察する、診察を受ける","partOfSpeech":"動詞","explanationJP":"khám bệnh、đi khám の形でよく使う。"},{"word":"đau đầu","meaningJP":"頭が痛い","partOfSpeech":"動詞句"},{"word":"bệnh viện","meaningJP":"病院","partOfSpeech":"名詞"}],"grammar":[{"pattern":"hay + 動詞","meaningJP":"よく～する（頻度）","explanationJP":"「hay bị đau đầu」で「よく頭痛になる」という頻度を表します。","example":"Em ấy hay quên đồ.","exampleJP":"その子はよく物を忘れます。"}],"collocations":[{"expression":"đi khám","meaningJP":"診察を受けに行く"},{"expression":"khám bệnh","meaningJP":"診察する"}],"level":"A2","difficulty":"normal","category":"病院"},{"sentence":"Bác sĩ dặn tôi phải ______ thuốc ba lần một ngày sau khi ăn.","choices":[{"id":"A","text":"ăn"},{"id":"B","text":"mua"},{"id":"C","text":"lấy"},{"id":"D","text":"uống"}],"correctChoice":"D","targetVocabulary":"uống","translationJP":"医者は私に、食後に1日3回薬を飲むように言いました。","explanationJP":"ベトナム語では薬は「飲む」＝uống を使います。「uống thuốc（薬を飲む）」は決まった組み合わせで、日本語と同じ発想です。ăn thuốc とは言いません。","choiceExplanations":[{"choice":"A","explanationJP":"ăn＝食べる。ベトナム語で「ăn thuốc」とは言いません。"},{"choice":"B","explanationJP":"mua＝買う。「1日3回買う」となり、医者の指示として不自然です。"},{"choice":"C","explanationJP":"lấy＝取る。薬を服用する意味にはなりません。"},{"choice":"D","explanationJP":"uống＝飲む。uống thuốc（薬を飲む）は定番表現で正解です。"}],"vocabulary":[{"word":"uống","meaningJP":"飲む","partOfSpeech":"動詞"},{"word":"thuốc","meaningJP":"薬","partOfSpeech":"名詞"},{"word":"dặn","meaningJP":"言いつける、注意する","partOfSpeech":"動詞"}],"grammar":[{"pattern":"sau khi + 動詞","meaningJP":"～した後に","explanationJP":"「sau khi ăn」で「食後に」。trước khi（～する前に）とセットで覚えましょう。","example":"Sau khi tan làm, tôi đi tập gym.","exampleJP":"仕事が終わった後、ジムへ行きます。"}],"collocations":[{"expression":"uống thuốc","meaningJP":"薬を飲む"},{"expression":"uống nước","meaningJP":"水を飲む"}],"level":"A2","difficulty":"easy","category":"健康"},{"sentence":"Hôm nay tôi bị sốt cao nên phải xin phép công ty ______ làm một ngày.","choices":[{"id":"A","text":"nghỉ"},{"id":"B","text":"thôi"},{"id":"C","text":"bỏ"},{"id":"D","text":"dừng"}],"correctChoice":"A","targetVocabulary":"nghỉ","translationJP":"今日は高熱が出たので、会社に1日休むことを願い出なければなりません。","explanationJP":"仕事や学校を「休む」は nghỉ を使います。「nghỉ làm（仕事を休む）」「nghỉ học（学校を休む）」は決まった組み合わせです。「một ngày（1日）」とあるので、一時的な休みだと分かります。","choiceExplanations":[{"choice":"A","explanationJP":"nghỉ＝休む。nghỉ làm một ngày（1日仕事を休む）で正解です。"},{"choice":"B","explanationJP":"thôi＝やめる。thôi làm だと「退職する」意味になり、1日だけの文脈に合いません。"},{"choice":"C","explanationJP":"bỏ＝捨てる、やめる。bỏ làm も仕事を辞める・放り出す意味で不自然です。"},{"choice":"D","explanationJP":"dừng＝止まる、停止する。作業を一時中断する意味で、休暇には使いません。"}],"vocabulary":[{"word":"nghỉ","meaningJP":"休む","partOfSpeech":"動詞","explanationJP":"nghỉ làm（仕事を休む）、nghỉ hè（夏休み）など。"},{"word":"sốt","meaningJP":"熱、発熱する","partOfSpeech":"名詞・動詞"},{"word":"xin phép","meaningJP":"許可を願い出る","partOfSpeech":"動詞"}],"grammar":[{"pattern":"phải + 動詞","meaningJP":"～しなければならない","explanationJP":"義務・必要を表す基本パターンです。","example":"Tôi phải dậy sớm mỗi ngày.","exampleJP":"私は毎日早起きしなければなりません。"}],"collocations":[{"expression":"nghỉ làm","meaningJP":"仕事を休む"},{"expression":"nghỉ học","meaningJP":"学校を休む"},{"expression":"xin nghỉ phép","meaningJP":"休暇を申請する"}],"level":"A2","difficulty":"normal","category":"仕事"},{"sentence":"Tôi đã ______ với bạn là 7 giờ tối gặp nhau ở quán cà phê.","choices":[{"id":"A","text":"nói"},{"id":"B","text":"hẹn"},{"id":"C","text":"hứa"},{"id":"D","text":"gọi"}],"correctChoice":"B","targetVocabulary":"hẹn","translationJP":"友達と、夜7時にカフェで会う約束をしました。","explanationJP":"会う時間や場所を決める「約束」は hẹn を使います。「hẹn gặp（会う約束をする）」「hẹn với ai（誰かと約束する）」の形が定番です。hứa は「（何かをすると）誓う・約束する」で、待ち合わせには使いません。","choiceExplanations":[{"choice":"A","explanationJP":"nói＝話す。単に「言った」となり、約束のニュアンスが出ません。"},{"choice":"B","explanationJP":"hẹn＝（会う）約束をする。時間と場所を決める文脈にぴったりで正解です。"},{"choice":"C","explanationJP":"hứa＝（行動を）誓う、約束する。「必ず～します」と誓う場面で使い、待ち合わせには hẹn を使います。"},{"choice":"D","explanationJP":"gọi＝呼ぶ、電話する。約束をする意味はありません。"}],"vocabulary":[{"word":"hẹn","meaningJP":"（会う）約束をする","partOfSpeech":"動詞","explanationJP":"hứa（行動を誓う）との違いに注意。待ち合わせは hẹn。"},{"word":"gặp nhau","meaningJP":"会う、落ち合う","partOfSpeech":"動詞句"},{"word":"quán cà phê","meaningJP":"カフェ、喫茶店","partOfSpeech":"名詞"}],"grammar":[{"pattern":"động詞 + với + 人 + là ...","meaningJP":"（人）と～だと…する","explanationJP":"là 以下で約束や発言の内容を伝えます。","example":"Mẹ dặn tôi là phải về trước 9 giờ.","exampleJP":"母は9時前に帰るようにと私に言いました。"}],"collocations":[{"expression":"hẹn gặp","meaningJP":"会う約束をする"},{"expression":"đến đúng giờ hẹn","meaningJP":"約束の時間どおりに来る"}],"level":"A2","difficulty":"hard","category":"約束"},{"sentence":"Tôi ______ mang ô nên bị ướt hết trên đường về nhà.","choices":[{"id":"A","text":"mất"},{"id":"B","text":"nhớ"},{"id":"C","text":"quên"},{"id":"D","text":"bỏ"}],"correctChoice":"C","targetVocabulary":"quên","translationJP":"傘を持って行くのを忘れたので、帰り道でびしょ濡れになりました。","explanationJP":"「濡れてしまった」という結果から、「傘を持って行くのを忘れた」＝quên が正解です。「quên + 動詞（～するのを忘れる）」の形はとてもよく使います。","choiceExplanations":[{"choice":"A","explanationJP":"mất＝なくす。mất は名詞を目的語に取り（mất ô＝傘をなくす）、動詞 mang の前には置けません。"},{"choice":"B","explanationJP":"nhớ＝覚えている。「覚えていたのに濡れた」となり、文脈と逆です。"},{"choice":"C","explanationJP":"quên＝忘れる。quên mang ô（傘を持って行き忘れる）で正解です。"},{"choice":"D","explanationJP":"bỏ＝捨てる、やめる。「持って行くのを捨てる」は不自然です。"}],"vocabulary":[{"word":"quên","meaningJP":"忘れる","partOfSpeech":"動詞","explanationJP":"後ろに動詞を置いて「～するのを忘れる」の形で使える。"},{"word":"ô","meaningJP":"傘","partOfSpeech":"名詞"},{"word":"ướt","meaningJP":"濡れている","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"bị + 形容詞 + hết","meaningJP":"すっかり～してしまう","explanationJP":"hết は「完全に・すっかり」を強調します。bị ướt hết＝びしょ濡れになる。","example":"Tôi mệt hết cả người.","exampleJP":"全身すっかり疲れました。"}],"collocations":[{"expression":"quên mang","meaningJP":"持って行くのを忘れる"},{"expression":"quên mất","meaningJP":"すっかり忘れてしまう"}],"level":"A2","difficulty":"normal","category":"日常生活"},{"sentence":"Đi từ nhà tôi đến trường ______ khoảng ba mươi phút bằng xe buýt.","choices":[{"id":"A","text":"có"},{"id":"B","text":"làm"},{"id":"C","text":"dùng"},{"id":"D","text":"mất"}],"correctChoice":"D","targetVocabulary":"mất","translationJP":"家から学校まではバスで約30分かかります。","explanationJP":"時間が「かかる」ことを表すのは mất です。「mất + 時間（～かかる）」は移動時間や所要時間を言うときの定番表現です。mất には「なくす」という意味もありますが、ここでは「（時間を）費やす」の意味です。","choiceExplanations":[{"choice":"A","explanationJP":"có＝ある、持つ。所要時間を表す使い方はありません。"},{"choice":"B","explanationJP":"làm＝する、作る。時間がかかる意味にはなりません。"},{"choice":"C","explanationJP":"dùng＝使う。「時間を使う」という直訳になり、所要時間の表現としては不自然です。"},{"choice":"D","explanationJP":"mất＝（時間が）かかる。mất 30 phút（30分かかる）で正解です。"}],"vocabulary":[{"word":"mất","meaningJP":"（時間が）かかる、なくす","partOfSpeech":"動詞","explanationJP":"「mất + 時間」で所要時間、「mất + 物」で紛失を表す多義語。"},{"word":"khoảng","meaningJP":"約、およそ","partOfSpeech":"副詞"},{"word":"xe buýt","meaningJP":"バス","partOfSpeech":"名詞"}],"grammar":[{"pattern":"từ A đến B","meaningJP":"AからBまで","explanationJP":"場所にも時間にも使える基本パターンです。","example":"Tôi làm việc từ 9 giờ đến 6 giờ.","exampleJP":"私は9時から6時まで働きます。"},{"pattern":"bằng + 乗り物","meaningJP":"～（乗り物）で","explanationJP":"移動手段を表します。bằng xe buýt＝バスで。","example":"Tôi đi làm bằng xe máy.","exampleJP":"私はバイクで通勤します。"}],"collocations":[{"expression":"mất khoảng ~ phút","meaningJP":"約～分かかる"},{"expression":"mất thời gian","meaningJP":"時間がかかる"}],"level":"A2","difficulty":"normal","category":"交通"},{"sentence":"Chiều nay mẹ tôi ra sân bay để ______ ông bà từ Nhật sang.","choices":[{"id":"A","text":"đón"},{"id":"B","text":"gặp"},{"id":"C","text":"đưa"},{"id":"D","text":"tiễn"}],"correctChoice":"A","targetVocabulary":"đón","translationJP":"今日の午後、母は日本から来る祖父母を迎えに空港へ行きます。","explanationJP":"「từ Nhật sang（日本からこちらへ来る）」人を空港で迎えるのは đón（迎える）です。反対に、出発する人を見送るのは tiễn です。đón と tiễn は方向が逆のペアとして覚えましょう。","choiceExplanations":[{"choice":"A","explanationJP":"đón＝迎える。到着する人を迎えに行く文脈にぴったりで正解です。"},{"choice":"B","explanationJP":"gặp＝会う。単に「会う」で、「迎えに行く」という目的のニュアンスが出ず、ra sân bay để との組み合わせでは đón が自然です。"},{"choice":"C","explanationJP":"đưa＝送り届ける。人をどこかへ連れて行くときに使います。"},{"choice":"D","explanationJP":"tiễn＝見送る。出発する人に使う動詞で、到着する祖父母には合いません。"}],"vocabulary":[{"word":"đón","meaningJP":"迎える","partOfSpeech":"動詞","explanationJP":"tiễn（見送る）と対になる語。đón con（子どもを迎えに行く）など。"},{"word":"sân bay","meaningJP":"空港","partOfSpeech":"名詞"},{"word":"ông bà","meaningJP":"祖父母","partOfSpeech":"名詞"}],"grammar":[{"pattern":"từ + 場所 + sang","meaningJP":"～から（こちらへ）渡って来る","explanationJP":"国や地域を越えて移動するときに sang を使います。","example":"Anh ấy từ Việt Nam sang Nhật làm việc.","exampleJP":"彼はベトナムから日本へ働きに来ました。"}],"collocations":[{"expression":"đón khách","meaningJP":"客を迎える"},{"expression":"ra sân bay đón","meaningJP":"空港へ迎えに行く"}],"level":"A2","difficulty":"normal","category":"家族"},{"sentence":"Cả nhà ra ga để ______ anh trai tôi đi làm xa.","choices":[{"id":"A","text":"đón"},{"id":"B","text":"tiễn"},{"id":"C","text":"chờ"},{"id":"D","text":"gửi"}],"correctChoice":"B","targetVocabulary":"tiễn","translationJP":"家族みんなで、遠くへ働きに行く兄を見送りに駅へ行きます。","explanationJP":"「đi làm xa（遠くへ働きに行く）」＝出発する人を送るのは tiễn（見送る）です。đón（迎える）は到着する人に使うので方向が逆です。","choiceExplanations":[{"choice":"A","explanationJP":"đón＝迎える。これから出発する兄には使えません。"},{"choice":"B","explanationJP":"tiễn＝見送る。出発する人を送る文脈にぴったりで正解です。"},{"choice":"C","explanationJP":"chờ＝待つ。「見送る」という行動を表せず、目的の để と合いません。"},{"choice":"D","explanationJP":"gửi＝送る（物を）。人を見送る意味では使いません。"}],"vocabulary":[{"word":"tiễn","meaningJP":"見送る","partOfSpeech":"動詞","explanationJP":"đón（迎える）と対になる語。"},{"word":"ga","meaningJP":"駅","partOfSpeech":"名詞"},{"word":"đi làm xa","meaningJP":"遠くへ働きに行く","partOfSpeech":"動詞句"}],"grammar":[{"pattern":"cả + 名詞","meaningJP":"～全体、～みんな","explanationJP":"cả nhà＝家族みんな、cả ngày＝一日中。","example":"Cả lớp đều thích cô giáo mới.","exampleJP":"クラスのみんなが新しい先生を好きです。"}],"collocations":[{"expression":"tiễn bạn","meaningJP":"友達を見送る"},{"expression":"ra ga tiễn","meaningJP":"駅へ見送りに行く"}],"level":"A2","difficulty":"normal","category":"家族"},{"sentence":"Tôi quên mang bút nên phải ______ của bạn ngồi bên cạnh.","choices":[{"id":"A","text":"thuê"},{"id":"B","text":"xin"},{"id":"C","text":"mượn"},{"id":"D","text":"lấy"}],"correctChoice":"C","targetVocabulary":"mượn","translationJP":"ペンを持って来るのを忘れたので、隣に座っている友達に借りなければなりません。","explanationJP":"人の物を「（無料で）借りる」のは mượn です。後で返す前提で借りるのが mượn、お金を払って借りるのが thuê です。ペンを一時的に借りる場面では mượn が正解です。","choiceExplanations":[{"choice":"A","explanationJP":"thuê＝お金を払って借りる。友達のペンにお金は払わないので不自然です。"},{"choice":"B","explanationJP":"xin＝もらう、願い出る。もらって返さないニュアンスになり、一時的に借りる文脈では mượn が自然です。"},{"choice":"C","explanationJP":"mượn＝（無料で）借りる。後で返す前提で借りる文脈にぴったりで正解です。"},{"choice":"D","explanationJP":"lấy＝取る。許可なく取る印象になり、不自然です。"}],"vocabulary":[{"word":"mượn","meaningJP":"（無料で）借りる","partOfSpeech":"動詞","explanationJP":"thuê（賃借する）との違いはお金を払うかどうか。"},{"word":"bút","meaningJP":"ペン","partOfSpeech":"名詞"},{"word":"bên cạnh","meaningJP":"隣","partOfSpeech":"名詞"}],"grammar":[{"pattern":"quên + 動詞","meaningJP":"～するのを忘れる","explanationJP":"quên mang bút＝ペンを持って来るのを忘れる。","example":"Tôi quên làm bài tập.","exampleJP":"宿題をするのを忘れました。"}],"collocations":[{"expression":"mượn sách","meaningJP":"本を借りる"},{"expression":"mượn tiền","meaningJP":"お金を借りる"}],"level":"A2","difficulty":"normal","category":"学校"},{"sentence":"Giá nhà ở đây quá đắt nên tôi quyết định ______ một căn hộ nhỏ thay vì mua.","choices":[{"id":"A","text":"mượn"},{"id":"B","text":"bán"},{"id":"C","text":"xây"},{"id":"D","text":"thuê"}],"correctChoice":"D","targetVocabulary":"thuê","translationJP":"ここの家の値段は高すぎるので、買う代わりに小さいアパートを借りることにしました。","explanationJP":"お金を払って家や車を借りるのは thuê です。「thay vì mua（買う代わりに）」という対比から、賃貸する＝thuê が正解だと分かります。mượn は友達の物などを無料で借りるときに使い、不動産の賃貸には使いません。","choiceExplanations":[{"choice":"A","explanationJP":"mượn＝無料で借りる。アパートを無料で借りることは通常なく、賃貸には thuê を使います。"},{"choice":"B","explanationJP":"bán＝売る。自分の物を売る意味で、文脈と合いません。"},{"choice":"C","explanationJP":"xây＝建てる。「高すぎるから建てる」は対比として不自然です。"},{"choice":"D","explanationJP":"thuê＝賃借りする。thuê nhà / thuê căn hộ は定番表現で正解です。"}],"vocabulary":[{"word":"thuê","meaningJP":"（お金を払って）借りる、賃借する","partOfSpeech":"動詞","explanationJP":"thuê nhà（家を借りる）、thuê xe（車を借りる）。"},{"word":"căn hộ","meaningJP":"アパート、マンションの部屋","partOfSpeech":"名詞"},{"word":"quyết định","meaningJP":"決める、決定する","partOfSpeech":"動詞"}],"grammar":[{"pattern":"thay vì + 動詞","meaningJP":"～する代わりに","explanationJP":"2つの選択肢を対比する表現です。","example":"Thay vì đi taxi, tôi đi bộ về nhà.","exampleJP":"タクシーに乗る代わりに、歩いて家に帰ります。"}],"collocations":[{"expression":"thuê nhà","meaningJP":"家を借りる"},{"expression":"thuê xe","meaningJP":"車を借りる"}],"level":"A2","difficulty":"normal","category":"家"},{"sentence":"Bà tôi thường ______ cho tôi nghe những câu chuyện ngày xưa.","choices":[{"id":"A","text":"kể"},{"id":"B","text":"nói"},{"id":"C","text":"bảo"},{"id":"D","text":"hỏi"}],"correctChoice":"A","targetVocabulary":"kể","translationJP":"祖母はよく昔の話を私に聞かせてくれます。","explanationJP":"物語や経験を「語る・話して聞かせる」のは kể です。「kể chuyện（話を語る）」「kể cho ai nghe（誰かに話して聞かせる）」は定番の形です。nói は「言う・話す」という一般的な動詞で、物語を語るニュアンスは kể が担います。","choiceExplanations":[{"choice":"A","explanationJP":"kể＝語る。kể chuyện cho ~ nghe（～に話を聞かせる）で正解です。"},{"choice":"B","explanationJP":"nói＝言う、話す。「物語を語る」場面では kể を使い、nói chuyện は「おしゃべりする」です。"},{"choice":"C","explanationJP":"bảo＝言いつける、指示する。物語には使いません。"},{"choice":"D","explanationJP":"hỏi＝尋ねる。話して聞かせる意味と逆方向です。"}],"vocabulary":[{"word":"kể","meaningJP":"語る、（話を）する","partOfSpeech":"動詞","explanationJP":"nói（言う）との違い：kể はストーリーを順に語ること。"},{"word":"câu chuyện","meaningJP":"話、物語","partOfSpeech":"名詞"},{"word":"ngày xưa","meaningJP":"昔","partOfSpeech":"名詞"}],"grammar":[{"pattern":"動詞 + cho + 人 + nghe","meaningJP":"（人）に～して聞かせる","explanationJP":"kể cho tôi nghe＝私に語って聞かせる。hát cho ~ nghe なども同じ形。","example":"Anh hát cho em nghe một bài nhé.","exampleJP":"1曲歌って聞かせてよ。"}],"collocations":[{"expression":"kể chuyện","meaningJP":"話を語る"},{"expression":"kể lại","meaningJP":"語り直す、再現して話す"}],"level":"A2","difficulty":"normal","category":"家族"},{"sentence":"Tôi không biết đường đến ga nên phải ______ một người đi đường.","choices":[{"id":"A","text":"nói"},{"id":"B","text":"hỏi"},{"id":"C","text":"trả lời"},{"id":"D","text":"gọi"}],"correctChoice":"B","targetVocabulary":"hỏi","translationJP":"駅までの道が分からないので、通行人に尋ねなければなりません。","explanationJP":"道が分からないときに人に「尋ねる」のは hỏi です。「hỏi đường（道を尋ねる）」は道案内の場面の必須表現です。trả lời（答える）は方向が逆になります。","choiceExplanations":[{"choice":"A","explanationJP":"nói＝話す。尋ねる意味がなく、文脈に合いません。"},{"choice":"B","explanationJP":"hỏi＝尋ねる。道が分からず人に聞く文脈にぴったりで正解です。"},{"choice":"C","explanationJP":"trả lời＝答える。尋ねる側なので方向が逆です。"},{"choice":"D","explanationJP":"gọi＝呼ぶ。通行人を呼ぶだけでは道は分かりません。"}],"vocabulary":[{"word":"hỏi","meaningJP":"尋ねる、質問する","partOfSpeech":"動詞","explanationJP":"hỏi đường（道を尋ねる）、hỏi thăm（様子を尋ねる）。"},{"word":"đường","meaningJP":"道","partOfSpeech":"名詞"},{"word":"người đi đường","meaningJP":"通行人","partOfSpeech":"名詞"}],"grammar":[{"pattern":"không biết + 名詞/文","meaningJP":"～が分からない、知らない","explanationJP":"không biết đường＝道を知らない。","example":"Tôi không biết anh ấy là ai.","exampleJP":"彼が誰なのか分かりません。"}],"collocations":[{"expression":"hỏi đường","meaningJP":"道を尋ねる"},{"expression":"hỏi thăm","meaningJP":"様子を尋ねる、挨拶する"}],"level":"A2","difficulty":"easy","category":"道案内"},{"sentence":"Đi thẳng đường này, đến ngã tư thứ hai thì ______ phải là thấy bưu điện.","choices":[{"id":"A","text":"đi"},{"id":"B","text":"quay"},{"id":"C","text":"rẽ"},{"id":"D","text":"chạy"}],"correctChoice":"C","targetVocabulary":"rẽ","translationJP":"この道をまっすぐ行って、2つ目の交差点で右に曲がると郵便局が見えます。","explanationJP":"交差点で「曲がる」のは rẽ です。「rẽ phải（右に曲がる）」「rẽ trái（左に曲がる）」は道案内の必須表現です。quay は「向きを変える・引き返す」で、曲がるとは意味が違います。","choiceExplanations":[{"choice":"A","explanationJP":"đi＝行く。「đi phải」という言い方はしません。"},{"choice":"B","explanationJP":"quay＝向きを変える、戻る。quay lại（引き返す）のように使い、曲がるには rẽ を使います。"},{"choice":"C","explanationJP":"rẽ＝曲がる。rẽ phải（右折する）で正解です。"},{"choice":"D","explanationJP":"chạy＝走る。「chạy phải」という組み合わせはありません。"}],"vocabulary":[{"word":"rẽ","meaningJP":"曲がる","partOfSpeech":"動詞","explanationJP":"rẽ phải / rẽ trái で右折・左折。南部では quẹo とも言う。"},{"word":"ngã tư","meaningJP":"交差点、十字路","partOfSpeech":"名詞"},{"word":"đi thẳng","meaningJP":"まっすぐ行く","partOfSpeech":"動詞句"}],"grammar":[{"pattern":"文 + thì + 文","meaningJP":"～すると、～したら","explanationJP":"条件や順序を表します。「rẽ phải là thấy...」の là も「～すれば…だ」の意味です。","example":"Đến nơi thì gọi cho tôi nhé.","exampleJP":"着いたら電話してね。"}],"collocations":[{"expression":"rẽ phải","meaningJP":"右に曲がる"},{"expression":"rẽ trái","meaningJP":"左に曲がる"}],"level":"A2","difficulty":"easy","category":"道案内"},{"sentence":"Tôi ăn quá nhiều đồ cay nên bây giờ bị ______ bụng.","choices":[{"id":"A","text":"mệt"},{"id":"B","text":"ốm"},{"id":"C","text":"buồn"},{"id":"D","text":"đau"}],"correctChoice":"D","targetVocabulary":"đau","translationJP":"辛い物を食べすぎたので、今お腹が痛いです。","explanationJP":"体の部位が「痛い」は đau を使います。「đau bụng（腹痛）」「đau đầu（頭痛）」のように「đau + 部位」の形で使う、健康の話題の基本表現です。","choiceExplanations":[{"choice":"A","explanationJP":"mệt＝疲れている。「mệt bụng」という言い方はありません。"},{"choice":"B","explanationJP":"ốm＝病気である。「ốm bụng」という組み合わせは使いません。"},{"choice":"C","explanationJP":"buồn＝悲しい。buồn と bụng は組み合わせられません。"},{"choice":"D","explanationJP":"đau＝痛い。đau bụng（お腹が痛い）は定番表現で正解です。"}],"vocabulary":[{"word":"đau","meaningJP":"痛い","partOfSpeech":"形容詞","explanationJP":"đau + 体の部位（bụng・đầu・răng など）で使う。"},{"word":"cay","meaningJP":"辛い","partOfSpeech":"形容詞"},{"word":"bụng","meaningJP":"お腹","partOfSpeech":"名詞"}],"grammar":[{"pattern":"quá nhiều + 名詞","meaningJP":"あまりにも多くの～","explanationJP":"ăn quá nhiều đồ cay＝辛い物を食べすぎる。","example":"Đừng uống quá nhiều cà phê.","exampleJP":"コーヒーを飲みすぎないでください。"}],"collocations":[{"expression":"đau bụng","meaningJP":"お腹が痛い"},{"expression":"đau đầu","meaningJP":"頭が痛い"},{"expression":"đau răng","meaningJP":"歯が痛い"}],"level":"A2","difficulty":"easy","category":"健康"},{"sentence":"Từ sáng đến giờ tôi chưa ăn gì nên bây giờ rất ______.","choices":[{"id":"A","text":"đói"},{"id":"B","text":"no"},{"id":"C","text":"khát"},{"id":"D","text":"buồn"}],"correctChoice":"A","targetVocabulary":"đói","translationJP":"朝から今まで何も食べていないので、今とてもお腹が空いています。","explanationJP":"「何も食べていない（chưa ăn gì）」結果は「お腹が空いている」＝đói です。no（満腹）は反対語です。khát は「喉が渇く」で、食べていないことの直接の結果としては đói が正解です。","choiceExplanations":[{"choice":"A","explanationJP":"đói＝お腹が空いている。食べていない文脈にぴったりで正解です。"},{"choice":"B","explanationJP":"no＝満腹である。食べていないので反対の意味になります。"},{"choice":"C","explanationJP":"khát＝喉が渇いている。飲んでいないときに使い、食事の文脈には合いません。"},{"choice":"D","explanationJP":"buồn＝悲しい。食べていないことの結果として不自然です。"}],"vocabulary":[{"word":"đói","meaningJP":"お腹が空いている","partOfSpeech":"形容詞","explanationJP":"no（満腹）が反対語。đói bụng とも言う。"},{"word":"no","meaningJP":"満腹である","partOfSpeech":"形容詞"},{"word":"chưa","meaningJP":"まだ～していない","partOfSpeech":"副詞"}],"grammar":[{"pattern":"chưa + 動詞 + gì","meaningJP":"まだ何も～していない","explanationJP":"chưa ăn gì＝まだ何も食べていない。","example":"Tôi chưa nói gì với anh ấy.","exampleJP":"彼にはまだ何も言っていません。"}],"collocations":[{"expression":"đói bụng","meaningJP":"お腹が空く"},{"expression":"ăn no","meaningJP":"お腹いっぱい食べる"}],"level":"A2","difficulty":"easy","category":"食事"},{"sentence":"Trời nóng quá, chạy bộ xong tôi ______ nước kinh khủng.","choices":[{"id":"A","text":"thèm"},{"id":"B","text":"khát"},{"id":"C","text":"uống"},{"id":"D","text":"cần"}],"correctChoice":"B","targetVocabulary":"khát","translationJP":"とても暑くて、ジョギングの後は喉がものすごく渇きました。","explanationJP":"「khát nước（喉が渇く）」は決まった組み合わせです。暑い中で運動した後という文脈から、喉の渇きを表す khát が正解です。thèm は「（食べ物などを）無性に欲しがる」で、水には普通使いません。","choiceExplanations":[{"choice":"A","explanationJP":"thèm＝無性に欲しい。thèm ăn phở（フォーが食べたくてたまらない）のように使い、nước との組み合わせでは khát が自然です。"},{"choice":"B","explanationJP":"khát＝（喉が）渇く。khát nước は定番表現で正解です。"},{"choice":"C","explanationJP":"uống＝飲む。「uống nước kinh khủng」だと文法的に不自然です。"},{"choice":"D","explanationJP":"cần＝必要とする。「cần nước kinh khủng」は不自然な言い方です。"}],"vocabulary":[{"word":"khát","meaningJP":"喉が渇いている","partOfSpeech":"形容詞","explanationJP":"khát nước の形でよく使う。đói（空腹）とセットで覚える。"},{"word":"chạy bộ","meaningJP":"ジョギングする","partOfSpeech":"動詞"},{"word":"kinh khủng","meaningJP":"ものすごく、ひどく","partOfSpeech":"副詞"}],"grammar":[{"pattern":"動詞 + xong","meaningJP":"～し終わる、～した後","explanationJP":"chạy bộ xong＝ジョギングし終わって。","example":"Ăn xong tôi sẽ rửa bát.","exampleJP":"食べ終わったら食器を洗います。"}],"collocations":[{"expression":"khát nước","meaningJP":"喉が渇く"},{"expression":"nóng kinh khủng","meaningJP":"ものすごく暑い"}],"level":"A2","difficulty":"normal","category":"健康"},{"sentence":"Sáng nay tôi ngủ quên nên đến lớp ______ mười lăm phút.","choices":[{"id":"A","text":"sớm"},{"id":"B","text":"lâu"},{"id":"C","text":"muộn"},{"id":"D","text":"nhanh"}],"correctChoice":"C","targetVocabulary":"muộn","translationJP":"今朝は寝坊したので、授業に15分遅れて着きました。","explanationJP":"「寝坊した（ngủ quên）」結果なので、「遅れる」＝muộn が正解です。「đến muộn（遅刻する）」は学校や仕事の場面でよく使います。sớm（早く）は反対の意味です。","choiceExplanations":[{"choice":"A","explanationJP":"sớm＝早く。寝坊した結果として逆の意味になります。"},{"choice":"B","explanationJP":"lâu＝（時間が）長い。所要時間の長さを表し、遅刻には使いません。"},{"choice":"C","explanationJP":"muộn＝遅い、遅れる。đến muộn（遅刻する）で正解です。"},{"choice":"D","explanationJP":"nhanh＝速い。速度を表す語で、遅刻の文脈に合いません。"}],"vocabulary":[{"word":"muộn","meaningJP":"遅い、遅れる","partOfSpeech":"形容詞","explanationJP":"đến muộn＝遅刻する。南部では trễ も使う。"},{"word":"ngủ quên","meaningJP":"寝坊する","partOfSpeech":"動詞句"},{"word":"lớp","meaningJP":"教室、クラス","partOfSpeech":"名詞"}],"grammar":[{"pattern":"形容詞 + 数量","meaningJP":"～だけ（差の量）","explanationJP":"muộn mười lăm phút＝15分遅れる。差を表す数量を後ろに置きます。","example":"Anh ấy cao hơn tôi 5 cm.","exampleJP":"彼は私より5センチ背が高いです。"}],"collocations":[{"expression":"đến muộn","meaningJP":"遅刻する"},{"expression":"dậy muộn","meaningJP":"遅く起きる"}],"level":"A2","difficulty":"easy","category":"学校"},{"sentence":"Đi du học xa nhà, tôi rất ______ gia đình và bạn bè.","choices":[{"id":"A","text":"quên"},{"id":"B","text":"yêu"},{"id":"C","text":"thích"},{"id":"D","text":"nhớ"}],"correctChoice":"D","targetVocabulary":"nhớ","translationJP":"家から遠く離れて留学しているので、家族や友達がとても恋しいです。","explanationJP":"離れている人を「恋しく思う・会いたく思う」のは nhớ です。nhớ には「覚えている」と「恋しい」の2つの意味があり、「xa nhà（家から遠い）」という文脈では「恋しい」の意味になります。","choiceExplanations":[{"choice":"A","explanationJP":"quên＝忘れる。「遠く離れたから忘れる」は文脈として不自然です。"},{"choice":"B","explanationJP":"yêu＝愛する。愛情は距離と関係なく、「遠く離れた結果」を表す文脈では nhớ が自然です。"},{"choice":"C","explanationJP":"thích＝好き。同じく「離れた結果」の気持ちとしては合いません。"},{"choice":"D","explanationJP":"nhớ＝恋しい、会いたい。離れた人を思う気持ちを表す語で正解です。"}],"vocabulary":[{"word":"nhớ","meaningJP":"恋しい、覚えている","partOfSpeech":"動詞","explanationJP":"nhớ nhà（ホームシック）、nhớ số điện thoại（電話番号を覚えている）の2用法。"},{"word":"du học","meaningJP":"留学する","partOfSpeech":"動詞"},{"word":"bạn bè","meaningJP":"友達（総称）","partOfSpeech":"名詞"}],"grammar":[{"pattern":"rất + 形容詞/心理動詞","meaningJP":"とても～","explanationJP":"rất nhớ＝とても恋しい。rất は動詞の前に置きます。","example":"Tôi rất thích món ăn Việt Nam.","exampleJP":"私はベトナム料理がとても好きです。"}],"collocations":[{"expression":"nhớ nhà","meaningJP":"家が恋しい、ホームシックになる"},{"expression":"nhớ gia đình","meaningJP":"家族が恋しい"}],"level":"A2","difficulty":"normal","category":"感情"},{"sentence":"Nhận được quà sinh nhật từ bạn thân, tôi cảm thấy rất ______.","choices":[{"id":"A","text":"vui"},{"id":"B","text":"buồn"},{"id":"C","text":"sợ"},{"id":"D","text":"giận"}],"correctChoice":"A","targetVocabulary":"vui","translationJP":"親友から誕生日プレゼントをもらって、とても嬉しく感じました。","explanationJP":"プレゼントをもらったときの気持ちは vui（嬉しい・楽しい）です。「cảm thấy vui（嬉しく感じる）」の形でよく使います。buồn（悲しい）は反対語です。","choiceExplanations":[{"choice":"A","explanationJP":"vui＝嬉しい。プレゼントをもらった場面にぴったりで正解です。"},{"choice":"B","explanationJP":"buồn＝悲しい。反対の感情で文脈に合いません。"},{"choice":"C","explanationJP":"sợ＝怖い。プレゼントをもらって怖がるのは不自然です。"},{"choice":"D","explanationJP":"giận＝怒っている。文脈と正反対の感情です。"}],"vocabulary":[{"word":"vui","meaningJP":"嬉しい、楽しい","partOfSpeech":"形容詞","explanationJP":"buồn（悲しい）が反対語。"},{"word":"quà","meaningJP":"プレゼント","partOfSpeech":"名詞"},{"word":"bạn thân","meaningJP":"親友","partOfSpeech":"名詞"}],"grammar":[{"pattern":"cảm thấy + 形容詞","meaningJP":"～と感じる","explanationJP":"気持ちや体調を表すときの基本パターンです。","example":"Tôi cảm thấy hơi mệt.","exampleJP":"少し疲れを感じます。"}],"collocations":[{"expression":"cảm thấy vui","meaningJP":"嬉しく感じる"},{"expression":"quà sinh nhật","meaningJP":"誕生日プレゼント"}],"level":"A2","difficulty":"easy","category":"感情"},{"sentence":"Ngày mai có bài kiểm tra quan trọng nên tôi hơi ______.","choices":[{"id":"A","text":"thoải mái"},{"id":"B","text":"lo lắng"},{"id":"C","text":"vui vẻ"},{"id":"D","text":"ngạc nhiên"}],"correctChoice":"B","targetVocabulary":"lo lắng","translationJP":"明日は大事なテストがあるので、少し不安です。","explanationJP":"大事なテストの前の気持ちとして自然なのは lo lắng（心配する・不安に思う）です。「hơi lo lắng（少し不安）」のように程度の副詞と一緒によく使います。","choiceExplanations":[{"choice":"A","explanationJP":"thoải mái＝気楽な、快適な。テスト前の緊張と逆の意味です。"},{"choice":"B","explanationJP":"lo lắng＝心配する、不安に思う。テスト前の気持ちとして自然で正解です。"},{"choice":"C","explanationJP":"vui vẻ＝楽しい、機嫌がよい。文脈の「大事なテスト」と合いません。"},{"choice":"D","explanationJP":"ngạc nhiên＝驚く。予想外のことに使い、予定されたテストには合いません。"}],"vocabulary":[{"word":"lo lắng","meaningJP":"心配する、不安に思う","partOfSpeech":"動詞・形容詞"},{"word":"bài kiểm tra","meaningJP":"テスト、試験","partOfSpeech":"名詞"},{"word":"quan trọng","meaningJP":"重要な","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"hơi + 形容詞","meaningJP":"少し～","explanationJP":"控えめな程度を表します。hơi mệt＝少し疲れた。","example":"Món này hơi cay.","exampleJP":"この料理は少し辛いです。"}],"collocations":[{"expression":"lo lắng về ~","meaningJP":"～について心配する"},{"expression":"bài kiểm tra quan trọng","meaningJP":"大事なテスト"}],"level":"A2","difficulty":"easy","category":"感情"},{"sentence":"Dự báo nói chiều nay có mưa to, con nhớ ______ ô khi ra ngoài nhé.","choices":[{"id":"A","text":"mặc"},{"id":"B","text":"đội"},{"id":"C","text":"mang"},{"id":"D","text":"đeo"}],"correctChoice":"C","targetVocabulary":"mang","translationJP":"天気予報では今日の午後は大雨だそうだから、外に出るときは傘を持って行くのを忘れないでね。","explanationJP":"傘を「持って行く」のは mang です。mang は物を身につけて持ち運ぶ・携帯するときに使います。mặc（服を着る）・đội（帽子をかぶる）・đeo（メガネをかける）は身につける物の種類が違います。","choiceExplanations":[{"choice":"A","explanationJP":"mặc＝（服を）着る。傘には使えません。"},{"choice":"B","explanationJP":"đội＝（帽子を）かぶる。頭にのせる物専用です。"},{"choice":"C","explanationJP":"mang＝持って行く、携帯する。mang ô（傘を持って行く）で正解です。"},{"choice":"D","explanationJP":"đeo＝（メガネ・アクセサリーを）身につける。傘には使いません。"}],"vocabulary":[{"word":"mang","meaningJP":"持って行く、携帯する","partOfSpeech":"動詞","explanationJP":"mang ô、mang giày（靴を履く）、mang túi（カバンを持つ）。"},{"word":"dự báo","meaningJP":"予報","partOfSpeech":"名詞"},{"word":"mưa to","meaningJP":"大雨","partOfSpeech":"名詞句"}],"grammar":[{"pattern":"khi + 動詞","meaningJP":"～するとき","explanationJP":"khi ra ngoài＝外に出るとき。","example":"Khi rảnh, tôi thường đọc sách.","exampleJP":"暇なとき、よく本を読みます。"}],"collocations":[{"expression":"mang ô","meaningJP":"傘を持って行く"},{"expression":"mang theo","meaningJP":"携帯する、持参する"}],"level":"A2","difficulty":"normal","category":"天気"},{"sentence":"Trước khi ra khỏi nhà, nhớ ______ điện và khóa cửa cẩn thận.","choices":[{"id":"A","text":"bật"},{"id":"B","text":"mở"},{"id":"C","text":"đóng"},{"id":"D","text":"tắt"}],"correctChoice":"D","targetVocabulary":"tắt","translationJP":"家を出る前に、電気を消して、しっかり鍵をかけるのを忘れないでね。","explanationJP":"外出前にするのは電気を「消す」＝tắt です。「tắt điện（電気を消す）」と bật（つける）はペアで覚えましょう。「khóa cửa（鍵をかける）」と並んでいることからも、外出前の行動だと分かります。","choiceExplanations":[{"choice":"A","explanationJP":"bật＝（電気を）つける。外出前の行動として逆です。"},{"choice":"B","explanationJP":"mở＝開ける、（機器を）つける。電気をつける意味になり、文脈と逆です。"},{"choice":"C","explanationJP":"đóng＝閉める。ドアや窓に使い、điện（電気）には使いません。"},{"choice":"D","explanationJP":"tắt＝消す。tắt điện（電気を消す）で正解です。"}],"vocabulary":[{"word":"tắt","meaningJP":"（電気・機器を）消す","partOfSpeech":"動詞","explanationJP":"bật（つける）が反対語。tắt đèn、tắt tivi など。"},{"word":"khóa","meaningJP":"鍵をかける、鍵","partOfSpeech":"動詞・名詞"},{"word":"cẩn thận","meaningJP":"注意深く、慎重に","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"ra khỏi + 場所","meaningJP":"～から出る","explanationJP":"ra khỏi nhà＝家から出る。khỏi は「～から離れて」を表します。","example":"Anh ấy vừa ra khỏi văn phòng.","exampleJP":"彼はちょうどオフィスを出たところです。"}],"collocations":[{"expression":"tắt điện","meaningJP":"電気を消す"},{"expression":"khóa cửa","meaningJP":"鍵をかける"}],"level":"A2","difficulty":"easy","category":"家"},{"sentence":"Trong phòng tối quá, bạn ______ đèn lên giúp mình với.","choices":[{"id":"A","text":"bật"},{"id":"B","text":"tắt"},{"id":"C","text":"đóng"},{"id":"D","text":"cầm"}],"correctChoice":"A","targetVocabulary":"bật","translationJP":"部屋が暗すぎるから、電気をつけてくれない？","explanationJP":"暗い部屋で電気を「つける」のは bật です。「bật đèn（電気をつける）」と「lên」を組み合わせた「bật đèn lên」はとても自然な言い方です。tắt（消す）は反対語です。","choiceExplanations":[{"choice":"A","explanationJP":"bật＝（電気・機器を）つける。暗い部屋の文脈にぴったりで正解です。"},{"choice":"B","explanationJP":"tắt＝消す。暗い部屋でさらに消すのは文脈と逆です。"},{"choice":"C","explanationJP":"đóng＝閉める。đèn（電灯）には使いません。"},{"choice":"D","explanationJP":"cầm＝手に持つ。電灯を手に持っても部屋は明るくなりません。"}],"vocabulary":[{"word":"bật","meaningJP":"（電気・機器を）つける","partOfSpeech":"動詞","explanationJP":"tắt（消す）が反対語。bật đèn、bật điều hòa（エアコンをつける）。"},{"word":"đèn","meaningJP":"電灯、ランプ","partOfSpeech":"名詞"},{"word":"tối","meaningJP":"暗い","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"動詞 + giúp + 人 + với","meaningJP":"（人のために）～してください","explanationJP":"お願いするときの口語表現。với で「お願い」の気持ちを添えます。","example":"Mở cửa giúp mình với.","exampleJP":"ドアを開けてくれない？"}],"collocations":[{"expression":"bật đèn","meaningJP":"電気をつける"},{"expression":"bật điều hòa","meaningJP":"エアコンをつける"}],"level":"A2","difficulty":"easy","category":"家"},{"sentence":"Xe buýt hôm nay chạy rất ______ nên tôi phải chờ gần một tiếng.","choices":[{"id":"A","text":"nhanh"},{"id":"B","text":"chậm"},{"id":"C","text":"muộn"},{"id":"D","text":"lâu"}],"correctChoice":"B","targetVocabulary":"chậm","translationJP":"今日のバスはとてもゆっくり走っているので、1時間近く待たなければなりませんでした。","explanationJP":"「chạy（走る）」の速さを表す形容詞は chậm（遅い）です。「1時間近く待った」という結果から、バスの動きが遅いことが分かります。muộn は「時刻に遅れる」、lâu は「時間が長くかかる」で、chạy と直接組み合わせるのは chậm が自然です。","choiceExplanations":[{"choice":"A","explanationJP":"nhanh＝速い。待たされた文脈と逆の意味です。"},{"choice":"B","explanationJP":"chậm＝（速度が）遅い。chạy chậm（ゆっくり走る）で正解です。"},{"choice":"C","explanationJP":"muộn＝（時刻に）遅れる。đến muộn（遅れて着く）のように使い、chạy muộn とは言いません。"},{"choice":"D","explanationJP":"lâu＝（時間が）長い。動作の継続時間に使い、速度には使いません。"}],"vocabulary":[{"word":"chậm","meaningJP":"（速度が）遅い","partOfSpeech":"形容詞","explanationJP":"nhanh（速い）が反対語。muộn（時刻に遅れる）との違いに注意。"},{"word":"chờ","meaningJP":"待つ","partOfSpeech":"動詞"},{"word":"tiếng","meaningJP":"時間（〜時間）","partOfSpeech":"名詞"}],"grammar":[{"pattern":"gần + 数量","meaningJP":"～近く、ほぼ～","explanationJP":"gần một tiếng＝1時間近く。","example":"Tôi đã học tiếng Việt gần hai năm.","exampleJP":"ベトナム語を2年近く勉強しています。"}],"collocations":[{"expression":"chạy chậm","meaningJP":"ゆっくり走る"},{"expression":"nói chậm","meaningJP":"ゆっくり話す"}],"level":"A2","difficulty":"hard","category":"交通"},{"sentence":"Cuối tuần tôi thường ngồi ở ______ cà phê gần nhà để đọc sách.","choices":[{"id":"A","text":"cửa hàng"},{"id":"B","text":"nhà"},{"id":"C","text":"quán"},{"id":"D","text":"chợ"}],"correctChoice":"C","targetVocabulary":"quán","translationJP":"週末はよく家の近くのカフェに座って本を読みます。","explanationJP":"「カフェ」は quán cà phê と言います。quán は飲食店（カフェ・食堂など）に使う語です。cửa hàng は物を売る「店」、chợ は「市場」で、コーヒーを飲みながら座る場所としては quán が正解です。","choiceExplanations":[{"choice":"A","explanationJP":"cửa hàng＝（物を売る）店。cửa hàng cà phê は「コーヒー豆を売る店」のニュアンスで、座って飲む場所は quán です。"},{"choice":"B","explanationJP":"nhà＝家。nhà cà phê という言い方はしません。"},{"choice":"C","explanationJP":"quán＝飲食店。quán cà phê（カフェ）は定番表現で正解です。"},{"choice":"D","explanationJP":"chợ＝市場。cà phê と組み合わせられません。"}],"vocabulary":[{"word":"quán","meaningJP":"（飲食）店","partOfSpeech":"名詞","explanationJP":"quán cà phê（カフェ）、quán ăn（食堂）、quán phở（フォー屋）。"},{"word":"cuối tuần","meaningJP":"週末","partOfSpeech":"名詞"},{"word":"đọc sách","meaningJP":"本を読む","partOfSpeech":"動詞句"}],"grammar":[{"pattern":"thường + 動詞","meaningJP":"よく～する、たいてい～する","explanationJP":"習慣を表す頻度の副詞です。","example":"Tôi thường dậy lúc 6 giờ.","exampleJP":"私はたいてい6時に起きます。"}],"collocations":[{"expression":"quán cà phê","meaningJP":"カフェ"},{"expression":"quán ăn","meaningJP":"食堂"}],"level":"A2","difficulty":"easy","category":"カフェ"},{"sentence":"Ở sân bay, tôi phải gửi ______ vì va li nặng hơn 7 kg.","choices":[{"id":"A","text":"đồ đạc"},{"id":"B","text":"quà"},{"id":"C","text":"túi"},{"id":"D","text":"hành lý"}],"correctChoice":"D","targetVocabulary":"hành lý","translationJP":"空港で、スーツケースが7キロより重いので、荷物を預けなければなりません。","explanationJP":"空港で預ける「荷物」は hành lý と言います。「gửi hành lý（荷物を預ける）」は空港の場面の定番表現です。đồ đạc は家の中の「家具・持ち物」で、旅行の荷物には hành lý を使います。","choiceExplanations":[{"choice":"A","explanationJP":"đồ đạc＝家具、（家の中の）持ち物。旅行の荷物には hành lý を使います。"},{"choice":"B","explanationJP":"quà＝プレゼント。スーツケースの重さの文脈と合いません。"},{"choice":"C","explanationJP":"túi＝カバン、袋。空港で預ける荷物全体は hành lý と言います。"},{"choice":"D","explanationJP":"hành lý＝（旅行の）荷物。gửi hành lý（荷物を預ける）で正解です。"}],"vocabulary":[{"word":"hành lý","meaningJP":"（旅行の）荷物","partOfSpeech":"名詞","explanationJP":"空港・駅などで使う。đồ đạc（家の持ち物）との違いに注意。"},{"word":"va li","meaningJP":"スーツケース","partOfSpeech":"名詞"},{"word":"nặng","meaningJP":"重い","partOfSpeech":"形容詞"}],"grammar":[{"pattern":"形容詞 + hơn + 数量","meaningJP":"～より…だ（比較）","explanationJP":"nặng hơn 7 kg＝7キロより重い。","example":"Hôm nay nóng hơn hôm qua.","exampleJP":"今日は昨日より暑いです。"}],"collocations":[{"expression":"gửi hành lý","meaningJP":"荷物を預ける"},{"expression":"hành lý xách tay","meaningJP":"手荷物"}],"level":"A2","difficulty":"normal","category":"旅行"},{"sentence":"Cái túi này đẹp nhưng ______ quá, tôi không đủ tiền mua.","choices":[{"id":"A","text":"đắt"},{"id":"B","text":"rẻ"},{"id":"C","text":"tốt"},{"id":"D","text":"mới"}],"correctChoice":"A","targetVocabulary":"đắt","translationJP":"このカバンはきれいだけど高すぎて、買うお金が足りません。","explanationJP":"「お金が足りない（không đủ tiền）」理由になるのは đắt（値段が高い）です。「đẹp nhưng đắt（きれいだけど高い）」という逆接の流れからも分かります。rẻ（安い）は反対語です。","choiceExplanations":[{"choice":"A","explanationJP":"đắt＝（値段が）高い。お金が足りない理由になり正解です。"},{"choice":"B","explanationJP":"rẻ＝安い。お金が足りない理由と矛盾します。"},{"choice":"C","explanationJP":"tốt＝良い。nhưng（しかし）の逆接に合いません。"},{"choice":"D","explanationJP":"mới＝新しい。買えない理由として文脈に合いません。"}],"vocabulary":[{"word":"đắt","meaningJP":"（値段が）高い","partOfSpeech":"形容詞","explanationJP":"rẻ（安い）が反対語。南部では mắc とも言う。"},{"word":"đủ","meaningJP":"十分な、足りる","partOfSpeech":"形容詞"},{"word":"túi","meaningJP":"カバン、袋","partOfSpeech":"名詞"}],"grammar":[{"pattern":"文 + nhưng + 文","meaningJP":"～だが…","explanationJP":"逆接を表す基本パターンです。","example":"Món này ngon nhưng cay.","exampleJP":"この料理はおいしいけど辛いです。"}],"collocations":[{"expression":"đắt quá","meaningJP":"高すぎる"},{"expression":"đủ tiền","meaningJP":"お金が足りる"}],"level":"A2","difficulty":"easy","category":"買い物"},{"sentence":"Alo, tôi đang họp nên không nói chuyện được. Tôi sẽ ______ lại cho anh sau một tiếng nữa nhé.","choices":[{"id":"A","text":"gọi"},{"id":"B","text":"nghe"},{"id":"C","text":"trả"},{"id":"D","text":"đến"}],"correctChoice":"A","targetVocabulary":"gọi","translationJP":"もしもし、今会議中なので話せません。1時間後にかけ直しますね。","explanationJP":"電話を「かけ直す」は gọi lại と言います。gọi（電話をかける）＋ lại（再び）の組み合わせです。電話の場面では gọi điện（電話をかける）、nghe máy（電話に出る）、gọi lại（かけ直す）をセットで覚えましょう。","choiceExplanations":[{"choice":"A","explanationJP":"gọi＝電話をかける。gọi lại（かけ直す）で正解です。"},{"choice":"B","explanationJP":"nghe＝聞く、（電話に）出る。「nghe lại」だと「聞き直す」となり、かけ直す意味になりません。"},{"choice":"C","explanationJP":"trả＝返す。trả lại は「返品する・返す」で、電話には使いません。"},{"choice":"D","explanationJP":"đến＝来る。「đến lại cho anh」は不自然な言い方です。"}],"vocabulary":[{"word":"gọi lại","meaningJP":"（電話を）かけ直す","partOfSpeech":"動詞句"},{"word":"họp","meaningJP":"会議する","partOfSpeech":"動詞"},{"word":"nói chuyện","meaningJP":"話をする","partOfSpeech":"動詞"}],"grammar":[{"pattern":"動詞 + được","meaningJP":"～できる","explanationJP":"không nói chuyện được＝話すことができない。được を動詞の後ろに置きます。","example":"Tôi không ăn cay được.","exampleJP":"私は辛い物が食べられません。"},{"pattern":"時間 + nữa","meaningJP":"あと～（時間）","explanationJP":"một tiếng nữa＝あと1時間（＝1時間後）。","example":"Năm phút nữa tàu sẽ đến.","exampleJP":"あと5分で電車が来ます。"}],"collocations":[{"expression":"gọi lại","meaningJP":"電話をかけ直す"},{"expression":"nghe máy","meaningJP":"電話に出る"}],"level":"A2","difficulty":"normal","category":"電話"},{"sentence":"Món phở ở quán này ______ lắm, tuần nào tôi cũng đến ăn hai lần.","choices":[{"id":"A","text":"dở"},{"id":"B","text":"ngon"},{"id":"C","text":"đẹp"},{"id":"D","text":"vui"}],"correctChoice":"B","targetVocabulary":"ngon","translationJP":"この店のフォーはとてもおいしくて、毎週2回食べに来ています。","explanationJP":"「毎週2回も食べに来る」理由になるのは ngon（おいしい）です。料理の味を褒める最も基本的な形容詞です。dở（まずい）は反対語で、đẹp は見た目の美しさに使います。","choiceExplanations":[{"choice":"A","explanationJP":"dở＝まずい。毎週通う理由と矛盾します。"},{"choice":"B","explanationJP":"ngon＝おいしい。毎週2回食べに来る理由として自然で正解です。"},{"choice":"C","explanationJP":"đẹp＝美しい。見た目に使う語で、料理の味には ngon を使います。"},{"choice":"D","explanationJP":"vui＝楽しい。人や雰囲気に使い、料理の味には使いません。"}],"vocabulary":[{"word":"ngon","meaningJP":"おいしい","partOfSpeech":"形容詞","explanationJP":"dở（まずい）が反対語。ngon miệng（食が進む）などにも使う。"},{"word":"món","meaningJP":"料理（〜の品）","partOfSpeech":"名詞"},{"word":"lần","meaningJP":"回、度","partOfSpeech":"名詞"}],"grammar":[{"pattern":"名詞 + nào + cũng ...","meaningJP":"どの～も…だ","explanationJP":"tuần nào cũng＝毎週（どの週も）。","example":"Ngày nào anh ấy cũng tập thể dục.","exampleJP":"彼は毎日運動します。"}],"collocations":[{"expression":"ngon lắm","meaningJP":"とてもおいしい"},{"expression":"ăn ngon","meaningJP":"おいしく食べる"}],"level":"A2","difficulty":"easy","category":"レストラン"},{"sentence":"Mùa hè ở Hà Nội nóng lắm, nhiệt độ có ngày ______ đến 40 độ.","choices":[{"id":"A","text":"giảm"},{"id":"B","text":"xuống"},{"id":"C","text":"lên"},{"id":"D","text":"chạy"}],"correctChoice":"C","targetVocabulary":"lên","translationJP":"ハノイの夏はとても暑くて、気温が40度まで上がる日もあります。","explanationJP":"「40度まで」という高い温度に向かうので、「上がる」＝lên が正解です。「nhiệt độ lên đến ~（気温が～まで上がる）」は天気の話でよく使う形です。xuống（下がる）は反対の方向です。","choiceExplanations":[{"choice":"A","explanationJP":"giảm＝減る、下がる。「暑い」という文脈と逆方向です。"},{"choice":"B","explanationJP":"xuống＝下がる。40度は高温なので文脈と合いません。"},{"choice":"C","explanationJP":"lên＝上がる。lên đến 40 độ（40度まで上がる）で正解です。"},{"choice":"D","explanationJP":"chạy＝走る。気温には使えません。"}],"vocabulary":[{"word":"lên","meaningJP":"上がる、上る","partOfSpeech":"動詞","explanationJP":"xuống（下がる）が反対語。値段・気温・階段など幅広く使う。"},{"word":"nhiệt độ","meaningJP":"温度、気温","partOfSpeech":"名詞"},{"word":"độ","meaningJP":"度","partOfSpeech":"名詞"}],"grammar":[{"pattern":"動詞 + đến + 数量","meaningJP":"～まで…する（到達）","explanationJP":"lên đến 40 độ＝40度にまで達する。đến で到達点を強調します。","example":"Anh ấy làm việc đến 11 giờ đêm.","exampleJP":"彼は夜11時まで働きます。"}],"collocations":[{"expression":"nhiệt độ lên cao","meaningJP":"気温が高く上がる"},{"expression":"nóng lắm","meaningJP":"とても暑い"}],"level":"A2","difficulty":"normal","category":"天気"},{"sentence":"Em trai tôi rất ______ chơi bóng đá, cuối tuần nào cũng ra sân tập.","choices":[{"id":"A","text":"chán"},{"id":"B","text":"ghét"},{"id":"C","text":"sợ"},{"id":"D","text":"thích"}],"correctChoice":"D","targetVocabulary":"thích","translationJP":"弟はサッカーをするのが大好きで、毎週末グラウンドへ練習しに行きます。","explanationJP":"「毎週末練習に行く」ことから、サッカーが「好き」＝thích だと分かります。「thích + 動詞（～するのが好き）」は趣味を話すときの基本パターンです。","choiceExplanations":[{"choice":"A","explanationJP":"chán＝飽きた、つまらない。毎週練習に行く文脈と矛盾します。"},{"choice":"B","explanationJP":"ghét＝嫌い。文脈と正反対です。"},{"choice":"C","explanationJP":"sợ＝怖い。サッカーを怖がる文脈ではありません。"},{"choice":"D","explanationJP":"thích＝好き。毎週練習に行く理由として自然で正解です。"}],"vocabulary":[{"word":"thích","meaningJP":"好き","partOfSpeech":"動詞","explanationJP":"後ろに名詞も動詞も置ける。ghét（嫌い）が反対語。"},{"word":"bóng đá","meaningJP":"サッカー","partOfSpeech":"名詞"},{"word":"sân","meaningJP":"グラウンド、庭","partOfSpeech":"名詞"}],"grammar":[{"pattern":"thích + 動詞","meaningJP":"～するのが好き","explanationJP":"thích chơi bóng đá＝サッカーをするのが好き。","example":"Tôi thích nấu ăn.","exampleJP":"私は料理をするのが好きです。"}],"collocations":[{"expression":"chơi bóng đá","meaningJP":"サッカーをする"},{"expression":"ra sân","meaningJP":"グラウンドに出る"}],"level":"A2","difficulty":"easy","category":"趣味"},{"sentence":"Phòng này ______ quá, không đủ chỗ để kê thêm một cái giường nữa.","choices":[{"id":"A","text":"rộng"},{"id":"B","text":"chật"},{"id":"C","text":"sáng"},{"id":"D","text":"sạch"}],"correctChoice":"B","targetVocabulary":"chật","translationJP":"この部屋は狭すぎて、もう1台ベッドを置く場所が足りません。","explanationJP":"「ベッドを置く場所が足りない（không đủ chỗ）」理由になるのは chật（狭い）です。rộng（広い）は反対語です。部屋の広さの話題でよく使うペアです。","choiceExplanations":[{"choice":"A","explanationJP":"rộng＝広い。場所が足りない理由と矛盾します。"},{"choice":"B","explanationJP":"chật＝狭い。ベッドを置けない理由として自然で正解です。"},{"choice":"C","explanationJP":"sáng＝明るい。場所の広さと関係ありません。"},{"choice":"D","explanationJP":"sạch＝清潔な。場所の広さと関係ありません。"}],"vocabulary":[{"word":"chật","meaningJP":"狭い、きつい","partOfSpeech":"形容詞","explanationJP":"rộng（広い）が反対語。部屋にも服（サイズがきつい）にも使う。"},{"word":"chỗ","meaningJP":"場所、席","partOfSpeech":"名詞"},{"word":"giường","meaningJP":"ベッド","partOfSpeech":"名詞"}],"grammar":[{"pattern":"thêm + 名詞 + nữa","meaningJP":"さらにもう～","explanationJP":"thêm một cái giường nữa＝さらにもう1台のベッド。","example":"Cho tôi thêm một cốc nước nữa.","exampleJP":"水をもう1杯ください。"}],"collocations":[{"expression":"phòng chật","meaningJP":"狭い部屋"},{"expression":"đủ chỗ","meaningJP":"場所が足りる"}],"level":"A2","difficulty":"easy","category":"部屋"},{"sentence":"Bài tập này khó quá, bạn ______ cho mình cách làm được không?","choices":[{"id":"A","text":"trả lời"},{"id":"B","text":"nói chuyện"},{"id":"C","text":"chỉ"},{"id":"D","text":"đọc"}],"correctChoice":"C","targetVocabulary":"chỉ","translationJP":"この宿題は難しすぎるから、やり方を教えてくれない？","explanationJP":"やり方・道などを「教える・示す」のは chỉ です。「chỉ cách làm（やり方を教える）」「chỉ đường（道を教える）」の形でよく使います。dạy が「（体系的に）教える・授業する」なのに対し、chỉ はその場で示して教えるニュアンスです。","choiceExplanations":[{"choice":"A","explanationJP":"trả lời＝答える。質問への返答に使い、「やり方を示す」には chỉ が自然です。"},{"choice":"B","explanationJP":"nói chuyện＝おしゃべりする。教える意味はありません。"},{"choice":"C","explanationJP":"chỉ＝教える、示す。chỉ cách làm（やり方を教える）で正解です。"},{"choice":"D","explanationJP":"đọc＝読む。教える意味はなく、文脈に合いません。"}],"vocabulary":[{"word":"chỉ","meaningJP":"教える、指し示す","partOfSpeech":"動詞","explanationJP":"chỉ đường（道を教える）、chỉ cách（方法を教える）。"},{"word":"bài tập","meaningJP":"宿題、練習問題","partOfSpeech":"名詞"},{"word":"cách làm","meaningJP":"やり方","partOfSpeech":"名詞"}],"grammar":[{"pattern":"動詞 + được không?","meaningJP":"～してもらえますか？","explanationJP":"依頼するときの基本パターン。柔らかいお願いになります。","example":"Bạn giúp mình một chút được không?","exampleJP":"ちょっと手伝ってもらえない？"}],"collocations":[{"expression":"chỉ cách làm","meaningJP":"やり方を教える"},{"expression":"chỉ đường","meaningJP":"道を教える"}],"level":"A2","difficulty":"normal","category":"学校"}];
 
 /* ===========================================================================
@@ -12,21 +12,167 @@ const QUESTION_BANK = [{"sentence":"Vì căn phòng quá bừa bộn, tôi phả
 /* ---------------------------------------------------------------------------
    永続化（localStorage）
 --------------------------------------------------------------------------- */
+/* 保存データは version 付きで持ち、読み込み時に migrate() で段階的に変換する。
+   スキーマを変えたら SCHEMA_VERSION を上げ、MIGRATIONS に変換を1つ足すこと。
+   変換の分岐は MIGRATIONS の1か所だけにまとめる（あちこちで補完しない）。 */
 const STORAGE_KEY = "kazu-static-v1";
+const BROKEN_STORAGE_KEY = "kazu-static-v1-broken"; // 読み取れなかったデータの退避先
+const SCHEMA_VERSION = 2;
+const VOCAB_STATUSES = ["new", "learning", "forgotten", "unsure", "reviewing", "mastered"];
+
+const isPlainObject = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+const numOr = (x, fallback) => (typeof x === "number" && Number.isFinite(x) ? x : fallback);
+const strOr = (x, fallback) => (typeof x === "string" ? x : fallback);
+
+function emptyStore() {
+  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [] };
+}
+
+// 保存・読み込みの失敗を画面に出す（黙って失敗させない）
+function showStorageWarning(message) {
+  const el = document.getElementById("storage-warning");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.remove("hidden");
+}
+
+/* --- レコードの既定値：フィールドが欠けた古いデータを補う ---
+   nowIso() はこの下で定義しているが、関数宣言なので読み込み時点で呼び出せる。 */
+
+// 語彙レコード：クイズ・Flash Card・実力分析が参照するフィールドをすべて揃える
+function normalizeVocabRecord(key, value) {
+  const v = isPlainObject(value) ? value : {};
+  return {
+    ...v,
+    word: strOr(v.word, key),
+    meaningJP: strOr(v.meaningJP, ""),
+    partOfSpeech: strOr(v.partOfSpeech, ""),
+    example: strOr(v.example, ""),
+    exampleJP: strOr(v.exampleJP, ""),
+    collocations: Array.isArray(v.collocations) ? v.collocations : [],
+    status: VOCAB_STATUSES.includes(v.status) ? v.status : "new",
+    masteryScore: Math.max(0, Math.min(100, numOr(v.masteryScore, 0))),
+    exposureCount: Math.max(0, numOr(v.exposureCount, 0)),
+    consecutiveCorrect: Math.max(0, numOr(v.consecutiveCorrect, 0)),
+    consecutiveWrong: Math.max(0, numOr(v.consecutiveWrong, 0)),
+    wrongCount: Math.max(0, numOr(v.wrongCount, 0)),
+    firstSeenAt: strOr(v.firstSeenAt, nowIso()),
+    // 復習期限が無い語は今日の復習対象にする（黙って復習から漏れるのを防ぐ）
+    nextReviewAt: strOr(v.nextReviewAt, nowIso()),
+  };
+}
+
+function normalizeVocab(vocab) {
+  const out = {};
+  if (!isPlainObject(vocab)) return out;
+  for (const [key, value] of Object.entries(vocab)) out[key] = normalizeVocabRecord(key, value);
+  return out;
+}
+
+// 回答履歴：{ count, correct } が数値であることを保証する
+function normalizeAnswered(answered) {
+  const out = {};
+  if (!isPlainObject(answered)) return out;
+  for (const [sentence, rec] of Object.entries(answered)) {
+    const r = isPlainObject(rec) ? rec : {};
+    out[sentence] = { ...r, count: Math.max(0, numOr(r.count, 0)), correct: Math.max(0, numOr(r.correct, 0)) };
+  }
+  return out;
+}
+
+// 日別記録：ストリークと実力分析が参照する { questions, correct } を保証する
+function normalizeDays(days) {
+  const out = {};
+  if (!isPlainObject(days)) return out;
+  for (const [day, rec] of Object.entries(days)) {
+    const r = isPlainObject(rec) ? rec : {};
+    out[day] = { ...r, questions: Math.max(0, numOr(r.questions, 0)), correct: Math.max(0, numOr(r.correct, 0)) };
+  }
+  return out;
+}
+
+// 学習履歴：実力分析が session.wrong を必ず走査するため、配列であることを保証する
+function normalizeSessions(sessions) {
+  if (!Array.isArray(sessions)) return [];
+  return sessions.filter(isPlainObject).map((s) => ({
+    ...s,
+    at: strOr(s.at, ""),
+    mode: strOr(s.mode, ""),
+    total: Math.max(0, numOr(s.total, 0)),
+    correct: Math.max(0, numOr(s.correct, 0)),
+    wrong: Array.isArray(s.wrong) ? s.wrong.filter(isPlainObject) : [],
+  }));
+}
+
+/* --- 移行処理 ---
+   キーは「変換前のversion」。1つ実行するたびに version が1つ上がる。
+   スキーマを変えたら、ここに次のversionのエントリを1つ足す。 */
+const MIGRATIONS = {
+  // 1 → 2: version を持たなかった時代のデータ。
+  //   入れ物（answered / vocab / days / sessions）と、各レコードに欠けている
+  //   フィールド（wrongCount / consecutiveCorrect / masteryScore など）を既定値で補う。
+  1: (s) => ({
+    ...s,
+    answered: normalizeAnswered(s.answered),
+    vocab: normalizeVocab(s.vocab),
+    days: normalizeDays(s.days),
+    sessions: normalizeSessions(s.sessions),
+  }),
+};
+
+function migrate(data) {
+  // version が無いデータ＝version 1（このフィールドを導入する前の保存データ）
+  let s = { ...data, version: Math.max(1, Math.floor(numOr(data.version, 1))) };
+  while (s.version < SCHEMA_VERSION && MIGRATIONS[s.version]) {
+    s = MIGRATIONS[s.version](s);
+    s.version += 1;
+  }
+  // 想定より新しいversion（将来版で保存されたデータ）でも起動だけはできるようにする
+  if (!isPlainObject(s.answered)) s.answered = {};
+  if (!isPlainObject(s.vocab)) s.vocab = {};
+  if (!isPlainObject(s.days)) s.days = {};
+  if (!Array.isArray(s.sessions)) s.sessions = [];
+  return s;
+}
 
 function loadStore() {
+  let raw = null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (_) { /* 壊れたデータは初期化する */ }
-  return { answered: {}, vocab: {}, days: {}, sessions: [] };
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch (_) {
+    // localStorage自体が使えない（プライベートモードなど）
+    showStorageWarning("このブラウザでは学習データを保存できません（プライベートモードの可能性があります）。今回の学習は記録されません。");
+    return emptyStore();
+  }
+  if (!raw) return emptyStore();
+
+  let parsed = null;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_) { /* 壊れたデータとして下で扱う */ }
+
+  if (!isPlainObject(parsed)) {
+    // 初期化する前に元データを退避しておく（あとから復旧できるようにする）
+    try {
+      localStorage.setItem(BROKEN_STORAGE_KEY, raw);
+    } catch (_) { /* 退避できなくても起動は続ける */ }
+    showStorageWarning(
+      `保存データを読み取れなかったため、学習記録を初期化しました。元のデータは復旧用に「${BROKEN_STORAGE_KEY}」として残しています。`,
+    );
+    return emptyStore();
+  }
+  return migrate(parsed);
 }
+
 function saveStore() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  } catch (_) {
+    showStorageWarning("学習データを保存できませんでした。ブラウザの空き容量が足りないか、プライベートモードの可能性があります。このままでは今回の学習が記録されません。");
+  }
 }
+
 const store = loadStore();
-// 旧バージョンのデータにはsessionsが無いため補完する
-if (!Array.isArray(store.sessions)) store.sessions = [];
 
 const DAY_MS = 86400000;
 function todayStr(offset = 0) {
@@ -617,6 +763,532 @@ const B1_QUESTION_BANK = [
     collocations: [{ expression: "bị ảnh hưởng", meaningJP: "影響を受ける" }, { expression: "suốt tuần", meaningJP: "一週間ずっと" }],
     level: "B1", difficulty: "hard", category: "旅行",
   },
+  {
+    sentence: "Nhóm chúng tôi cần thêm hai ngày nữa để ______ dự án đúng chất lượng.",
+    choices: [{ id: "A", text: "hoàn thành" }, { id: "B", text: "bắt đầu" }, { id: "C", text: "hủy bỏ" }, { id: "D", text: "kéo dài" }],
+    correctChoice: "A", targetVocabulary: "hoàn thành",
+    translationJP: "きちんとした品質でプロジェクトを完成させるために、私たちのチームはあと2日必要です。",
+    explanationJP: "「đúng chất lượng（品質どおりに）」仕上げるために時間が欲しいので「hoàn thành（完成させる）」が正解です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "hoàn thành＝完成させる。hoàn thành dự án で正解です。" },
+      { choice: "B", explanationJP: "bắt đầu＝始める。もう進行中の話なので合いません。" },
+      { choice: "C", explanationJP: "hủy bỏ＝取りやめる。品質の話と矛盾します。" },
+      { choice: "D", explanationJP: "kéo dài＝長引かせる。目的語としてdự ánを「引き延ばすために時間が要る」は不自然です。" },
+    ],
+    vocabulary: [
+      { word: "hoàn thành", meaningJP: "完成させる、仕上げる", partOfSpeech: "動詞" },
+      { word: "chất lượng", meaningJP: "品質", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "cần thêm ~ nữa để …", meaningJP: "…のためにあと～必要だ", explanationJP: "追加で必要な量＋目的を表します。", example: "Tôi cần thêm một tuần nữa để chuẩn bị.", exampleJP: "準備にあと1週間必要です。" }],
+    collocations: [{ expression: "hoàn thành đúng hạn", meaningJP: "期限どおりに完成させる" }],
+    level: "B1", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Sau ba tháng, tôi đã ______ với việc dậy sớm đi làm.",
+    choices: [{ id: "A", text: "chán" }, { id: "B", text: "quen" }, { id: "C", text: "sợ" }, { id: "D", text: "mệt" }],
+    correctChoice: "B", targetVocabulary: "quen",
+    translationJP: "3か月経って、早起きして仕事に行くことに慣れました。",
+    explanationJP: "「quen với ~（～に慣れる）」が定番の形です。時間の経過（3か月）＋với の組み合わせが決め手です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "chán＝飽きる。「chán với」という形は使いません（chán + 名詞）。" },
+      { choice: "B", explanationJP: "quen＝慣れる。quen với ~ で正解です。" },
+      { choice: "C", explanationJP: "sợ＝怖い。sợ với という形はありません。" },
+      { choice: "D", explanationJP: "mệt＝疲れる。mệt với も不自然で、文脈も3か月後の適応の話です。" },
+    ],
+    vocabulary: [
+      { word: "quen", meaningJP: "慣れる、知り合いである", partOfSpeech: "動詞" },
+      { word: "dậy sớm", meaningJP: "早起きする", partOfSpeech: "動詞句" },
+    ],
+    grammar: [{ pattern: "quen với + 名詞/việc + 動詞", meaningJP: "～に慣れる", explanationJP: "việcで動詞句を名詞化してつなぎます。", example: "Tôi chưa quen với đồ ăn cay.", exampleJP: "辛い料理にまだ慣れていません。" }],
+    collocations: [{ expression: "quen với ~", meaningJP: "～に慣れる" }],
+    level: "B1", difficulty: "normal", category: "日常生活",
+  },
+  {
+    sentence: "Anh ấy định ______ ngân hàng ba trăm triệu để mua căn hộ trả góp.",
+    choices: [{ id: "A", text: "gửi" }, { id: "B", text: "cho" }, { id: "C", text: "vay" }, { id: "D", text: "đổi" }],
+    correctChoice: "C", targetVocabulary: "vay",
+    translationJP: "彼はローンでアパートを買うため、銀行から3億ドン借りるつもりです。",
+    explanationJP: "「mua trả góp（分割で買う）」のだからお金を「借りる」＝vay です。vay ngân hàng（銀行から借りる）は金融の必須表現です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "gửi＝預ける。買うためのお金を預けるのは逆です。" },
+      { choice: "B", explanationJP: "cho＝あげる。銀行にお金をあげる話ではありません。" },
+      { choice: "C", explanationJP: "vay＝（お金を）借りる。vay ngân hàng で正解です。" },
+      { choice: "D", explanationJP: "đổi＝両替する。金額を借りる文脈に合いません。" },
+    ],
+    vocabulary: [
+      { word: "vay", meaningJP: "（お金を）借りる", partOfSpeech: "動詞", explanationJP: "mượn（物を借りる）との違い：お金・融資はvay。" },
+      { word: "trả góp", meaningJP: "分割払い", partOfSpeech: "名詞・副詞" },
+    ],
+    grammar: [{ pattern: "vay + 相手 + 金額", meaningJP: "（相手）から（金額）を借りる", explanationJP: "vayは借りる相手を直後に置けます。", example: "Tôi vay bạn 500 nghìn.", exampleJP: "友達から50万ドン借りました。" }],
+    collocations: [{ expression: "vay tiền", meaningJP: "お金を借りる" }, { expression: "mua trả góp", meaningJP: "分割で買う" }],
+    level: "B1", difficulty: "normal", category: "お金",
+  },
+  {
+    sentence: "Mỗi tối, chị ấy ______ một tiếng để chơi với con trước khi làm việc tiếp.",
+    choices: [{ id: "A", text: "mất" }, { id: "B", text: "bỏ" }, { id: "C", text: "tốn" }, { id: "D", text: "dành" }],
+    correctChoice: "D", targetVocabulary: "dành",
+    translationJP: "毎晩、彼女は仕事を続ける前に、子どもと遊ぶ時間を1時間確保しています。",
+    explanationJP: "意識的に時間を「取っておく・充てる」は dành です。dành thời gian cho ~（～のために時間を割く）は家族・自己投資の話で頻出です。mất/tốn は「かかる（消費）」でニュアンスが逆です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mất＝（時間が）かかる。大切に充てるニュアンスがありません。" },
+      { choice: "B", explanationJP: "bỏ＝捨てる。bỏ một tiếng だと「1時間を無駄にする」に聞こえます。" },
+      { choice: "C", explanationJP: "tốn＝費やす（コスト）。もったいない含みがあり、愛情の文脈に合いません。" },
+      { choice: "D", explanationJP: "dành＝充てる、取っておく。dành thời gian で正解です。" },
+    ],
+    vocabulary: [
+      { word: "dành", meaningJP: "充てる、取っておく", partOfSpeech: "動詞" },
+      { word: "tiếp", meaningJP: "続けて", partOfSpeech: "副詞" },
+    ],
+    grammar: [{ pattern: "dành ~ để + 動詞", meaningJP: "～を…のために充てる", explanationJP: "時間・お金の配分を表します。", example: "Tôi dành 30 phút mỗi sáng để đọc.", exampleJP: "毎朝30分を読書に充てています。" }],
+    collocations: [{ expression: "dành thời gian cho ~", meaningJP: "～に時間を割く" }],
+    level: "B1", difficulty: "hard", category: "家族",
+  },
+  {
+    sentence: "Đội bóng yêu thích thua trận chung kết nên anh ấy rất ______.",
+    choices: [{ id: "A", text: "thất vọng" }, { id: "B", text: "tự hào" }, { id: "C", text: "hài lòng" }, { id: "D", text: "bình tĩnh" }],
+    correctChoice: "A", targetVocabulary: "thất vọng",
+    translationJP: "好きなチームが決勝戦で負けたので、彼はとてもがっかりしています。",
+    explanationJP: "「thua（負ける）」という残念な出来事への感情は「thất vọng（がっかりする・失望する）」です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "thất vọng＝失望する。敗戦への感情として正解です。" },
+      { choice: "B", explanationJP: "tự hào＝誇りに思う。負けた直後の感情として文脈に合いません。" },
+      { choice: "C", explanationJP: "hài lòng＝満足する。敗北と逆の感情です。" },
+      { choice: "D", explanationJP: "bình tĩnh＝冷静な。「rất（とても）」で強調する感情として不自然です。" },
+    ],
+    vocabulary: [
+      { word: "thất vọng", meaningJP: "失望する、がっかりする", partOfSpeech: "形容詞・動詞" },
+      { word: "trận chung kết", meaningJP: "決勝戦", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "thua / thắng", meaningJP: "負ける／勝つ", explanationJP: "試合結果の基本ペアです。", example: "Đội tôi thắng 2-1.", exampleJP: "私のチームは2対1で勝ちました。" }],
+    collocations: [{ expression: "thất vọng về ~", meaningJP: "～に失望する" }],
+    level: "B1", difficulty: "easy", category: "感情",
+  },
+  {
+    sentence: "Bọn trẻ rất ______ khi nghe tin cả nhà sắp đi biển.",
+    choices: [{ id: "A", text: "mệt mỏi" }, { id: "B", text: "hào hứng" }, { id: "C", text: "lo lắng" }, { id: "D", text: "khó chịu" }],
+    correctChoice: "B", targetVocabulary: "hào hứng",
+    translationJP: "家族みんなで海に行くと聞いて、子どもたちはとてもわくわくしています。",
+    explanationJP: "楽しい予定への反応は「hào hứng（わくわくする・張り切る）」です。vuiより強い期待感を表すB1語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mệt mỏi＝疲れ切った。嬉しいニュースへの反応と逆です。" },
+      { choice: "B", explanationJP: "hào hứng＝わくわくする。旅行の知らせへの反応として正解です。" },
+      { choice: "C", explanationJP: "lo lắng＝心配する。楽しい予定の文脈に合いません。" },
+      { choice: "D", explanationJP: "khó chịu＝不快な。文脈と逆です。" },
+    ],
+    vocabulary: [
+      { word: "hào hứng", meaningJP: "わくわくした、張り切った", partOfSpeech: "形容詞" },
+      { word: "tin", meaningJP: "知らせ、ニュース", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "khi nghe tin ~", meaningJP: "～という知らせを聞いたとき", explanationJP: "出来事への反応を導きます。", example: "Cô ấy khóc khi nghe tin đỗ đại học.", exampleJP: "大学合格の知らせを聞いて彼女は泣きました。" }],
+    collocations: [{ expression: "đi biển", meaningJP: "海に行く" }],
+    level: "B1", difficulty: "easy", category: "感情",
+  },
+  {
+    sentence: "Vì công việc mới, gia đình tôi sẽ ______ vào Đà Nẵng sống từ tháng sau.",
+    choices: [{ id: "A", text: "đi du lịch" }, { id: "B", text: "ghé" }, { id: "C", text: "chuyển" }, { id: "D", text: "quay" }],
+    correctChoice: "C", targetVocabulary: "chuyển",
+    translationJP: "新しい仕事のため、私の家族は来月からダナンに移住します。",
+    explanationJP: "「sống từ tháng sau（来月から住む）」ので一時滞在ではなく「chuyển（移る・引っ越す）」が正解です。chuyển vào（南方面へ移る）という方向表現にも注目。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "đi du lịch＝旅行する。「住む」と矛盾します。" },
+      { choice: "B", explanationJP: "ghé＝立ち寄る。短時間の訪問で、移住に合いません。" },
+      { choice: "C", explanationJP: "chuyển＝移る。chuyển vào ~ sống で正解です。" },
+      { choice: "D", explanationJP: "quay＝戻る。初めて移る文脈でquay（帰る）は合いません。" },
+    ],
+    vocabulary: [
+      { word: "chuyển", meaningJP: "移る、移動させる", partOfSpeech: "動詞", explanationJP: "chuyển nhà（引っ越す）・chuyển việc（転職する）。" },
+      { word: "từ tháng sau", meaningJP: "来月から", partOfSpeech: "副詞句" },
+    ],
+    grammar: [{ pattern: "vào / ra + 地名", meaningJP: "南へ／北へ（移動）", explanationJP: "ベトナムでは南下はvào、北上はraと言います。", example: "Anh ấy ra Hà Nội công tác.", exampleJP: "彼はハノイへ出張します。" }],
+    collocations: [{ expression: "chuyển nhà", meaningJP: "引っ越す" }, { expression: "chuyển việc", meaningJP: "転職する" }],
+    level: "B1", difficulty: "normal", category: "家",
+  },
+  {
+    sentence: "Tôi đã ______ lời mời làm thêm cuối tuần vì muốn dành thời gian cho gia đình.",
+    choices: [{ id: "A", text: "nhận" }, { id: "B", text: "đồng ý" }, { id: "C", text: "xin" }, { id: "D", text: "từ chối" }],
+    correctChoice: "D", targetVocabulary: "từ chối",
+    translationJP: "家族との時間を大切にしたいので、週末の残業の依頼を断りました。",
+    explanationJP: "理由（家族との時間）から、依頼を「断る」＝từ chối が正解です。từ chối lời mời（誘いを断る）は丁寧なコミュニケーションの必須語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "nhận＝受ける。家族との時間という理由と矛盾します。" },
+      { choice: "B", explanationJP: "đồng ý＝同意する。同じく理由と矛盾します。" },
+      { choice: "C", explanationJP: "xin＝願い出る。自分から残業を頼む形になり文脈と逆です。" },
+      { choice: "D", explanationJP: "từ chối＝断る。理由と一致し正解です。" },
+    ],
+    vocabulary: [
+      { word: "từ chối", meaningJP: "断る、拒否する", partOfSpeech: "動詞" },
+      { word: "lời mời", meaningJP: "誘い、招待", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "vì muốn + 動詞", meaningJP: "～したいので", explanationJP: "希望を理由として示します。", example: "Tôi học tiếng Việt vì muốn làm việc ở Việt Nam.", exampleJP: "ベトナムで働きたいのでベトナム語を勉強しています。" }],
+    collocations: [{ expression: "từ chối khéo", meaningJP: "やんわり断る" }],
+    level: "B1", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Chị có thể ______ cho tôi một quán ăn ngon gần đây không?",
+    choices: [{ id: "A", text: "giới thiệu" }, { id: "B", text: "quảng cáo" }, { id: "C", text: "mô tả" }, { id: "D", text: "kể" }],
+    correctChoice: "A", targetVocabulary: "giới thiệu",
+    translationJP: "この近くのおいしい食堂を紹介してもらえますか？",
+    explanationJP: "おすすめを教えてもらうのは「giới thiệu（紹介する）」です。giới thiệu cho tôi ~（私に～を紹介して）の形で使います。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "giới thiệu＝紹介する。おすすめを尋ねる表現として正解です。" },
+      { choice: "B", explanationJP: "quảng cáo＝宣伝する。商業的な宣伝で、個人的な紹介に合いません。" },
+      { choice: "C", explanationJP: "mô tả＝描写する。店の様子を説明するだけで、おすすめの意味がありません。" },
+      { choice: "D", explanationJP: "kể＝語る。物語を話す動詞で、店の紹介には使いません。" },
+    ],
+    vocabulary: [
+      { word: "giới thiệu", meaningJP: "紹介する", partOfSpeech: "動詞" },
+      { word: "gần đây", meaningJP: "この近く／最近", partOfSpeech: "副詞", explanationJP: "場所（近く）と時間（最近）の両方の意味がある。" },
+    ],
+    grammar: [{ pattern: "có thể ~ cho tôi ~ không?", meaningJP: "私に～してもらえますか", explanationJP: "依頼の丁寧形です。", example: "Anh có thể chỉ cho tôi đường đến ga không?", exampleJP: "駅までの道を教えてもらえますか？" }],
+    collocations: [{ expression: "giới thiệu bản thân", meaningJP: "自己紹介する" }],
+    level: "B1", difficulty: "easy", category: "レストラン",
+  },
+  {
+    sentence: "Hai lớp sẽ ______ ý kiến về kế hoạch dã ngoại vào chiều thứ sáu.",
+    choices: [{ id: "A", text: "tranh cãi" }, { id: "B", text: "trao đổi" }, { id: "C", text: "ra lệnh" }, { id: "D", text: "im lặng" }],
+    correctChoice: "B", targetVocabulary: "trao đổi",
+    translationJP: "2つのクラスは金曜の午後、遠足の計画について意見を交換します。",
+    explanationJP: "「trao đổi ý kiến（意見を交換する）」は会議・話し合いの定番表現です。tranh cãi（言い争う）はネガティブで予定として不自然です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "tranh cãi＝言い争う。予定として組む活動ではありません。" },
+      { choice: "B", explanationJP: "trao đổi＝交換する。trao đổi ý kiến で正解です。" },
+      { choice: "C", explanationJP: "ra lệnh＝命令する。クラス同士の話し合いに合いません。" },
+      { choice: "D", explanationJP: "im lặng＝黙る。意見について「黙る」は矛盾します。" },
+    ],
+    vocabulary: [
+      { word: "trao đổi", meaningJP: "交換する、意見を交わす", partOfSpeech: "動詞" },
+      { word: "dã ngoại", meaningJP: "ピクニック、遠足", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "về + 話題", meaningJP: "～について", explanationJP: "話題を導く前置詞です。", example: "Chúng tôi nói chuyện về công việc.", exampleJP: "私たちは仕事について話しました。" }],
+    collocations: [{ expression: "trao đổi ý kiến", meaningJP: "意見を交換する" }],
+    level: "B1", difficulty: "normal", category: "学校",
+  },
+  {
+    sentence: "Con ______ với mẹ là từ nay sẽ không chơi điện thoại quá 9 giờ tối.",
+    choices: [{ id: "A", text: "đoán" }, { id: "B", text: "kể" }, { id: "C", text: "hứa" }, { id: "D", text: "hỏi" }],
+    correctChoice: "C", targetVocabulary: "hứa",
+    translationJP: "これからは夜9時以降スマホをいじらないと、お母さんに約束します。",
+    explanationJP: "「từ nay sẽ ~（これからは～する）」という将来の行動の誓いは「hứa（約束する）」です。hẹn（待ち合わせの約束）との違いに注意。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "đoán＝推測する。自分の行動を推測するのは不自然です。" },
+      { choice: "B", explanationJP: "kể＝語る。過去の話を語る動詞で、将来の誓いに合いません。" },
+      { choice: "C", explanationJP: "hứa＝（行動を）約束する。将来の誓いとして正解です。" },
+      { choice: "D", explanationJP: "hỏi＝尋ねる。質問ではなく宣言なので合いません。" },
+    ],
+    vocabulary: [
+      { word: "hứa", meaningJP: "（～すると）約束する", partOfSpeech: "動詞", explanationJP: "hẹn（会う約束）と使い分ける。行動の誓い＝hứa。" },
+      { word: "từ nay", meaningJP: "これから、今後", partOfSpeech: "副詞" },
+    ],
+    grammar: [{ pattern: "hứa (với 人) là ~", meaningJP: "（人に）～すると約束する", explanationJP: "làの後に約束の内容を続けます。", example: "Anh hứa là sẽ về sớm.", exampleJP: "早く帰ると約束するよ。" }],
+    collocations: [{ expression: "giữ lời hứa", meaningJP: "約束を守る" }],
+    level: "B1", difficulty: "normal", category: "家族",
+  },
+  {
+    sentence: "Nhờ ôn tập đều đặn, em ấy đã ______ điểm cao nhất lớp trong kỳ thi vừa rồi.",
+    choices: [{ id: "A", text: "mất" }, { id: "B", text: "thi" }, { id: "C", text: "nhận" }, { id: "D", text: "đạt" }],
+    correctChoice: "D", targetVocabulary: "đạt",
+    translationJP: "コンスタントに復習したおかげで、その子は先日の試験でクラス最高点を取りました。",
+    explanationJP: "成績・目標を「達成する・取る」は đạt です。đạt điểm cao（高得点を取る）は学習の定番コロケーションです。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mất＝失う。良い結果の文脈と逆です。" },
+      { choice: "B", explanationJP: "thi＝受験する。「điểm を thi する」とは言えません。" },
+      { choice: "C", explanationJP: "nhận＝受け取る。thành tíchはnhậnより「đạt（達成）」が自然です。" },
+      { choice: "D", explanationJP: "đạt＝達成する。đạt điểm cao で正解です。" },
+    ],
+    vocabulary: [
+      { word: "đạt", meaningJP: "達成する、（成績を）取る", partOfSpeech: "動詞" },
+      { word: "ôn tập", meaningJP: "復習する", partOfSpeech: "動詞" },
+    ],
+    grammar: [{ pattern: "Nhờ ~, đã …", meaningJP: "～のおかげで…した", explanationJP: "良い原因＋結果。B1定番の因果表現です。", example: "Nhờ tập luyện, anh ấy đã khỏe lại.", exampleJP: "トレーニングのおかげで彼は回復しました。" }],
+    collocations: [{ expression: "đạt điểm cao", meaningJP: "高得点を取る" }, { expression: "đạt mục tiêu", meaningJP: "目標を達成する" }],
+    level: "B1", difficulty: "normal", category: "学校",
+  },
+  {
+    sentence: "Quán phở này rất ______, khách thường phải xếp hàng ba mươi phút.",
+    choices: [{ id: "A", text: "nổi tiếng" }, { id: "B", text: "yên tĩnh" }, { id: "C", text: "vắng" }, { id: "D", text: "bí mật" }],
+    correctChoice: "A", targetVocabulary: "nổi tiếng",
+    translationJP: "このフォー屋はとても有名で、客はたいてい30分並ばなければなりません。",
+    explanationJP: "「xếp hàng 30 phút（30分並ぶ）」という行列の理由は「nổi tiếng（有名な）」だからです。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "nổi tiếng＝有名な。行列の理由として正解です。" },
+      { choice: "B", explanationJP: "yên tĩnh＝静かな。行列とは結びつきません。" },
+      { choice: "C", explanationJP: "vắng＝空いている。30分並ぶ描写と正反対です。" },
+      { choice: "D", explanationJP: "bí mật＝秘密の。有名で混む店の描写と矛盾します。" },
+    ],
+    vocabulary: [
+      { word: "nổi tiếng", meaningJP: "有名な", partOfSpeech: "形容詞" },
+      { word: "xếp hàng", meaningJP: "列に並ぶ", partOfSpeech: "動詞句" },
+    ],
+    grammar: [{ pattern: "phải + 動詞（やむを得ず）", meaningJP: "～せざるを得ない", explanationJP: "義務・必然を表します。", example: "Cuối năm ai cũng phải chờ lâu.", exampleJP: "年末は誰でも長く待たされます。" }],
+    collocations: [{ expression: "nổi tiếng về ~", meaningJP: "～で有名だ" }],
+    level: "B1", difficulty: "easy", category: "レストラン",
+  },
+  {
+    sentence: "Con đến nơi thì nhắn tin cho mẹ để mẹ ______ nhé.",
+    choices: [{ id: "A", text: "lo lắng" }, { id: "B", text: "yên tâm" }, { id: "C", text: "ngạc nhiên" }, { id: "D", text: "buồn" }],
+    correctChoice: "B", targetVocabulary: "yên tâm",
+    translationJP: "着いたらお母さんにメッセージしてね。安心できるように。",
+    explanationJP: "到着の連絡をする目的は親が「yên tâm（安心する）」ためです。để ~（～するために）の目的節に入る感情はプラスのものです。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "lo lắng＝心配する。連絡の目的として逆です。" },
+      { choice: "B", explanationJP: "yên tâm＝安心する。連絡の目的として正解です。" },
+      { choice: "C", explanationJP: "ngạc nhiên＝驚く。連絡して驚かせるのは目的として不自然です。" },
+      { choice: "D", explanationJP: "buồn＝悲しい。文脈に合いません。" },
+    ],
+    vocabulary: [
+      { word: "yên tâm", meaningJP: "安心する", partOfSpeech: "動詞・形容詞" },
+      { word: "nhắn tin", meaningJP: "メッセージを送る", partOfSpeech: "動詞" },
+    ],
+    grammar: [{ pattern: "~ thì … nhé", meaningJP: "～したら…してね", explanationJP: "条件＋依頼のやわらかい形です。", example: "Rảnh thì gọi cho anh nhé.", exampleJP: "暇になったら電話してね。" }],
+    collocations: [{ expression: "đến nơi", meaningJP: "目的地に着く" }],
+    level: "B1", difficulty: "easy", category: "家族",
+  },
+];
+
+/* ---------------------------------------------------------------------------
+   A2追加問題バンク（12問・正解位置A/B/C/D各3問）— QUESTION_BANKと合わせて使用
+--------------------------------------------------------------------------- */
+const A2_EXTRA_QUESTION_BANK = [
+  {
+    sentence: "Quần áo bẩn nhiều quá, cuối tuần này tôi phải ______ hết.",
+    choices: [{ id: "A", text: "giặt" }, { id: "B", text: "rửa" }, { id: "C", text: "lau" }, { id: "D", text: "quét" }],
+    correctChoice: "A", targetVocabulary: "giặt",
+    translationJP: "汚れた服がたまりすぎたので、今週末に全部洗濯しなければなりません。",
+    explanationJP: "服を洗うのは giặt です。ベトナム語では洗う対象で動詞が変わります：服は giặt、食器・手は rửa、床・机を拭くのは lau、掃くのは quét。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "giặt＝（服を）洗濯する。quần áo に使う正しい動詞で正解です。" },
+      { choice: "B", explanationJP: "rửa＝（食器・手などを）洗う。服には使いません。" },
+      { choice: "C", explanationJP: "lau＝拭く。布で表面を拭く動作です。" },
+      { choice: "D", explanationJP: "quét＝掃く。ほうきで掃く動作です。" },
+    ],
+    vocabulary: [
+      { word: "giặt", meaningJP: "（服を）洗濯する", partOfSpeech: "動詞", explanationJP: "rửa（食器・手を洗う）との使い分けが重要。" },
+      { word: "bẩn", meaningJP: "汚れた", partOfSpeech: "形容詞" },
+    ],
+    grammar: [{ pattern: "動詞 + hết", meaningJP: "全部～する", explanationJP: "hếtで「残さず全部」を表します。", example: "Tôi đã đọc hết cuốn sách.", exampleJP: "本を全部読み終えました。" }],
+    collocations: [{ expression: "giặt quần áo", meaningJP: "服を洗濯する" }, { expression: "máy giặt", meaningJP: "洗濯機" }],
+    level: "A2", difficulty: "normal", category: "家",
+  },
+  {
+    sentence: "Mẹ tôi đang ______ cơm trong bếp, khoảng ba mươi phút nữa là ăn được.",
+    choices: [{ id: "A", text: "mua" }, { id: "B", text: "nấu" }, { id: "C", text: "gọi" }, { id: "D", text: "rửa" }],
+    correctChoice: "B", targetVocabulary: "nấu",
+    translationJP: "母は台所でご飯を作っています。あと30分ほどで食べられます。",
+    explanationJP: "「trong bếp（台所で）」「30分後に食べられる」という文脈から、料理を「作る」＝nấu が正解です。nấu cơm（ご飯を作る・炊く）は毎日使う表現です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mua＝買う。台所で30分かけてする行動ではありません。" },
+      { choice: "B", explanationJP: "nấu＝料理する、炊く。nấu cơm で正解です。" },
+      { choice: "C", explanationJP: "gọi＝注文する。家の台所の場面に合いません。" },
+      { choice: "D", explanationJP: "rửa＝洗う。「ご飯を洗って30分後に食べる」は不自然です。" },
+    ],
+    vocabulary: [
+      { word: "nấu", meaningJP: "料理する、煮る", partOfSpeech: "動詞" },
+      { word: "bếp", meaningJP: "台所", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "時間 + nữa là ~ được", meaningJP: "あと～で…できる", explanationJP: "完了までの残り時間を表します。", example: "Mười phút nữa là xong.", exampleJP: "あと10分で終わります。" }],
+    collocations: [{ expression: "nấu cơm", meaningJP: "ご飯を作る" }, { expression: "nấu ăn", meaningJP: "料理をする" }],
+    level: "A2", difficulty: "easy", category: "食事",
+  },
+  {
+    sentence: "Bạn cứ ______ tôi ở cổng trường nhé, tôi ra ngay bây giờ.",
+    choices: [{ id: "A", text: "đi" }, { id: "B", text: "gặp" }, { id: "C", text: "đợi" }, { id: "D", text: "tìm" }],
+    correctChoice: "C", targetVocabulary: "đợi",
+    translationJP: "校門のところで待っていてね。今すぐ出るから。",
+    explanationJP: "「tôi ra ngay（すぐ出る）」と言っているので、相手には「待って」もらう＝đợi が正解です。đợi と chờ は同義語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "đi＝行く。「私を行く」という形は作れません。" },
+      { choice: "B", explanationJP: "gặp＝会う。「すぐ出るから待ってて」の流れにはđợiが自然です。" },
+      { choice: "C", explanationJP: "đợi＝待つ。đợi tôi ở ~（～で私を待つ）で正解です。" },
+      { choice: "D", explanationJP: "tìm＝探す。居場所は伝えているので探す必要がありません。" },
+    ],
+    vocabulary: [
+      { word: "đợi", meaningJP: "待つ", partOfSpeech: "動詞", explanationJP: "chờ と同義。" },
+      { word: "cổng", meaningJP: "門", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "cứ + 動詞 + nhé", meaningJP: "（気にせず）～していてね", explanationJP: "cứは「そのまま・遠慮なく」のニュアンスを加えます。", example: "Bạn cứ ăn trước đi.", exampleJP: "先に食べてていいよ。" }],
+    collocations: [{ expression: "đợi một chút", meaningJP: "ちょっと待つ" }],
+    level: "A2", difficulty: "normal", category: "約束",
+  },
+  {
+    sentence: "Tôi đang ______ một căn nhà gần công ty để đỡ mất thời gian đi lại.",
+    choices: [{ id: "A", text: "bán" }, { id: "B", text: "xây" }, { id: "C", text: "dọn" }, { id: "D", text: "tìm" }],
+    correctChoice: "D", targetVocabulary: "tìm",
+    translationJP: "通勤時間を減らすため、会社の近くの家を探しています。",
+    explanationJP: "目的（通勤時間の節約）のために家を「探す」＝tìm が正解です。tìm nhà（家を探す）は引っ越しの場面の定番です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "bán＝売る。まだ持っていない家は売れません。" },
+      { choice: "B", explanationJP: "xây＝建てる。会社の近くに家を建てるのは大掛かりすぎ、tìmが自然です。" },
+      { choice: "C", explanationJP: "dọn＝片付ける・引っ越す。dọn nhà は「家を掃除する／引っ越す」で、家を見つける段階に合いません。" },
+      { choice: "D", explanationJP: "tìm＝探す。tìm nhà で正解です。" },
+    ],
+    vocabulary: [
+      { word: "tìm", meaningJP: "探す", partOfSpeech: "動詞" },
+      { word: "đi lại", meaningJP: "行き来する、通う", partOfSpeech: "動詞" },
+    ],
+    grammar: [{ pattern: "để đỡ + 動詞", meaningJP: "～しなくて済むように", explanationJP: "đỡは「軽減する」。負担を減らす目的を表します。", example: "Tôi ghi chú để đỡ quên.", exampleJP: "忘れないようにメモします。" }],
+    collocations: [{ expression: "tìm nhà", meaningJP: "家を探す" }, { expression: "tìm việc", meaningJP: "仕事を探す" }],
+    level: "A2", difficulty: "normal", category: "家",
+  },
+  {
+    sentence: "Cuối tuần này tôi ______ các bạn cùng lớp đến nhà ăn tối.",
+    choices: [{ id: "A", text: "mời" }, { id: "B", text: "gọi" }, { id: "C", text: "đưa" }, { id: "D", text: "dẫn" }],
+    correctChoice: "A", targetVocabulary: "mời",
+    translationJP: "今週末、クラスメートを家での夕食に招待します。",
+    explanationJP: "人を食事や家に「招待する」は mời です。mời ~ đến nhà（家に招く）、mời ăn cơm（食事に誘う）の形で使います。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mời＝招待する。mời ~ đến nhà で正解です。" },
+      { choice: "B", explanationJP: "gọi＝呼ぶ・電話する。丁寧な招待にはmờiを使います。" },
+      { choice: "C", explanationJP: "đưa＝送り届ける。招く意味はありません。" },
+      { choice: "D", explanationJP: "dẫn＝連れて行く。自分の家に「招く」場面ではmờiが自然です。" },
+    ],
+    vocabulary: [
+      { word: "mời", meaningJP: "招待する、勧める", partOfSpeech: "動詞" },
+      { word: "bạn cùng lớp", meaningJP: "クラスメート", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "mời + 人 + 動詞", meaningJP: "（人）を～に招く", explanationJP: "招待の基本形です。", example: "Tôi mời cô ấy đi uống cà phê.", exampleJP: "彼女をコーヒーに誘いました。" }],
+    collocations: [{ expression: "mời khách", meaningJP: "客を招く" }, { expression: "ăn tối", meaningJP: "夕食を食べる" }],
+    level: "A2", difficulty: "easy", category: "友人",
+  },
+  {
+    sentence: "Trước khi bạn tôi đến chơi, tôi phải ______ phòng khách cho gọn gàng.",
+    choices: [{ id: "A", text: "xây" }, { id: "B", text: "dọn" }, { id: "C", text: "đóng" }, { id: "D", text: "sửa" }],
+    correctChoice: "B", targetVocabulary: "dọn",
+    translationJP: "友達が遊びに来る前に、リビングをきちんと片付けなければなりません。",
+    explanationJP: "「cho gọn gàng（きちんとなるように）」とあるので「片付ける」＝dọn が正解です。dọn phòng／dọn nhà は日常の定番表現です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "xây＝建てる。片付けの場面に合いません。" },
+      { choice: "B", explanationJP: "dọn＝片付ける。dọn phòng で正解です。" },
+      { choice: "C", explanationJP: "đóng＝閉める。部屋を「閉める」ではgọn gàngになりません。" },
+      { choice: "D", explanationJP: "sửa＝修理する。壊れている描写はありません。" },
+    ],
+    vocabulary: [
+      { word: "dọn", meaningJP: "片付ける", partOfSpeech: "動詞" },
+      { word: "gọn gàng", meaningJP: "整然とした、きちんとした", partOfSpeech: "形容詞" },
+    ],
+    grammar: [{ pattern: "動詞 + cho + 形容詞", meaningJP: "～になるように…する", explanationJP: "目標の状態を表します。", example: "Viết cho rõ ràng nhé.", exampleJP: "はっきり書いてね。" }],
+    collocations: [{ expression: "dọn phòng", meaningJP: "部屋を片付ける" }, { expression: "phòng khách", meaningJP: "リビング" }],
+    level: "A2", difficulty: "normal", category: "部屋",
+  },
+  {
+    sentence: "Xe máy của tôi bị hỏng, tôi phải mang ra tiệm để ______.",
+    choices: [{ id: "A", text: "bán" }, { id: "B", text: "đổi" }, { id: "C", text: "sửa" }, { id: "D", text: "giặt" }],
+    correctChoice: "C", targetVocabulary: "sửa",
+    translationJP: "バイクが故障したので、店に持って行って修理してもらわなければなりません。",
+    explanationJP: "「bị hỏng（故障した）」→店へ→「修理する」＝sửa の流れです。sửa xe（車・バイクを直す）は生活必須表現です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "bán＝売る。壊れたから売るとは書かれておらず、phải（～しなければ）とも合いません。" },
+      { choice: "B", explanationJP: "đổi＝交換する。バイクを丸ごと交換ではなく修理が自然です。" },
+      { choice: "C", explanationJP: "sửa＝修理する。bị hỏng との組み合わせで正解です。" },
+      { choice: "D", explanationJP: "giặt＝洗濯する。服専用の動詞です。" },
+    ],
+    vocabulary: [
+      { word: "sửa", meaningJP: "修理する、直す", partOfSpeech: "動詞" },
+      { word: "tiệm", meaningJP: "店（修理店・小さな店）", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "mang + 物 + ra/đến + 場所", meaningJP: "（物）を～へ持って行く", explanationJP: "物の移動を表します。", example: "Tôi mang áo ra tiệm giặt.", exampleJP: "服をクリーニング店に持って行きます。" }],
+    collocations: [{ expression: "sửa xe", meaningJP: "車・バイクを修理する" }, { expression: "bị hỏng", meaningJP: "故障する" }],
+    level: "A2", difficulty: "easy", category: "交通",
+  },
+  {
+    sentence: "Trời lạnh quá, bạn ______ cửa sổ lại giúp mình nhé.",
+    choices: [{ id: "A", text: "mở" }, { id: "B", text: "bật" }, { id: "C", text: "tắt" }, { id: "D", text: "đóng" }],
+    correctChoice: "D", targetVocabulary: "đóng",
+    translationJP: "とても寒いから、窓を閉めてくれない？",
+    explanationJP: "寒いのだから窓は「閉める」＝đóng です。đóng cửa（ドア・窓を閉める）⇔ mở cửa（開ける）のペアで覚えましょう。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "mở＝開ける。寒い文脈と逆です。" },
+      { choice: "B", explanationJP: "bật＝（電気を）つける。窓には使いません。" },
+      { choice: "C", explanationJP: "tắt＝（電気を）消す。窓には使いません。" },
+      { choice: "D", explanationJP: "đóng＝閉める。đóng cửa sổ で正解です。" },
+    ],
+    vocabulary: [
+      { word: "đóng", meaningJP: "閉める", partOfSpeech: "動詞", explanationJP: "mở（開ける）が反対語。電気はtắt/bậtを使う点に注意。" },
+      { word: "cửa sổ", meaningJP: "窓", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "動詞 + lại", meaningJP: "（開いているものを）閉じ直す・～し直す", explanationJP: "đóng ~ lạiで「きちんと閉める」ニュアンスです。", example: "Buộc dây giày lại đi.", exampleJP: "靴ひもを結び直して。" }],
+    collocations: [{ expression: "đóng cửa", meaningJP: "ドアを閉める、閉店する" }],
+    level: "A2", difficulty: "easy", category: "家",
+  },
+  {
+    sentence: "Dạo này anh ấy tập gym mỗi ngày nên trông ______ hơn trước.",
+    choices: [{ id: "A", text: "khỏe" }, { id: "B", text: "mệt" }, { id: "C", text: "ốm" }, { id: "D", text: "buồn" }],
+    correctChoice: "A", targetVocabulary: "khỏe",
+    translationJP: "最近彼は毎日ジムで鍛えているので、前より健康そうに見えます。",
+    explanationJP: "毎日運動した結果はプラスの変化＝「khỏe（健康な・元気な）」です。「trông ~ hơn（～に見える）」の形も重要です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "khỏe＝健康な。運動の成果として正解です。" },
+      { choice: "B", explanationJP: "mệt＝疲れた。nên（だから）でつなぐ結果として文脈に合いません。" },
+      { choice: "C", explanationJP: "ốm＝病気の・痩せた。運動の良い効果と逆です。" },
+      { choice: "D", explanationJP: "buồn＝悲しい。体調の変化の話に合いません。" },
+    ],
+    vocabulary: [
+      { word: "khỏe", meaningJP: "健康な、元気な", partOfSpeech: "形容詞" },
+      { word: "tập gym", meaningJP: "ジムで鍛える", partOfSpeech: "動詞句" },
+    ],
+    grammar: [{ pattern: "trông + 形容詞 + hơn", meaningJP: "より～に見える", explanationJP: "見た目の変化を表します。", example: "Chị trông trẻ hơn nhiều.", exampleJP: "ずっと若く見えますね。" }],
+    collocations: [{ expression: "khỏe mạnh", meaningJP: "健康な" }],
+    level: "A2", difficulty: "easy", category: "健康",
+  },
+  {
+    sentence: "Căn hộ mới của chúng tôi ______ hơn nhà cũ nên để được nhiều đồ.",
+    choices: [{ id: "A", text: "chật" }, { id: "B", text: "rộng" }, { id: "C", text: "tối" }, { id: "D", text: "cũ" }],
+    correctChoice: "B", targetVocabulary: "rộng",
+    translationJP: "私たちの新しいアパートは前の家より広いので、たくさん物が置けます。",
+    explanationJP: "「để được nhiều đồ（たくさん置ける）」理由は「広い」＝rộng だからです。chật（狭い）が反対語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "chật＝狭い。物がたくさん置ける理由と逆です。" },
+      { choice: "B", explanationJP: "rộng＝広い。結果（収納力）に合い正解です。" },
+      { choice: "C", explanationJP: "tối＝暗い。収納の話と関係ありません。" },
+      { choice: "D", explanationJP: "cũ＝古い。新しいアパートの説明と矛盾します。" },
+    ],
+    vocabulary: [
+      { word: "rộng", meaningJP: "広い", partOfSpeech: "形容詞", explanationJP: "chật（狭い）が反対語。" },
+      { word: "đồ", meaningJP: "物", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "動詞 + được + 名詞", meaningJP: "～できる（収容・達成）", explanationJP: "để được nhiều đồ＝多くの物を置ける。", example: "Phòng này chứa được 50 người.", exampleJP: "この部屋は50人収容できます。" }],
+    collocations: [{ expression: "phòng rộng", meaningJP: "広い部屋" }],
+    level: "A2", difficulty: "easy", category: "家",
+  },
+  {
+    sentence: "Sau khi lau xong, sàn nhà trông rất ______.",
+    choices: [{ id: "A", text: "bẩn" }, { id: "B", text: "cũ" }, { id: "C", text: "sạch" }, { id: "D", text: "ướt" }],
+    correctChoice: "C", targetVocabulary: "sạch",
+    translationJP: "拭き終わった後、床はとてもきれいに見えます。",
+    explanationJP: "掃除（lau＝拭く）の結果は「きれい」＝sạch です。bẩn（汚い）が反対語。ướt（濡れた）は拭いた直後の状態としてはあり得ますが、「trông rất（とても～に見える）」と褒める文脈ではsạchが自然です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "bẩn＝汚い。掃除の結果と逆です。" },
+      { choice: "B", explanationJP: "cũ＝古い。掃除で新旧は変わりません。" },
+      { choice: "C", explanationJP: "sạch＝清潔な。掃除の成果として正解です。" },
+      { choice: "D", explanationJP: "ướt＝濡れた。事実としてはあり得ますが、良い結果を述べる文脈に合いません。" },
+    ],
+    vocabulary: [
+      { word: "sạch", meaningJP: "清潔な、きれいな", partOfSpeech: "形容詞", explanationJP: "bẩn（汚い）が反対語。sạch sẽとも言う。" },
+      { word: "sàn nhà", meaningJP: "床", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "Sau khi + 動詞 + xong", meaningJP: "～し終わった後", explanationJP: "sau khiとxongを重ねて完了を強調します。", example: "Sau khi ăn xong, tôi rửa bát.", exampleJP: "食べ終わった後、食器を洗います。" }],
+    collocations: [{ expression: "sạch sẽ", meaningJP: "清潔な" }, { expression: "lau nhà", meaningJP: "床を拭く" }],
+    level: "A2", difficulty: "easy", category: "家",
+  },
+  {
+    sentence: "Hàng xóm mới của tôi rất ______, gặp ai cũng chào hỏi.",
+    choices: [{ id: "A", text: "khó tính" }, { id: "B", text: "lười" }, { id: "C", text: "buồn" }, { id: "D", text: "thân thiện" }],
+    correctChoice: "D", targetVocabulary: "thân thiện",
+    translationJP: "私の新しい隣人はとてもフレンドリーで、誰に会っても挨拶します。",
+    explanationJP: "「gặp ai cũng chào hỏi（誰に会っても挨拶する）」という行動に合う性格は「thân thiện（親しみやすい）」です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "khó tính＝気難しい。挨拶好きの描写と逆です。" },
+      { choice: "B", explanationJP: "lười＝怠け者。挨拶とは関係ありません。" },
+      { choice: "C", explanationJP: "buồn＝悲しい。明るい行動の描写に合いません。" },
+      { choice: "D", explanationJP: "thân thiện＝フレンドリーな。行動の説明と一致し正解です。" },
+    ],
+    vocabulary: [
+      { word: "thân thiện", meaningJP: "親しみやすい、フレンドリーな", partOfSpeech: "形容詞" },
+      { word: "hàng xóm", meaningJP: "隣人、近所の人", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "gặp ai cũng ~", meaningJP: "誰に会っても～", explanationJP: "「ai cũng」で例外のなさを表します。", example: "Món nào cô ấy cũng nấu được.", exampleJP: "彼女はどの料理も作れます。" }],
+    collocations: [{ expression: "chào hỏi", meaningJP: "挨拶する" }],
+    level: "A2", difficulty: "easy", category: "人間関係",
+  },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -1121,6 +1793,251 @@ const B2_QUESTION_BANK = [
     collocations: [{ expression: "ý tưởng sáng tạo", meaningJP: "創造的なアイデア" }],
     level: "B2", difficulty: "normal", category: "学校",
   },
+  {
+    sentence: "Bằng số liệu cụ thể, cô ấy đã ______ được ban giám đốc đồng ý với kế hoạch mới.",
+    choices: [{ id: "A", text: "thuyết phục" }, { id: "B", text: "ép buộc" }, { id: "C", text: "ra lệnh" }, { id: "D", text: "nhờ vả" }],
+    correctChoice: "A", targetVocabulary: "thuyết phục",
+    translationJP: "具体的なデータによって、彼女は経営陣に新しい計画を承諾させることができました。",
+    explanationJP: "データという根拠で相手の同意を引き出すのは「thuyết phục（説得する）」です。thuyết phục được ~＝説得に成功する。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "thuyết phục＝説得する。根拠を使った合意形成で正解です。" },
+      { choice: "B", explanationJP: "ép buộc＝強制する。データで納得させる文脈と合いません。" },
+      { choice: "C", explanationJP: "ra lệnh＝命令する。部下が経営陣に命令はできません。" },
+      { choice: "D", explanationJP: "nhờ vả＝頼み込む。根拠より情に訴える語で、số liệuと合いません。" },
+    ],
+    vocabulary: [
+      { word: "thuyết phục", meaningJP: "説得する", partOfSpeech: "動詞" },
+      { word: "số liệu", meaningJP: "データ、数値", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "Bằng + 手段, ~", meaningJP: "～によって…", explanationJP: "手段を文頭で示す形です。", example: "Bằng sự kiên trì, anh ấy đã thành công.", exampleJP: "粘り強さによって彼は成功しました。" }],
+    collocations: [{ expression: "thuyết phục khách hàng", meaningJP: "顧客を説得する" }],
+    level: "B2", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Chương trình giảm giá cuối năm đã ______ hàng nghìn khách đến trung tâm thương mại.",
+    choices: [{ id: "A", text: "xua đuổi" }, { id: "B", text: "thu hút" }, { id: "C", text: "hạn chế" }, { id: "D", text: "thay thế" }],
+    correctChoice: "B", targetVocabulary: "thu hút",
+    translationJP: "年末セールは何千人もの客をショッピングセンターに引き寄せました。",
+    explanationJP: "セールが客を「引き寄せる」＝thu hút（引きつける・集める）です。thu hút khách（集客する）はマーケティングの必須語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "xua đuổi＝追い払う。セールの効果と正反対です。" },
+      { choice: "B", explanationJP: "thu hút＝引きつける。thu hút khách で正解です。" },
+      { choice: "C", explanationJP: "hạn chế＝制限する。大勢来た事実と矛盾します。" },
+      { choice: "D", explanationJP: "thay thế＝置き換える。文意が通りません。" },
+    ],
+    vocabulary: [
+      { word: "thu hút", meaningJP: "引きつける、集める", partOfSpeech: "動詞" },
+      { word: "trung tâm thương mại", meaningJP: "ショッピングセンター", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "hàng + 単位", meaningJP: "何～もの（多数）", explanationJP: "hàng nghìn＝何千もの。大きな数を強調します。", example: "Hàng trăm người đã tham gia.", exampleJP: "何百人もが参加しました。" }],
+    collocations: [{ expression: "thu hút sự chú ý", meaningJP: "注目を集める" }],
+    level: "B2", difficulty: "easy", category: "ビジネス",
+  },
+  {
+    sentence: "Sau khi được phê duyệt, dự án sẽ được ______ ngay trong quý tới.",
+    choices: [{ id: "A", text: "hoãn lại" }, { id: "B", text: "đánh giá" }, { id: "C", text: "triển khai" }, { id: "D", text: "hủy bỏ" }],
+    correctChoice: "C", targetVocabulary: "triển khai",
+    translationJP: "承認された後、プロジェクトはすぐに来四半期中に実施されます。",
+    explanationJP: "承認→実行という流れなので「triển khai（展開する・実施に移す）」が正解です。ビジネス文書の頻出語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "hoãn lại＝延期する。「ngay（すぐに）」と矛盾します。" },
+      { choice: "B", explanationJP: "đánh giá＝評価する。承認前に済んでいる段階です。" },
+      { choice: "C", explanationJP: "triển khai＝実施する。承認後の自然な流れで正解です。" },
+      { choice: "D", explanationJP: "hủy bỏ＝取りやめる。承認された直後に中止は矛盾です。" },
+    ],
+    vocabulary: [
+      { word: "triển khai", meaningJP: "展開する、実施する", partOfSpeech: "動詞" },
+      { word: "phê duyệt", meaningJP: "承認する", partOfSpeech: "動詞" },
+      { word: "quý", meaningJP: "四半期", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "được + 動詞（受身・手順）", meaningJP: "～される", explanationJP: "手続きの受身にはđượcを使います。", example: "Đơn của bạn đã được xử lý.", exampleJP: "あなたの申請は処理されました。" }],
+    collocations: [{ expression: "triển khai kế hoạch", meaningJP: "計画を実施する" }],
+    level: "B2", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Là trưởng nhóm, anh ấy phải chịu ______ về kết quả của cả dự án.",
+    choices: [{ id: "A", text: "quyền lợi" }, { id: "B", text: "kỷ luật" }, { id: "C", text: "ý kiến" }, { id: "D", text: "trách nhiệm" }],
+    correctChoice: "D", targetVocabulary: "trách nhiệm",
+    translationJP: "リーダーとして、彼はプロジェクト全体の結果に責任を負わなければなりません。",
+    explanationJP: "「chịu trách nhiệm về ~（～に責任を負う）」は決まったコロケーションです。役職と責任はセットで語られます。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "quyền lợi＝権利・待遇。「chịu（負う）」と組み合わせません。" },
+      { choice: "B", explanationJP: "kỷ luật＝規律。chịu kỷ luật は「処分を受ける」で文脈が違います。" },
+      { choice: "C", explanationJP: "ý kiến＝意見。chịu ý kiến という形はありません。" },
+      { choice: "D", explanationJP: "trách nhiệm＝責任。chịu trách nhiệm về ~ で正解です。" },
+    ],
+    vocabulary: [
+      { word: "trách nhiệm", meaningJP: "責任", partOfSpeech: "名詞" },
+      { word: "chịu", meaningJP: "負う、耐える", partOfSpeech: "動詞" },
+    ],
+    grammar: [{ pattern: "Là + 役職, ~", meaningJP: "～として、…", explanationJP: "立場を前提として述べる形です。", example: "Là cha mẹ, chúng ta cần lắng nghe con.", exampleJP: "親として、子どもの声に耳を傾ける必要があります。" }],
+    collocations: [{ expression: "chịu trách nhiệm", meaningJP: "責任を負う" }],
+    level: "B2", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Hai công ty đang ______ về giá cả trước khi ký hợp đồng chính thức.",
+    choices: [{ id: "A", text: "thương lượng" }, { id: "B", text: "tranh cãi" }, { id: "C", text: "phàn nàn" }, { id: "D", text: "thông báo" }],
+    correctChoice: "A", targetVocabulary: "thương lượng",
+    translationJP: "正式契約の前に、2社は価格について交渉しています。",
+    explanationJP: "契約前に条件をすり合わせるのは「thương lượng（交渉する）」です。đàm phánとほぼ同義のビジネス必須語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "thương lượng＝交渉する。契約前の価格調整で正解です。" },
+      { choice: "B", explanationJP: "tranh cãi＝口論する。感情的な言い争いで、ビジネスの手続きに合いません。" },
+      { choice: "C", explanationJP: "phàn nàn＝苦情を言う。双方向の調整ではありません。" },
+      { choice: "D", explanationJP: "thông báo＝通知する。一方向の連絡で、交渉になりません。" },
+    ],
+    vocabulary: [
+      { word: "thương lượng", meaningJP: "交渉する", partOfSpeech: "動詞" },
+      { word: "chính thức", meaningJP: "正式な", partOfSpeech: "形容詞" },
+    ],
+    grammar: [{ pattern: "trước khi + 動詞（重要イベント）", meaningJP: "～する前に", explanationJP: "A2文法のビジネス応用です。", example: "Kiểm tra kỹ trước khi gửi email.", exampleJP: "メール送信前によく確認してください。" }],
+    collocations: [{ expression: "thương lượng giá", meaningJP: "価格交渉する" }],
+    level: "B2", difficulty: "normal", category: "ビジネス",
+  },
+  {
+    sentence: "Công ty đặt ______ tăng doanh số hai mươi phần trăm trong năm nay.",
+    choices: [{ id: "A", text: "thói quen" }, { id: "B", text: "mục tiêu" }, { id: "C", text: "kỷ niệm" }, { id: "D", text: "cảm giác" }],
+    correctChoice: "B", targetVocabulary: "mục tiêu",
+    translationJP: "会社は今年、売上を20%増やすという目標を設定しました。",
+    explanationJP: "「đặt mục tiêu（目標を設定する）」は仕事・学習で最頻出のコロケーションです。数値目標が続くのも典型です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "thói quen＝習慣。đặt（設定する）と組み合わせません。" },
+      { choice: "B", explanationJP: "mục tiêu＝目標。đặt mục tiêu で正解です。" },
+      { choice: "C", explanationJP: "kỷ niệm＝記念、思い出。文脈に合いません。" },
+      { choice: "D", explanationJP: "cảm giác＝感覚。設定する対象ではありません。" },
+    ],
+    vocabulary: [
+      { word: "mục tiêu", meaningJP: "目標", partOfSpeech: "名詞" },
+      { word: "doanh số", meaningJP: "売上", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "đặt mục tiêu + 動詞", meaningJP: "～するという目標を立てる", explanationJP: "目標の内容を動詞句で続けます。", example: "Tôi đặt mục tiêu đọc 20 cuốn sách.", exampleJP: "本を20冊読む目標を立てました。" }],
+    collocations: [{ expression: "đạt mục tiêu", meaningJP: "目標を達成する" }],
+    level: "B2", difficulty: "easy", category: "ビジネス",
+  },
+  {
+    sentence: "Do ______ có hạn, chúng ta phải chọn quảng cáo trên mạng thay vì truyền hình.",
+    choices: [{ id: "A", text: "thời tiết" }, { id: "B", text: "sức khỏe" }, { id: "C", text: "ngân sách" }, { id: "D", text: "khoảng cách" }],
+    correctChoice: "C", targetVocabulary: "ngân sách",
+    translationJP: "予算が限られているため、テレビではなくネット広告を選ばなければなりません。",
+    explanationJP: "安い媒体を選ぶ理由は「ngân sách có hạn（予算が限られている）」からです。ngân sách＝予算はビジネスの基礎語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "thời tiết＝天気。広告媒体の選択と関係ありません。" },
+      { choice: "B", explanationJP: "sức khỏe＝健康。文脈に合いません。" },
+      { choice: "C", explanationJP: "ngân sách＝予算。コスト事情の説明として正解です。" },
+      { choice: "D", explanationJP: "khoảng cách＝距離。広告選択の理由になりません。" },
+    ],
+    vocabulary: [
+      { word: "ngân sách", meaningJP: "予算", partOfSpeech: "名詞" },
+      { word: "truyền hình", meaningJP: "テレビ（放送）", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "Do ~ , (nên) …", meaningJP: "～のため…（原因）", explanationJP: "vìより書き言葉的な原因表現です。", example: "Do trời mưa, trận đấu bị hoãn.", exampleJP: "雨のため試合は延期されました。" }],
+    collocations: [{ expression: "ngân sách có hạn", meaningJP: "予算が限られている" }],
+    level: "B2", difficulty: "normal", category: "ビジネス",
+  },
+  {
+    sentence: "Ngủ đủ giấc giúp tăng ______ làm việc vào ngày hôm sau.",
+    choices: [{ id: "A", text: "chi phí" }, { id: "B", text: "rủi ro" }, { id: "C", text: "áp lực" }, { id: "D", text: "năng suất" }],
+    correctChoice: "D", targetVocabulary: "năng suất",
+    translationJP: "十分な睡眠は、翌日の仕事の生産性を高めてくれます。",
+    explanationJP: "睡眠のプラス効果として「tăng năng suất（生産性を上げる）」が正解です。năng suất làm việc＝仕事の生産性。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "chi phí＝コスト。睡眠でコストは増えません（増えても良い話ではない）。" },
+      { choice: "B", explanationJP: "rủi ro＝リスク。プラス効果の文脈と逆です。" },
+      { choice: "C", explanationJP: "áp lực＝プレッシャー。増えて嬉しいものではありません。" },
+      { choice: "D", explanationJP: "năng suất＝生産性。睡眠の効果として正解です。" },
+    ],
+    vocabulary: [
+      { word: "năng suất", meaningJP: "生産性、能率", partOfSpeech: "名詞" },
+      { word: "đủ giấc", meaningJP: "十分な睡眠（の）", partOfSpeech: "表現" },
+    ],
+    grammar: [{ pattern: "動詞句 + giúp + 動詞", meaningJP: "～は…するのに役立つ", explanationJP: "主語が行為でも使えます。", example: "Đi bộ giúp giảm căng thẳng.", exampleJP: "歩くことはストレス軽減に役立ちます。" }],
+    collocations: [{ expression: "năng suất làm việc", meaningJP: "仕事の生産性" }],
+    level: "B2", difficulty: "easy", category: "健康",
+  },
+  {
+    sentence: "Sau nhiều biến động, giá xăng đã ______ trở lại trong tháng này.",
+    choices: [{ id: "A", text: "ổn định" }, { id: "B", text: "tăng vọt" }, { id: "C", text: "biến mất" }, { id: "D", text: "giảm mạnh" }],
+    correctChoice: "A", targetVocabulary: "ổn định",
+    translationJP: "多くの変動を経て、ガソリン価格は今月、再び安定しました。",
+    explanationJP: "「biến động（変動）」との対比＋「trở lại（再び～の状態に戻る）」に合うのは「ổn định（安定する）」です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "ổn định＝安定する。変動→安定という流れで正解です。" },
+      { choice: "B", explanationJP: "tăng vọt＝急騰する。「trở lại（元に戻る）」と組み合わせるのは不自然です。" },
+      { choice: "C", explanationJP: "biến mất＝消える。価格は消えません。" },
+      { choice: "D", explanationJP: "giảm mạnh＝急落する。tăng vọtと同様、trở lạiと合いません。" },
+    ],
+    vocabulary: [
+      { word: "ổn định", meaningJP: "安定した、安定する", partOfSpeech: "形容詞・動詞" },
+      { word: "biến động", meaningJP: "変動", partOfSpeech: "名詞" },
+      { word: "giá xăng", meaningJP: "ガソリン価格", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "動詞 + trở lại", meaningJP: "再び～（の状態）に戻る", explanationJP: "元の状態への回復を表します。", example: "Cửa hàng mở cửa trở lại.", exampleJP: "店は営業を再開しました。" }],
+    collocations: [{ expression: "ổn định trở lại", meaningJP: "再び安定する" }],
+    level: "B2", difficulty: "normal", category: "社会",
+  },
+  {
+    sentence: "Nhân viên ______ công ty lắp thêm máy lạnh ở phòng họp vì mùa hè quá nóng.",
+    choices: [{ id: "A", text: "ra lệnh" }, { id: "B", text: "đề nghị" }, { id: "C", text: "cấm" }, { id: "D", text: "hứa" }],
+    correctChoice: "B", targetVocabulary: "đề nghị",
+    translationJP: "夏が暑すぎるため、社員は会議室にエアコンを増設するよう会社に要望しました。",
+    explanationJP: "下から上への正式な要望は「đề nghị（提案・要望する）」です。đề xuất（アイデアの提案）より「～してほしい」という要求の色が強い語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "ra lệnh＝命令する。社員が会社に命令はできません。" },
+      { choice: "B", explanationJP: "đề nghị＝要望する。立場関係に合い正解です。" },
+      { choice: "C", explanationJP: "cấm＝禁止する。エアコン設置の要望と逆方向です。" },
+      { choice: "D", explanationJP: "hứa＝約束する。要望する側の動詞ではありません。" },
+    ],
+    vocabulary: [
+      { word: "đề nghị", meaningJP: "提案する、要望する", partOfSpeech: "動詞" },
+      { word: "lắp", meaningJP: "取り付ける", partOfSpeech: "動詞" },
+      { word: "máy lạnh", meaningJP: "エアコン", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "đề nghị + 相手 + 動詞", meaningJP: "（相手）に～するよう求める", explanationJP: "要望の対象と内容を続けます。", example: "Chúng tôi đề nghị nhà trường sửa thư viện.", exampleJP: "私たちは学校に図書館の修繕を要望しました。" }],
+    collocations: [{ expression: "đề nghị tăng lương", meaningJP: "昇給を要望する" }],
+    level: "B2", difficulty: "normal", category: "仕事",
+  },
+  {
+    sentence: "Cách làm việc ______ của đội ngũ nhân viên khiến khách hàng rất tin tưởng.",
+    choices: [{ id: "A", text: "cẩu thả" }, { id: "B", text: "chậm chạp" }, { id: "C", text: "chuyên nghiệp" }, { id: "D", text: "bừa bộn" }],
+    correctChoice: "C", targetVocabulary: "chuyên nghiệp",
+    translationJP: "スタッフのプロフェッショナルな仕事ぶりが、顧客に大きな信頼を与えています。",
+    explanationJP: "顧客の信頼（tin tưởng）を生む働き方は「chuyên nghiệp（プロフェッショナルな）」です。他の3つはすべてマイナスの形容詞です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "cẩu thả＝雑な。信頼と正反対です。" },
+      { choice: "B", explanationJP: "chậm chạp＝のろい。信頼の理由になりません。" },
+      { choice: "C", explanationJP: "chuyên nghiệp＝プロフェッショナルな。信頼の理由として正解です。" },
+      { choice: "D", explanationJP: "bừa bộn＝散らかった。仕事ぶりの褒め言葉ではありません。" },
+    ],
+    vocabulary: [
+      { word: "chuyên nghiệp", meaningJP: "プロフェッショナルな", partOfSpeech: "形容詞" },
+      { word: "tin tưởng", meaningJP: "信頼する", partOfSpeech: "動詞" },
+      { word: "đội ngũ", meaningJP: "チーム、陣容", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "A khiến B + 動詞/形容詞", meaningJP: "AがBを～させる", explanationJP: "原因→結果の使役表現です。", example: "Tin đó khiến mọi người vui.", exampleJP: "その知らせはみんなを喜ばせました。" }],
+    collocations: [{ expression: "làm việc chuyên nghiệp", meaningJP: "プロらしく働く" }],
+    level: "B2", difficulty: "easy", category: "仕事",
+  },
+  {
+    sentence: "Sau khi đọc kỹ mô tả công việc, tôi quyết định ______ vào vị trí trưởng nhóm marketing.",
+    choices: [{ id: "A", text: "từ chức" }, { id: "B", text: "nghỉ việc" }, { id: "C", text: "phỏng vấn" }, { id: "D", text: "ứng tuyển" }],
+    correctChoice: "D", targetVocabulary: "ứng tuyển",
+    translationJP: "職務内容をよく読んだ後、私はマーケティングチームリーダーのポジションに応募することにしました。",
+    explanationJP: "「vào vị trí ~（～のポジションに）」と組み合わせるのは「ứng tuyển（応募する）」です。求人応募の必須語です。",
+    choiceExplanations: [
+      { choice: "A", explanationJP: "từ chức＝辞任する。まだ就いていない職は辞められません。" },
+      { choice: "B", explanationJP: "nghỉ việc＝退職する。応募の場面と逆です。" },
+      { choice: "C", explanationJP: "phỏng vấn＝面接する。応募者が「面接することを決める」のは立場が逆です。" },
+      { choice: "D", explanationJP: "ứng tuyển＝応募する。ứng tuyển vào vị trí ~ で正解です。" },
+    ],
+    vocabulary: [
+      { word: "ứng tuyển", meaningJP: "応募する", partOfSpeech: "動詞" },
+      { word: "mô tả công việc", meaningJP: "職務内容、ジョブディスクリプション", partOfSpeech: "名詞句" },
+      { word: "vị trí", meaningJP: "ポジション、職位", partOfSpeech: "名詞" },
+    ],
+    grammar: [{ pattern: "quyết định + 動詞", meaningJP: "～することに決める", explanationJP: "意思決定を表します。", example: "Tôi quyết định học thêm tiếng Nhật.", exampleJP: "日本語も勉強することにしました。" }],
+    collocations: [{ expression: "ứng tuyển vào ~", meaningJP: "～に応募する" }],
+    level: "B2", difficulty: "normal", category: "仕事",
+  },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -1197,7 +2114,7 @@ function addDictEntry(word, meaningJP, partOfSpeech, extra) {
     extra || {},
   );
 }
-for (const q of [...QUESTION_BANK, ...B1_QUESTION_BANK, ...B2_QUESTION_BANK]) {
+for (const q of [...QUESTION_BANK, ...A2_EXTRA_QUESTION_BANK, ...B1_QUESTION_BANK, ...B2_QUESTION_BANK]) {
   for (const v of q.vocabulary) {
     addDictEntry(v.word, v.meaningJP, v.partOfSpeech, {
       explanationJP: v.explanationJP, example: v.example, exampleJP: v.exampleJP,
@@ -1216,7 +2133,7 @@ function activeQuestionBank() {
   const level = currentLevel();
   if (level === "B2") return B2_QUESTION_BANK;
   if (level === "B1") return B1_QUESTION_BANK;
-  return QUESTION_BANK;
+  return [...QUESTION_BANK, ...A2_EXTRA_QUESTION_BANK];
 }
 
 // レベル別バンクの共通セレクタ（会話・読解などで使用）
@@ -2083,6 +3000,42 @@ const SITUATION_BANK = [
     ce: ["「先週末は忙しかった」— 過去の話で、今週末の質問に合いません。", "「働きすぎだよ」— 質問への返事になっていません。", "「今日は水曜日」— 予定を聞かれた返事に合いません。", "「định + 動詞」で予定を答えていて正解です。"],
     key: ["định", "～するつもり", "動詞"], cat: "旅行", dif: "normal",
   },
+  {
+    d: [["Tài xế", "Anh muốn đi đâu ạ?"], ["Khách", "______"]],
+    c: ["Cho tôi đến sân bay Nội Bài.", "Tôi không biết lái xe.", "Xe này màu gì vậy?", "Anh sống ở đâu?"],
+    a: 0,
+    t: "運転手「どちらまで行かれますか？」 客「（ノイバイ空港までお願いします。）」",
+    e: "タクシーで行き先を伝えるのは「Cho tôi đến ~（～までお願いします）」です。移動の必須表現です。",
+    ce: ["行き先を伝えていて正解です。", "「運転できない」— 行き先の質問に答えていません。", "「この車は何色？」— 場面に合いません。", "「あなたはどこに住んでるの？」— 質問返しで不自然です。"],
+    key: ["Cho tôi đến ~", "～までお願いします", "表現"], cat: "交通", dif: "easy",
+  },
+  {
+    d: [["Khách", "Tôi bị ho và đau họng, có thuốc gì không ạ?"], ["Dược sĩ", "______"]],
+    c: ["Anh nên mua kẹo ngọt ạ.", "Dạ có, anh uống thuốc này ngày ba lần sau khi ăn nhé.", "Anh hát nhiều quá rồi.", "Tiệm thuốc sắp đóng cửa ạ."],
+    a: 1,
+    t: "客「咳が出て喉が痛いんですが、何か薬はありますか？」 薬剤師「（ございますよ。この薬を1日3回、食後に飲んでくださいね。）」",
+    e: "薬局での定番のやりとりです。薬剤師は薬を出し、飲み方（ngày ba lần＝1日3回、sau khi ăn＝食後）を説明します。",
+    ce: ["「あめを買うといい」— 薬の相談への返答として不十分です。", "薬＋服用方法を案内していて正解です。", "「歌いすぎですね」— 原因の決めつけで失礼です。", "「もうすぐ閉店です」— 相談に答えていません。"],
+    key: ["bị ho", "咳が出る", "表現"], cat: "病院", dif: "easy",
+  },
+  {
+    d: [["Du khách", "Bạn chụp giúp mình một tấm ảnh được không?"], ["Bạn", "______"]],
+    c: ["Máy ảnh của mình đẹp hơn.", "Mình không thích chụp ảnh đâu.", "Được chứ, bạn muốn chụp ở góc nào?", "Ảnh này ai chụp vậy?"],
+    a: 2,
+    t: "旅行者「写真を1枚撮ってもらえませんか？」 あなた「（いいですよ。どの角度から撮りましょうか？）」",
+    e: "小さな頼みごとを快く引き受け、「góc nào（どのアングル）」と相手の希望を聞くのが親切な応対です。「Được chứ（もちろん）」は快諾の定番です。",
+    ce: ["「自分のカメラの方がいい」— 頼みと関係ありません。", "「写真は好きじゃない」— 小さな頼みを断る理由として不自然です。", "快諾＋希望の確認で正解です。", "「この写真誰が撮ったの？」— 場面に合いません。"],
+    key: ["Được chứ", "もちろんいいですよ", "表現"], cat: "旅行", dif: "easy",
+  },
+  {
+    d: [["Khách", "Alo, lúc nãy tôi ăn ở quán mình, có để quên chiếc mũ màu đen ở đó không ạ?"], ["Nhân viên", "______"]],
+    c: ["Quán tôi không bán mũ ạ.", "Anh nhớ nhầm quán khác rồi.", "Mũ đen không hợp với anh đâu.", "Anh chờ chút, để tôi hỏi xem có ai nhặt được không ạ."],
+    a: 3,
+    t: "客「もしもし、さっきそちらで食事したのですが、黒い帽子を忘れていませんでしたか？」 店員「（少々お待ちください。誰か拾っていないか聞いてみますね。）」",
+    e: "忘れ物の問い合わせには「確認します」と動くのが正しい応対です。「để tôi hỏi xem ~（～か聞いてみます）」が鍵の表現です。",
+    ce: ["「帽子は売っていません」— 忘れ物の話を誤解しています。", "確認もせず「別の店でしょ」と突き放すのは不適切です。", "「黒は似合わない」— 失礼で見当違いです。", "確認を申し出ていて正解です。"],
+    key: ["để quên", "置き忘れる", "表現"], cat: "レストラン", dif: "normal",
+  },
 ];
 
 // 会話練習のキーフレーズを辞書へ登録（Flash Card追加時に意味を引けるように）
@@ -2187,6 +3140,42 @@ const B1_SITUATION_BANK = [
     e: "約束のキャンセルは「謝罪＋理由＋具体的な代替日時の提案」が礼儀です。「dời sang ~（～に変更する）」が鍵の表現。相手の返事「hẹn tuần sau」とも噛み合います。",
     ce: ["「もう電話しないで」— 関係を切る発言で場面に合いません。", "「もう会う必要ない」— 次の約束をする流れと矛盾します。", "「忙しいので察して」— 代案がなく、相手の返事とつながりません。", "具体的な変更案を提案しており、相手の返事と自然につながる正解です。"],
     key: ["dời sang ~", "（予定を）～に変更する", "表現"], cat: "約束", dif: "hard",
+  },
+  {
+    d: [["Khách hàng", "Sao đơn hàng của tôi đặt năm ngày rồi mà vẫn chưa đến?"], ["Nhân viên", "______"]],
+    c: ["Em xin lỗi anh, kho đang quá tải ạ. Em kiểm tra và báo lại anh trong hôm nay nhé.", "Anh đặt lại đơn khác đi ạ.", "Chắc do anh đặt sai địa chỉ rồi.", "Bên em lúc nào cũng giao đúng hẹn mà."],
+    a: 0,
+    t: "顧客「注文して5日も経つのに、まだ届かないのはどうして？」 店員「（申し訳ありません、倉庫が混み合っておりまして。確認して本日中にご連絡いたします。）」",
+    e: "配送遅延への正しい応対は「謝罪＋理由＋いつまでに何をするか」です。「báo lại trong hôm nay（今日中に折り返す）」と期限を切るのがポイントです。",
+    ce: ["謝罪＋理由＋期限付きの対応で正解です。", "「注文し直して」— 原因確認もせず客に負担を押し付けています。", "根拠なく客のせいにしており失礼です。", "「うちはいつも時間どおり」— 現に遅れている事実を否定しています。"],
+    key: ["đơn hàng", "注文（品）", "名詞"], cat: "買い物", dif: "normal",
+  },
+  {
+    d: [["Du khách", "Từ đây đến bảo tàng lịch sử đi thế nào tiện nhất ạ?"], ["Người dân", "______"]],
+    c: ["Bảo tàng đóng cửa thứ hai đấy.", "Chị bắt xe buýt số 09 ở bến kia, đi bốn trạm rồi xuống là tới.", "Tôi chưa đi bảo tàng bao giờ.", "Đi đường nào cũng được mà."],
+    a: 1,
+    t: "旅行者「ここから歴史博物館へは、どう行くのが一番便利ですか？」 住民「（あそこのバス停で9番のバスに乗って、4駅行って降りればすぐですよ。）」",
+    e: "「đi thế nào（どう行くか）」への答えは具体的な経路案内です。bắt xe buýt（バスに乗る）・trạm（停留所）は移動案内の必須語です。",
+    ce: ["月曜休館は有益情報ですが、行き方の質問に答えていません。", "路線・駅数まで具体的に案内していて正解です。", "「行ったことがない」— 案内になっていません。", "「どの道でも行ける」— 具体性がなく役に立ちません。"],
+    key: ["bắt xe buýt", "バスに乗る、バスをつかまえる", "表現"], cat: "道案内", dif: "normal",
+  },
+  {
+    d: [["Chủ nhà", "Em có ăn được đồ cay không, để chị nấu cho phù hợp?"], ["Khách", "______"]],
+    c: ["Dạ, em không biết nấu ăn ạ.", "Dạ, chị ăn cay giỏi thật ạ.", "Dạ, em ăn cay được một chút thôi, chị nấu nhạt giúp em ạ.", "Dạ, mai em mới đến ạ."],
+    a: 2,
+    t: "ホストマザー「辛いものは食べられる？合わせて作るからね。」 客「（少しだけなら大丈夫です。薄味で作っていただけると助かります。）」",
+    e: "好みを聞かれたら、程度（một chút thôi＝少しだけ）＋希望（nấu nhạt＝薄味に）を具体的に伝えるのが相手への思いやりです。",
+    ce: ["「料理ができない」— 聞かれたのは食べられるかどうかです。", "「辛いの強いですね」— 質問に答えていません。", "程度と希望を具体的に伝えていて正解です。", "「明日着きます」— 話が噛み合っていません。"],
+    key: ["nhạt", "味が薄い", "形容詞"], cat: "食事", dif: "normal",
+  },
+  {
+    d: [["Nhân viên thư viện", "Bạn ơi, trong phòng đọc không được nói chuyện điện thoại nhé."], ["Bạn", "______"]],
+    c: ["Mình nói nhỏ mà.", "Điện thoại của mình mới mua đấy.", "Anh cũng đang nói to còn gì.", "Ồ, mình xin lỗi. Mình sẽ ra ngoài nghe máy ạ."],
+    a: 3,
+    t: "図書館員「すみません、閲覧室では通話はご遠慮くださいね。」 あなた「（あっ、すみません。外に出て電話します。）」",
+    e: "注意を受けたら素直に謝罪し、すぐ行動を改める（ra ngoài nghe máy＝外で電話に出る）のが正しい対応です。言い訳や反撃は関係を悪くします。",
+    ce: ["「小声だから」— ルールに対する言い訳です。", "「新しい電話なんだ」— 注意と無関係です。", "「あなたも声が大きい」— 反撃は最悪の対応です。", "謝罪＋即改善で正解です。"],
+    key: ["nghe máy", "電話に出る", "表現"], cat: "学校", dif: "easy",
   },
 ];
 for (const s of B1_SITUATION_BANK) addDictEntry(s.key[0], s.key[1], s.key[2]);
@@ -2913,6 +3902,30 @@ const BUILDER_BANK = [
     g: ["định + 動詞", "～するつもり", "予定・つもりを表します。動詞の前にđịnhを置きます。"],
     key: ["định", "～するつもり", "動詞"], cat: "文法",
   },
+  {
+    w: ["Chị ấy", "đi chợ", "để", "mua", "rau và thịt."],
+    jp: "彼女は野菜と肉を買うために市場へ行きます。",
+    g: ["động詞 + để + 動詞", "～するために…する", "移動の目的を表す基本パターンです。"],
+    key: ["đi chợ", "市場へ行く", "動詞句"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "thích", "uống cà phê", "vào", "buổi sáng."],
+    jp: "私は朝にコーヒーを飲むのが好きです。",
+    g: ["vào + 時間帯", "～（の時間帯）に", "buổi sáng/chiều/tối などの前にvàoを置きます。"],
+    key: ["vào buổi sáng", "朝に", "表現"], cat: "文法",
+  },
+  {
+    w: ["Em gái tôi", "cao", "hơn", "tôi."],
+    jp: "妹は私より背が高いです。",
+    g: ["A + 形容詞 + hơn + B", "AはBより～だ", "比較の基本形。hơnの後に比較対象を置きます。"],
+    key: ["hơn（比較）", "～より", "文型"], cat: "文法",
+  },
+  {
+    w: ["Chúng tôi", "ăn tối", "lúc", "bảy giờ."],
+    jp: "私たちは7時に夕食を食べます。",
+    g: ["lúc + 時刻", "～時に", "時刻の前にはlúcを置きます。時間帯にはvào。"],
+    key: ["lúc + 時刻", "～時に", "文型"], cat: "文法",
+  },
 ];
 
 // B1並べ替えバンク（10問・B1文法パターン）
@@ -2978,6 +3991,30 @@ const B1_BUILDER_BANK = [
     g: ["Nếu ~ thì đã ~", "もし～だったら…したのに（過去の仮定）", "実際とは違う過去を仮定する形。đãを入れるのがポイントです。"],
     key: ["nếu ~ thì đã ~", "もし～なら…したのに（仮定）", "文型"], cat: "文法",
   },
+  {
+    w: ["Tôi", "vừa", "học", "vừa", "làm thêm", "để có", "kinh nghiệm."],
+    jp: "経験を積むために、勉強しながらアルバイトもしています。",
+    g: ["vừa A vừa B + để ~", "AしながらBする（目的つき）", "同時進行＋目的の複合文です。"],
+    key: ["làm thêm", "アルバイト・残業をする", "動詞句"], cat: "文法",
+  },
+  {
+    w: ["Nếu", "được nghỉ,", "tôi", "sẽ", "về quê", "thăm bố mẹ."],
+    jp: "休みが取れたら、故郷へ帰って両親に会います。",
+    g: ["Nếu được ~, sẽ ~", "～できたら…する", "được（許可・機会を得る）を条件に使う形です。"],
+    key: ["về quê", "帰省する", "動詞句"], cat: "文法",
+  },
+  {
+    w: ["Anh ấy", "nói tiếng Việt", "giỏi", "như", "người bản xứ."],
+    jp: "彼はネイティブのように上手にベトナム語を話します。",
+    g: ["形容詞 + như + 名詞", "～のように…だ", "như で比喩・同等の比較を表します。"],
+    key: ["như", "～のように", "前置詞"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "quên", "mang theo ví", "nên", "phải", "quay về nhà."],
+    jp: "財布を持って来るのを忘れたので、家に戻らなければなりませんでした。",
+    g: ["~ nên phải ~", "～なので…せざるを得ない", "原因＋やむを得ない行動の組み合わせです。"],
+    key: ["mang theo", "携帯する、持って行く", "動詞句"], cat: "文法",
+  },
 ];
 
 // B2並べ替えバンク（10問・B2文法パターン）
@@ -3041,6 +4078,30 @@ const B2_BUILDER_BANK = [
     jp: "今日の渋滞は事故によって引き起こされたものです。",
     g: ["A là do B gây ra", "AはBによって引き起こされた", "原因を明示する受身構文。ニュースの定番表現です。"],
     key: ["do ~ gây ra", "～によって引き起こされる", "文型"], cat: "文法",
+  },
+  {
+    w: ["Không phải", "ai", "cũng", "thích", "làm việc từ xa."],
+    jp: "誰もがリモートワークを好むわけではありません。",
+    g: ["Không phải ai cũng ~", "誰もが～わけではない（部分否定）", "全否定ではなく「一部は違う」ことを表すB2の重要構文です。"],
+    key: ["không phải ai cũng ~", "誰もが～わけではない", "文型"], cat: "文法",
+  },
+  {
+    w: ["Anh ấy", "làm", "như thể", "chưa có", "chuyện gì", "xảy ra."],
+    jp: "彼はまるで何事もなかったかのように振る舞います。",
+    g: ["như thể ~", "まるで～かのように", "実際とは違う様子のたとえを導きます。"],
+    key: ["như thể", "まるで～かのように", "文型"], cat: "文法",
+  },
+  {
+    w: ["Thay vì", "than phiền,", "hãy", "tìm cách", "giải quyết."],
+    jp: "不平を言う代わりに、解決策を探しましょう。",
+    g: ["Thay vì A, hãy B", "Aする代わりにBしよう", "行動の切り替えを促す提案の形です。"],
+    key: ["than phiền", "不平を言う", "動詞"], cat: "文法",
+  },
+  {
+    w: ["Dù", "bận", "đến mấy,", "anh ấy", "cũng", "gọi về nhà", "mỗi tối."],
+    jp: "どんなに忙しくても、彼は毎晩家に電話します。",
+    g: ["Dù ~ đến mấy, cũng ~", "どんなに～でも…", "程度が極端でも変わらないことを表します。đến mấy＝どれほど。"],
+    key: ["dù ~ đến mấy", "どんなに～でも", "文型"], cat: "文法",
   },
 ];
 
@@ -3943,7 +5004,7 @@ $("sl-wrong-list").addEventListener("click", (e) => {
 function computeAnalysis() {
   // 回答履歴は全レベルにまたがるため、メタ情報は全バンクから引く
   const questionMeta = new Map(
-    [...QUESTION_BANK, ...B1_QUESTION_BANK, ...B2_QUESTION_BANK].map((q) => [q.sentence, q]),
+    [...QUESTION_BANK, ...A2_EXTRA_QUESTION_BANK, ...B1_QUESTION_BANK, ...B2_QUESTION_BANK].map((q) => [q.sentence, q]),
   );
 
   // トピック別・難易度別の正答率
