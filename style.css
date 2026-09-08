@@ -117,8 +117,7 @@ h1 { font-size: 22px; font-weight: 700; }
   padding: 12px 14px; font-size: 15px; cursor: pointer; text-align: left;
   font-family: inherit; transition: border-color 0.15s, background 0.15s;
 }
-.choice:hover:not(:disabled) { border-color: #a5b4fc; background: var(--primary-light); }
-.choice:disabled { cursor: default; }
+.choice:not(.correct):not(.wrong):not(.dimmed):hover { border-color: #a5b4fc; background: var(--primary-light); }
 .choice .choice-id {
   display: flex; align-items: center; justify-content: center;
   width: 28px; height: 28px; border-radius: 50%; background: #f3f4f6;
@@ -197,6 +196,45 @@ h1 { font-size: 22px; font-weight: 700; }
 .rate-remembered { border-color: #86efac; background: var(--green-bg); color: #15803d; }
 .rate-remembered:hover { background: #dcfce7; }
 .hint { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 10px; }
+
+/* タップで意味を表示できる単語（回答後） */
+.tap-word {
+  border-bottom: 1px dashed #a5b4fc;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.tap-word:hover { background: var(--primary-light); }
+.tap-word.filled {
+  color: var(--green);
+  font-weight: 700;
+  border-bottom-color: var(--green);
+}
+
+/* 単語の意味ポップアップ */
+.word-popup-overlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.word-popup {
+  width: 100%; max-width: 720px;
+  background: var(--card);
+  border-radius: 16px 16px 0 0;
+  padding: 18px 20px 22px;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+}
+.word-popup-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.word-popup-word { font-size: 22px; font-weight: 700; color: var(--primary); }
+.word-popup-pos { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 4px; }
+.word-popup-close {
+  background: #f3f4f6; border: none; border-radius: 50%;
+  width: 30px; height: 30px; font-size: 16px; cursor: pointer; color: var(--muted);
+}
+.word-popup-close:hover { background: #e5e7eb; }
+.word-popup-meaning { font-size: 16px; font-weight: 600; margin-top: 6px; }
+.word-popup-note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.word-popup-added { font-size: 13px; color: var(--green); font-weight: 600; margin-top: 10px; text-align: center; }
+.word-popup .btn-block { margin-top: 14px; }
 
 /* 学習履歴 */
 .history-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }

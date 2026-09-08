@@ -33,7 +33,103 @@ function todayStr(offset = 0) {
   return new Date(Date.now() - offset * DAY_MS).toISOString().slice(0, 10);
 }
 function nowIso() { return new Date().toISOString(); }
-function norm(word) { return word.trim().toLowerCase(); }
+function norm(word) { return word.trim().toLowerCase().normalize("NFC"); }
+
+/* ---------------------------------------------------------------------------
+   単語辞書 — 回答後に任意の単語をタップして意味を確認できるようにする
+   出典：①各問題のvocabulary ②コロケーション ③選択肢解説（「語＝意味。」形式）
+        ④補助辞書（問題文に登場するA1〜A2の基礎語）
+--------------------------------------------------------------------------- */
+
+// 補助辞書：問題文に登場する基礎語の日本語訳（value: 意味 または [意味, 品詞]）
+const SUPPLEMENT_DICT = {
+  "alo": ["もしもし", "感動詞"], "anh": "あなた・お兄さん（年上の男性）", "ba": "3（数字）・（南部で）お父さん",
+  "bay": "飛ぶ", "buýt": "バス（xe buýt）", "bà": "おばあさん・年配の女性", "bác": "おじさん・おばさん（年上の呼称）",
+  "bác sĩ": ["医者", "名詞"], "báo": "新聞・知らせる", "bây giờ": "今", "bây": "今（bây giờ）", "bè": "友達（bạn bè）",
+  "bên": "側・～のそば", "bóng": "ボール", "bưu": "郵便（bưu điện）", "bạn": "あなた・友達", "bằng": "～で（手段）",
+  "bệnh": "病気", "bị": "～される（望ましくないこと）", "bộ": "組・セット（類別詞）", "bộn": "（bừa bộn）散らかった",
+  "bừa": "（bừa bộn）散らかった", "bức": "枚（手紙・絵の類別詞）", "cao": "高い", "chiếc": "個・台・着（類別詞）",
+  "chiều": "午後", "cho": "～に・あげる", "chuyện": "話・こと", "chìa": "（chìa khóa）鍵", "chúng ta": "私たち（相手を含む）",
+  "chúng": "私たち（chúng ta）", "chơi": "遊ぶ・（スポーツを）する", "chị": "お姉さん（年上の女性）", "chữ": "文字",
+  "con": "子ども・（動物の類別詞）・（親から子への呼称）", "cuối": "終わり・末", "cà": "（cà phê）コーヒー",
+  "cách": "方法", "cái": "個（類別詞）", "câu": "文", "cô giáo": ["女性の先生", "名詞"], "cô": "先生（女性）・おばさん",
+  "công ty": ["会社", "名詞"], "công việc": ["仕事", "名詞"], "công": "（công ty）会社", "cùng nhau": "一緒に",
+  "cùng": "一緒に", "căn": "軒・室（家・部屋の類別詞）", "cũng": "～も", "cạnh": "そば・隣", "cả nhà": "家族みんな",
+  "cả": "全部・みんな", "cảm thấy": ["～と感じる", "動詞"], "cảm": "（cảm thấy）感じる", "cẩn": "（cẩn thận）慎重な",
+  "của": "～の（所有）", "cửa": "ドア・戸", "du lịch": ["旅行（する）", "名詞・動詞"], "du": "（du học/du lịch）",
+  "dạo này": "最近", "dạo": "（dạo này）最近", "dự": "（dự báo）予報", "em trai": ["弟", "名詞"],
+  "em": "弟・妹・年下の人", "gia đình": ["家族", "名詞"], "gia": "（gia đình）家族", "giá": "値段",
+  "giáo": "（cô giáo）先生", "giúp": "手伝う・助ける", "giờ": "時・時間", "gì": "何", "gần": "近い・近く",
+  "hai": "2（数字）", "hay": "よく～する・面白い・または", "hà nội": ["ハノイ", "地名"], "hà": "（Hà Nội）",
+  "hàng": "品物・商品", "hè": "夏（mùa hè）", "hôm nay": "今日", "hôm": "日（hôm nay）", "hơi": "少し",
+  "hơn": "～より（比較）", "hết": "尽きる・すっかり～", "hộ": "（căn hộ）アパート", "kg": "キログラム",
+  "khi": "～するとき", "khoác": "（áo khoác）上着", "khách": "客", "khó": "難しい", "không": "～ない・ゼロ",
+  "khỏi": "～から（離れて）", "khủng": "（kinh khủng）ものすごく", "kinh": "（kinh khủng）ものすごく",
+  "kiểm tra": ["テストする・確認する", "動詞"], "kiểm": "（kiểm tra）検査", "kê": "（家具を）置く・設置する",
+  "li": "（va li）スーツケース", "là": "～である", "lăm": "5（15・25などの読み）", "lại": "再び・～し直す",
+  "lạnh": "寒い", "lắm": "とても", "lịch": "スケジュール・カレンダー", "mai": "明日（ngày mai）",
+  "muốn": "～したい", "mà": "～のに（逆接）", "mãi": "ずっと・いつまでも", "mình": "自分・私（親しい間柄）",
+  "mùa hè": "夏", "mùa": "季節", "mưa": "雨", "mươi": "～十（数字）", "mười": "10（数字）", "mặt hàng": ["商品", "名詞"],
+  "mặt": "顔・面", "mẹ": "お母さん", "mỗi": "毎～・それぞれ", "một": "1（数字）", "nam": "南（Việt Nam）",
+  "nay": "今・この", "nem": "（nem rán）春巻き", "ngoài": "外", "ngày mai": "明日", "ngày": "日",
+  "ngân": "（ngân hàng）銀行", "ngã": "（ngã tư）交差点・転ぶ", "người": "人", "ngồi": "座る", "ngủ": "寝る",
+  "nhau": "お互い", "nhiều": "多い・たくさん", "nhiệt": "（nhiệt độ）温度", "nhé": "～ね（文末詞）",
+  "nhưng": "しかし", "nhật": "日本（Nhật）", "nhỏ": "小さい", "những": "～たち（複数）", "nào": "どの",
+  "này": "この", "nên": "だから・～したほうがいい", "nóng": "暑い・熱い", "nước": "水・国", "nội": "（Hà Nội）",
+  "nữa": "さらに・あと～", "phim": "映画", "phép": "（xin phép）許可", "phê": "（cà phê）コーヒー",
+  "phòng": "部屋", "phút": "分", "phải": "～しなければならない・右", "phở": "フォー", "quan": "（quan trọng）重要",
+  "quyết": "（quyết định）決定", "quá": "～すぎる", "ra": "出る", "ra khỏi": "～から出る", "rán": "揚げる",
+  "rất": "とても", "rồi": "もう～した（完了）", "sang": "～へ渡る・移る", "sau": "後・後ろ", "sinh nhật": ["誕生日", "名詞"],
+  "sinh": "（sinh nhật）誕生", "siêu": "（siêu thị）スーパー", "sách": "本", "sĩ": "（bác sĩ）医者",
+  "sạn": "（khách sạn）ホテル", "sẽ": "～するだろう（未来）", "ta": "私たち（chúng ta）", "thay vì": "～の代わりに",
+  "thay": "（thay vì）代わりに", "tháng sau": "来月", "tháng": "月（時間の単位）", "thân": "（bạn thân）親しい",
+  "thêm": "追加する・さらに", "thì": "～なら・～すると", "thư": "手紙", "thường": "よく・普段",
+  "thận": "（cẩn thận）慎重な", "thẳng": "まっすぐ", "có thể": "～できる", "thể": "（có thể）できる",
+  "thị": "（siêu thị）スーパー", "thứ hai": "2番目・月曜日", "thứ": "～番目", "to": "大きい", "tra": "（kiểm tra）検査",
+  "anh trai": ["兄", "名詞"], "trai": "男（em trai＝弟）", "trong": "～の中", "trên": "～の上", "trước": "前・先に",
+  "trường": "学校", "trọng": "（quan trọng）重要", "trời": "天気・空", "tuần": "週", "ty": "（công ty）会社",
+  "tôi": "私", "tư": "4（thứ tư）", "tập": "練習する", "từ": "～から・単語", "va": "（va li）スーツケース",
+  "viện": "（bệnh viện）病院", "việt nam": ["ベトナム", "地名"], "việt": "（Việt Nam）ベトナム", "và": "～と",
+  "váy": "スカート・ワンピース", "vì": "～なので", "về": "帰る・～について", "với": "～と（一緒に）",
+  "vừa": "～したばかり・（vừa A vừa B）AしながらB", "xa": "遠い", "xe": "車・乗り物", "xong": "～し終わる",
+  "xưa": "昔", "tiền yên": "円（日本円）", "yên": "（tiền yên）円", "áo": "服・シャツ", "ông": "おじいさん・男性",
+  "đang": "～している（進行）", "điện": "電気・電話", "đá": "蹴る・石（bóng đá＝サッカー）", "đâu": "どこ",
+  "đây": "ここ", "đã": "～した（過去）", "đình": "（gia đình）家族", "đĩa": "皿", "được": "できる・～される",
+  "đạc": "（đồ đạc）持ち物", "đầu": "頭・最初", "để": "～するために", "định": "（quyết định）決定",
+  "đồ": "物・品", "ơi": "～さん（呼びかけ）", "ở": "～に・～で（場所）・住む", "7": "7（数字）", "40": "40（数字）",
+};
+
+// 統合辞書を構築する
+const DICTIONARY = {};
+function addDictEntry(word, meaningJP, partOfSpeech, extra) {
+  const key = norm(word);
+  if (!key || DICTIONARY[key]) return;
+  DICTIONARY[key] = Object.assign(
+    { word, meaningJP, partOfSpeech: partOfSpeech || "" },
+    extra || {},
+  );
+}
+for (const q of QUESTION_BANK) {
+  for (const v of q.vocabulary) {
+    addDictEntry(v.word, v.meaningJP, v.partOfSpeech, {
+      explanationJP: v.explanationJP, example: v.example, exampleJP: v.exampleJP,
+    });
+  }
+  for (const c of q.collocations || []) addDictEntry(c.expression, c.meaningJP, "表現");
+  for (const c of q.choices) {
+    const exp = q.choiceExplanations.find((e) => e.choice === c.id);
+    const m = exp && exp.explanationJP.match(/[＝=]\s*([^。]+)/);
+    if (m) addDictEntry(c.text, m[1].trim(), "");
+  }
+}
+for (const [word, value] of Object.entries(SUPPLEMENT_DICT)) {
+  if (Array.isArray(value)) addDictEntry(word, value[0], value[1]);
+  else addDictEntry(word, value, "");
+}
+
+function lookupWord(word) {
+  return DICTIONARY[norm(word)] || null;
+}
 
 /* ---------------------------------------------------------------------------
    簡易SRS（CLAUDE.md セクション18準拠の簡略版）
@@ -234,7 +330,49 @@ function pickQuestions(mode, count) {
 /* ---------------------------------------------------------------------------
    クイズ実行
 --------------------------------------------------------------------------- */
-const quiz = { questions: [], index: 0, correct: 0, wrong: [] };
+const quiz = { questions: [], index: 0, correct: 0, wrong: [], answered: false };
+
+/* ---------------------------------------------------------------------------
+   タップ可能な文の描画（回答後）
+   辞書にある語を最長一致（3語→2語→1語）でマークし、タップで意味を表示する
+--------------------------------------------------------------------------- */
+function interactiveHtml(text) {
+  const tokens = text.split(/\s+/).filter(Boolean);
+  const parts = [];
+  let i = 0;
+  while (i < tokens.length) {
+    let matched = null;
+    let matchLen = 0;
+    // 句読点を除いた語幹で最長一致を探す
+    for (let len = Math.min(3, tokens.length - i); len >= 1; len--) {
+      const raw = tokens.slice(i, i + len).join(" ");
+      const core = raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+      if (core && lookupWord(core)) {
+        matched = { raw, core };
+        matchLen = len;
+        break;
+      }
+    }
+    if (matched) {
+      const m = matched.raw.match(/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/u);
+      parts.push(
+        `${escapeHtml(m[1])}<span class="tap-word" data-word="${escapeHtml(matched.core)}">${escapeHtml(m[2])}</span>${escapeHtml(m[3])}`,
+      );
+      i += matchLen;
+    } else {
+      parts.push(escapeHtml(tokens[i]));
+      i += 1;
+    }
+  }
+  return parts.join(" ");
+}
+
+function renderSentenceInteractive(q) {
+  const correctText = q.choices.find((c) => c.id === q.correctChoice).text;
+  const segments = q.sentence.split(/_{2,}/);
+  const filled = `<span class="tap-word filled" data-word="${escapeHtml(correctText)}">${escapeHtml(correctText)}</span>`;
+  $("quiz-sentence").innerHTML = segments.map(interactiveHtml).join(filled);
+}
 
 function startQuiz(mode, count) {
   quiz.questions = pickQuestions(mode, count);
@@ -267,9 +405,15 @@ function renderQuestion() {
     btn.className = "choice";
     btn.dataset.choice = choice.id;
     btn.innerHTML = `<span class="choice-id">${choice.id}</span><span>${escapeHtml(choice.text)}</span><span class="verdict"></span>`;
-    btn.addEventListener("click", () => answer(choice.id));
+    // 回答前：回答として処理 / 回答後：単語の意味を表示
+    btn.addEventListener("click", () => {
+      if (quiz.answered) openWordPopup(choice.text);
+      else answer(choice.id);
+    });
     choicesEl.appendChild(btn);
   }
+  quiz.answered = false;
+  $("tap-hint").classList.add("hidden");
   $("quiz-feedback").classList.add("hidden");
 }
 
@@ -294,9 +438,10 @@ function answer(choiceId) {
   upsertVocabFromQuestion(q, isCorrect);
   saveStore();
 
-  // 選択肢の正誤表示
+  quiz.answered = true;
+
+  // 選択肢の正誤表示（ボタンは無効化せず、タップで単語の意味を表示できるようにする）
   document.querySelectorAll(".choice").forEach((btn) => {
-    btn.disabled = true;
     const id = btn.dataset.choice;
     if (id === q.correctChoice) {
       btn.classList.add("correct");
@@ -308,6 +453,10 @@ function answer(choiceId) {
       btn.classList.add("dimmed");
     }
   });
+
+  // 問題文をタップ可能にし、空欄を正解で埋める
+  renderSentenceInteractive(q);
+  $("tap-hint").classList.remove("hidden");
 
   renderExplanation(q, isCorrect);
   $("quiz-correct-count").textContent = quiz.correct;
@@ -582,6 +731,92 @@ $("fc-controls").addEventListener("click", (e) => {
     $("sum-remembered").textContent = fc.results.remembered;
     showScreen("fc-done");
   }
+});
+
+/* ---------------------------------------------------------------------------
+   単語の意味ポップアップ + Flash Card追加
+--------------------------------------------------------------------------- */
+let popupWord = null;
+
+function openWordPopup(word) {
+  const entry = lookupWord(word);
+  popupWord = word;
+
+  $("wp-word").textContent = entry ? entry.word : word;
+  $("wp-pos").textContent = entry && entry.partOfSpeech ? `〔${entry.partOfSpeech}〕` : "";
+  $("wp-meaning").textContent = entry ? entry.meaningJP : "この単語の意味はまだ登録されていません。";
+
+  const existing = store.vocab[norm(word)];
+  const note = $("wp-note");
+  if (existing && (existing.status === "forgotten" || existing.status === "unsure")) {
+    note.textContent = "すでに復習リストに入っています。もう一度追加すると今日の復習に出ます。";
+    note.classList.remove("hidden");
+  } else if (entry && entry.explanationJP) {
+    note.textContent = entry.explanationJP;
+    note.classList.remove("hidden");
+  } else {
+    note.classList.add("hidden");
+  }
+
+  $("wp-add").classList.toggle("hidden", !entry);
+  $("wp-added").classList.add("hidden");
+  $("wp-add").disabled = false;
+  $("word-popup-overlay").classList.remove("hidden");
+}
+
+function closeWordPopup() {
+  $("word-popup-overlay").classList.add("hidden");
+  popupWord = null;
+}
+
+// 「覚えていない → Flash Cardに追加」：
+// statusをforgottenにして今日の復習対象にする（次回のFlash Cardで出題される）
+function addWordToFlashcards(word) {
+  const key = norm(word);
+  const entry = lookupWord(word);
+  if (!entry) return;
+
+  const existing = store.vocab[key];
+  if (existing) {
+    existing.status = "forgotten";
+    existing.consecutiveCorrect = 0;
+    existing.nextReviewAt = nowIso(); // 今日の復習に出す
+  } else {
+    store.vocab[key] = {
+      word: entry.word,
+      meaningJP: entry.meaningJP,
+      partOfSpeech: entry.partOfSpeech || "",
+      example: entry.example || "",
+      exampleJP: entry.exampleJP || "",
+      collocations: [],
+      status: "forgotten",
+      masteryScore: 0,
+      exposureCount: 1,
+      consecutiveCorrect: 0,
+      consecutiveWrong: 0,
+      wrongCount: 0,
+      firstSeenAt: nowIso(),
+      nextReviewAt: nowIso(),
+    };
+  }
+  saveStore();
+}
+
+// 問題文中の単語タップ（イベント委譲）
+$("quiz-sentence").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+
+$("wp-close").addEventListener("click", closeWordPopup);
+$("word-popup-overlay").addEventListener("click", (e) => {
+  if (e.target === $("word-popup-overlay")) closeWordPopup();
+});
+$("wp-add").addEventListener("click", () => {
+  if (!popupWord) return;
+  addWordToFlashcards(popupWord);
+  $("wp-add").disabled = true;
+  $("wp-added").classList.remove("hidden");
 });
 
 /* ---------------------------------------------------------------------------

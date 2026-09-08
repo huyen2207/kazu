@@ -74,6 +74,7 @@
       <div class="progress-bar"><div id="quiz-progress-fill" class="progress-fill"></div></div>
 
       <div class="card sentence-card"><p id="quiz-sentence"></p></div>
+      <p id="tap-hint" class="hint hidden">単語をタップすると意味を確認できます（選択肢も）</p>
 
       <div id="quiz-choices" class="choices"></div>
 
@@ -186,6 +187,23 @@
     </section>
 
   </main>
+
+  <!-- 単語の意味ポップアップ（回答後、任意の単語をタップで表示） -->
+  <div id="word-popup-overlay" class="word-popup-overlay hidden">
+    <div id="word-popup" class="word-popup">
+      <div class="word-popup-head">
+        <p class="word-popup-word">
+          <span id="wp-word"></span>
+          <span id="wp-pos" class="word-popup-pos"></span>
+        </p>
+        <button id="wp-close" class="word-popup-close" aria-label="閉じる">×</button>
+      </div>
+      <p id="wp-meaning" class="word-popup-meaning"></p>
+      <p id="wp-note" class="word-popup-note hidden"></p>
+      <button id="wp-add" class="btn btn-primary btn-block">覚えていない → Flash Cardに追加</button>
+      <p id="wp-added" class="word-popup-added hidden">✓ Flash Cardに追加しました。次回の復習に出ます。</p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
