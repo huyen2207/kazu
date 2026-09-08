@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KAZU — ベトナム語 語彙クイズ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <button class="brand" data-nav="home">KAZU</button>
+      <nav class="nav">
+        <button data-nav="home">ホーム</button>
+        <button data-nav="flashcards">フラッシュカード</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ホーム画面 -->
+    <section id="screen-home" class="screen">
+      <div class="page-head">
+        <div>
+          <h1>ベトナム語 語彙トレーニング</h1>
+          <p class="sub">問題を解く → 解説を読む → Flash Cardで復習 → 別の文脈で確認する</p>
+        </div>
+        <p id="streak-badge" class="streak-badge hidden">🔥 <span id="streak-days"></span>日連続学習中</p>
+      </div>
+
+      <div class="stat-grid" id="today-stats">
+        <div class="stat-card"><p class="stat-value" id="stat-today-questions">0問</p><p class="stat-label">今日の問題数</p></div>
+        <div class="stat-card"><p class="stat-value" id="stat-today-accuracy">—</p><p class="stat-label">今日の正答率</p></div>
+        <div class="stat-card"><p class="stat-value" id="stat-vocab-total">0語</p><p class="stat-label">学習語彙</p></div>
+        <div class="stat-card"><p class="stat-value" id="stat-due">0語</p><p class="stat-label">今日の復習</p></div>
+      </div>
+
+      <h2 class="section-title">モードを選択</h2>
+      <div class="mode-grid" id="mode-grid">
+        <button class="mode-card" data-mode="new">
+          <h3>New Vocabulary</h3><p>まだ解いていない問題を中心に出題</p>
+        </button>
+        <button class="mode-card" data-mode="review">
+          <h3>Review</h3><p>間違えた語彙・あやふやな語彙を中心に出題</p>
+        </button>
+        <button class="mode-card" data-mode="random">
+          <h3>Random</h3><p>新規と復習をバランスよく混ぜて出題</p>
+        </button>
+      </div>
+
+      <h2 class="section-title">問題数を選択</h2>
+      <div class="count-grid" id="count-grid">
+        <button class="count-card" data-count="5">5<span>問</span></button>
+        <button class="count-card" data-count="10">10<span>問</span></button>
+        <button class="count-card" data-count="20">20<span>問</span></button>
+      </div>
+
+      <div class="cta-row">
+        <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>クイズを始める</button>
+        <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
+      </div>
+
+      <div class="vocab-status" id="vocab-status"></div>
+    </section>
+
+    <!-- クイズ画面 -->
+    <section id="screen-quiz" class="screen hidden">
+      <div class="progress-row">
+        <span>問題 <strong id="quiz-current">1</strong> / <span id="quiz-total">10</span></span>
+        <span>正解 <span id="quiz-correct-count">0</span></span>
+      </div>
+      <div class="progress-bar"><div id="quiz-progress-fill" class="progress-fill"></div></div>
+
+      <div class="card sentence-card"><p id="quiz-sentence"></p></div>
+
+      <div id="quiz-choices" class="choices"></div>
+
+      <div id="quiz-feedback" class="hidden">
+        <div id="feedback-banner" class="feedback-banner"></div>
+        <div class="card explanation">
+          <h3>日本語訳</h3><p id="exp-translation"></p>
+          <h3>解説</h3><p id="exp-main"></p>
+          <h3>選択肢の解説</h3><ul id="exp-choices" class="exp-choice-list"></ul>
+          <div id="exp-vocab-wrap"><h3>重要語彙</h3><ul id="exp-vocab" class="exp-vocab-list"></ul></div>
+          <div id="exp-grammar-wrap"><h3>文法</h3><ul id="exp-grammar" class="exp-grammar-list"></ul></div>
+          <div id="exp-colloc-wrap"><h3>コロケーション</h3><ul id="exp-colloc" class="chip-list"></ul></div>
+        </div>
+        <button id="btn-next" class="btn btn-primary btn-block">次の問題へ</button>
+      </div>
+    </section>
+
+    <!-- 結果画面 -->
+    <section id="screen-result" class="screen hidden">
+      <div class="card result-card">
+        <h2>クイズ結果</h2>
+        <p class="result-score"><span id="result-correct">0</span><span class="result-total"> / <span id="result-total">0</span></span></p>
+        <p class="sub" id="result-accuracy"></p>
+      </div>
+      <div id="result-wrong-wrap" class="card hidden">
+        <h3>間違えた語彙（復習候補に追加されました）</h3>
+        <ul id="result-wrong-list" class="wrong-list"></ul>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" data-nav="home">ホームへ</button>
+        <button id="btn-result-cards" class="btn btn-secondary">Flash Cardで復習</button>
+      </div>
+    </section>
+
+    <!-- フラッシュカード画面 -->
+    <section id="screen-flashcards" class="screen hidden">
+      <div class="progress-row">
+        <span>カード <strong id="card-current">1</strong> / <span id="card-total">0</span></span>
+        <span id="card-bucket" class="bucket-badge"></span>
+      </div>
+
+      <div id="fc-empty" class="card center hidden">
+        <p>今日復習するカードはありません。まずはクイズで語彙を増やしましょう。</p>
+        <button class="btn btn-primary" data-nav="home">ホームへ</button>
+      </div>
+
+      <div id="fc-deck">
+        <button id="flashcard" class="flashcard">
+          <div id="fc-front">
+            <p id="fc-word" class="fc-word"></p>
+            <p id="fc-pos" class="fc-pos"></p>
+            <p class="fc-hint">タップして意味を表示</p>
+          </div>
+          <div id="fc-back" class="hidden">
+            <p class="fc-word-small"><span id="fc-back-word"></span> <span id="fc-back-pos" class="fc-pos-inline"></span></p>
+            <p id="fc-meaning" class="fc-meaning"></p>
+            <div id="fc-example" class="fc-example hidden">
+              <p id="fc-example-vi"></p>
+              <p id="fc-example-ja" class="muted"></p>
+            </div>
+            <ul id="fc-colloc" class="chip-list"></ul>
+          </div>
+        </button>
+        <div id="fc-controls" class="fc-controls hidden">
+          <button class="btn rate rate-forgotten" data-rate="forgotten">覚えていない</button>
+          <button class="btn rate rate-unsure" data-rate="unsure">あやふや</button>
+          <button class="btn rate rate-remembered" data-rate="remembered">覚えた</button>
+        </div>
+        <p id="fc-tap-hint" class="hint">カードをタップして裏面を確認してから評価してください</p>
+      </div>
+    </section>
+
+    <!-- フラッシュカード完了画面 -->
+    <section id="screen-fc-done" class="screen hidden">
+      <div class="card center">
+        <h2>復習完了！</h2>
+        <p class="sub"><span id="fc-done-count">0</span>枚のカードを復習しました。次回の復習予定が更新されました。</p>
+        <div class="fc-summary">
+          <div class="fc-sum forgotten"><p id="sum-forgotten">0</p><span>覚えていない</span></div>
+          <div class="fc-sum unsure"><p id="sum-unsure">0</p><span>あやふや</span></div>
+          <div class="fc-sum remembered"><p id="sum-remembered">0</p><span>覚えた</span></div>
+        </div>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" data-nav="home">ホームへ</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
