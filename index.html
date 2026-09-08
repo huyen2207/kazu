@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=16" />
+  <link rel="stylesheet" href="style.css?v=17" />
 </head>
 <body>
   <header class="site-header">
@@ -78,6 +78,22 @@
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
+
+      <!-- 学習データ（バックアップ・復元・削除） -->
+      <h2 class="section-title">学習データ</h2>
+      <div class="card settings-card">
+        <p class="settings-note">
+          学習データはこの端末のブラウザにのみ保存されます。ブラウザのデータを削除したり、
+          端末を変えると消えます。バックアップを保存しておくと、あとから元に戻せます。
+        </p>
+        <div class="settings-actions">
+          <button id="btn-export" class="btn btn-secondary" type="button">バックアップを保存</button>
+          <button id="btn-import" class="btn btn-secondary" type="button">バックアップから復元</button>
+          <button id="btn-reset" class="btn btn-danger" type="button">学習データを削除</button>
+        </div>
+        <input id="import-file" type="file" accept="application/json,.json" class="hidden" />
+        <p id="settings-message" class="settings-message hidden"></p>
+      </div>
     </section>
 
     <!-- クイズ画面 -->
@@ -567,6 +583,19 @@
   </main>
 
   <!-- 単語の意味ポップアップ（回答後、任意の単語をタップで表示） -->
+  <!-- バックアップの読み込み方法を選ぶダイアログ -->
+  <div id="import-overlay" class="word-popup-overlay hidden">
+    <div class="word-popup">
+      <div class="word-popup-head">
+        <p class="word-popup-word">バックアップの読み込み方法</p>
+        <button id="import-cancel" class="word-popup-close" aria-label="閉じる">×</button>
+      </div>
+      <p id="import-summary" class="word-popup-meaning"></p>
+      <button id="import-merge" class="btn btn-primary btn-block" type="button">今のデータと合わせる（マージ）</button>
+      <button id="import-replace" class="btn btn-secondary btn-block" type="button">今のデータを消して置き換える（上書き）</button>
+    </div>
+  </div>
+
   <div id="word-popup-overlay" class="word-popup-overlay hidden">
     <div id="word-popup" class="word-popup">
       <div class="word-popup-head">
@@ -584,6 +613,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=16"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>
