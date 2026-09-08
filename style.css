@@ -288,6 +288,20 @@ h1 { font-size: 22px; font-weight: 700; }
 #st-tap-hint { margin: -6px 0 8px; }
 #st-key .key-phrase { font-weight: 700; color: var(--primary); }
 
+/* 読解練習 */
+.passage-card p { font-size: 15px; line-height: 2; }
+.blank-num {
+  display: inline-block; min-width: 64px; text-align: center;
+  border-bottom: 2px solid #cbd5e1; background: #f1f5f9; color: #94a3b8;
+  border-radius: 4px 4px 0 0; padding: 0 8px; margin: 0 2px; font-size: 13px;
+}
+.blank-num.current {
+  border-bottom-color: var(--primary); background: var(--primary-light); color: var(--primary);
+  font-weight: 700;
+}
+.blank-num.done-correct { border-bottom-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
+.blank-num.done-wrong { border-bottom-color: var(--red); background: var(--red-bg); color: #b91c1c; font-weight: 600; }
+
 /* 実力分析 */
 .analysis-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .readiness-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

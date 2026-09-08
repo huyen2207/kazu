@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
   <header class="site-header">
@@ -64,6 +64,7 @@
         <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
         <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
         <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
+        <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -228,6 +229,52 @@
       </div>
     </section>
 
+    <!-- 読解練習画面（文章の空欄を埋める） -->
+    <section id="screen-passage" class="screen hidden">
+      <div id="pg-question">
+        <div class="progress-row">
+          <span>空欄 <strong id="pg-current">1</strong> / <span id="pg-total">3</span></span>
+          <span>正解 <span id="pg-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="pg-progress-fill" class="progress-fill"></div></div>
+
+        <p class="sub st-lead">文章を読んで、空欄に最も合う語を選んでください</p>
+        <div class="card passage-card"><p id="pg-text"></p></div>
+        <p id="pg-tap-hint" class="hint hidden">単語をタップすると意味を確認できます</p>
+
+        <p id="pg-blank-label" class="section-title"></p>
+        <div id="pg-choices" class="choices"></div>
+
+        <div id="pg-feedback" class="hidden">
+          <div id="pg-banner" class="feedback-banner"></div>
+          <div class="card"><p id="pg-explanation"></p></div>
+          <button id="pg-next" class="btn btn-primary btn-block">次の空欄へ</button>
+        </div>
+      </div>
+
+      <div id="pg-result" class="hidden">
+        <div class="card result-card">
+          <h2>読解練習の結果</h2>
+          <p class="result-score"><span id="pg-result-correct">0</span><span class="result-total"> / <span id="pg-result-total">0</span></span></p>
+          <p class="sub" id="pg-result-note"></p>
+        </div>
+        <div class="card passage-card"><p id="pg-text-final"></p></div>
+        <p class="hint">単語をタップすると意味を確認できます</p>
+        <div class="card explanation">
+          <h3>日本語訳</h3>
+          <p id="pg-translation"></p>
+        </div>
+        <div id="pg-wrong-wrap" class="card hidden">
+          <h3>間違えた語（Flash Cardに追加済み）</h3>
+          <ul id="pg-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="pg-again" class="btn btn-primary">別の文章に挑戦</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
+    </section>
+
     <!-- 実力分析画面 -->
     <section id="screen-analysis" class="screen hidden">
       <div class="page-head">
@@ -367,6 +414,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>

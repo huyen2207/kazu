@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -1154,6 +1154,284 @@ $("st-next").addEventListener("click", () => {
   }
 });
 $("st-again").addEventListener("click", startSituation);
+
+/* ---------------------------------------------------------------------------
+   読解練習 — 文章の空欄に合う語を選ぶ（8文章・23空欄）
+   text: 空欄マーカー __1__ __2__ … / blanks: {c:選択肢, a:正解index, e:解説, key:[語, 意味, 品詞]}
+--------------------------------------------------------------------------- */
+const PASSAGE_BANK = [
+  {
+    text: "Lan làm việc ở một công ty gần nhà. Hằng ngày cô ấy đi làm bằng xe máy. Công việc bắt đầu lúc 8 giờ nhưng Lan thường đến công ty lúc 7 giờ 45 vì cô ấy không muốn đến __1__. Buổi trưa, Lan ăn cơm cùng đồng nghiệp. Sau khi __2__ việc lúc 5 giờ chiều, cô ấy thường đi siêu thị rồi mới về nhà.",
+    blanks: [
+      { c: ["sớm", "muộn", "nhanh", "lâu"], a: 1, e: "8時より前の7時45分に着くのは「遅刻したくない（không muốn đến muộn）」からです。sớm（早く）だと理由が逆になります。", key: ["muộn", "遅い、遅れる", "形容詞"] },
+      { c: ["hết", "xong", "đủ", "khỏi"], a: 1, e: "「仕事を終える」は xong việc が定番の言い方です。hết は「尽きる」、đủ は「足りる」、khỏi は「（病気が）治る・～しなくてよい」で合いません。", key: ["xong", "～し終わる", "動詞"] },
+    ],
+    t: "ランは家の近くの会社で働いています。毎日バイクで通勤します。仕事は8時に始まりますが、遅刻したくないのでいつも7時45分に会社に着きます。昼は同僚と一緒にご飯を食べます。夕方5時に仕事を終えた後、スーパーに寄ってから家に帰ります。",
+    cat: "仕事",
+  },
+  {
+    text: "Gia đình tôi có bốn người. Buổi sáng, mẹ tôi dậy __1__ nhất để chuẩn bị bữa sáng cho cả nhà. Bố tôi thường vừa uống cà phê vừa __2__ báo. Em gái tôi sáu tuổi, rất __3__ vẽ tranh.",
+    blanks: [
+      { c: ["muộn", "lâu", "sớm", "chậm"], a: 2, e: "家族の朝食を準備するために「一番早く（sớm nhất）」起きます。muộn（遅く）では準備できません。", key: ["sớm", "早い、早く", "形容詞"] },
+      { c: ["đọc", "nghe", "nói", "viết"], a: 0, e: "「新聞を読む」は đọc báo。nghe は「聞く」、báo（新聞）は読むものです。", key: ["đọc báo", "新聞を読む", "表現"] },
+      { c: ["ghét", "sợ", "chán", "thích"], a: 3, e: "6歳の妹が絵を描くのが「大好き（rất thích）」という流れが自然です。ghét（嫌い）・sợ（怖い）・chán（飽きた）は文脈に合いません。", key: ["thích", "好き", "動詞"] },
+    ],
+    t: "私の家族は4人です。朝、母は家族みんなの朝食を準備するために一番早く起きます。父はコーヒーを飲みながら新聞を読むのが習慣です。6歳の妹は絵を描くのが大好きです。",
+    cat: "家族",
+  },
+  {
+    text: "Chủ nhật, tôi thường đi chợ với mẹ. Chợ gần nhà tôi bán nhiều rau và hoa quả tươi. Mẹ tôi thích __1__ giá trước khi mua. Hôm nay cam rất __2__, chỉ hai mươi nghìn một cân, nên mẹ mua ba cân. Về nhà, tôi giúp mẹ __3__ hoa quả vào tủ lạnh.",
+    blanks: [
+      { c: ["hỏi", "trả lời", "nói", "kể"], a: 0, e: "買う前に「値段を尋ねる（hỏi giá）」のが市場での習慣です。trả lời は「答える」で逆方向です。", key: ["hỏi giá", "値段を尋ねる", "表現"] },
+      { c: ["đắt", "rẻ", "ngon", "đẹp"], a: 1, e: "「1キロたった2万ドン（chỉ ~）」→ 安い（rẻ）から3キロ買いました。đắt（高い）だと chỉ や3キロ購入と矛盾します。", key: ["rẻ", "（値段が）安い", "形容詞"] },
+      { c: ["bán", "nấu", "cất", "uống"], a: 2, e: "果物を冷蔵庫に「しまう（cất ~ vào tủ lạnh）」が自然です。bán（売る）・nấu（煮る）は場面に合いません。", key: ["cất", "しまう、保管する", "動詞"] },
+    ],
+    t: "日曜日、私はよく母と市場へ行きます。家の近くの市場は新鮮な野菜や果物をたくさん売っています。母は買う前に値段を聞くのが好きです。今日はオレンジがとても安く、1キロたった2万ドンだったので、母は3キロ買いました。家に帰って、私は果物を冷蔵庫にしまうのを手伝いました。",
+    cat: "買い物",
+  },
+  {
+    text: "Sáng nay em trai tôi kêu đau răng nên mẹ đưa em đến phòng khám. Bác sĩ __1__ răng cho em rất cẩn thận và nói em ăn kẹo nhiều quá. Bác sĩ dặn em phải __2__ răng ngày hai lần và không nên ăn nhiều đồ ngọt. Mẹ tôi cảm ơn bác sĩ rồi đưa em __3__ nhà.",
+    blanks: [
+      { c: ["khám", "nghe", "hỏi", "đọc"], a: 0, e: "医者が歯を「診る」は khám。khám răng（歯を診察する）が定番の組み合わせです。", key: ["khám", "診察する", "動詞"] },
+      { c: ["rửa", "gội", "tắm", "đánh"], a: 3, e: "「歯を磨く」は đánh răng。rửa mặt（顔を洗う）・gội đầu（髪を洗う）・tắm（体を洗う）と、部位で動詞が変わります。", key: ["đánh răng", "歯を磨く", "表現"] },
+      { c: ["đến", "về", "sang", "ra"], a: 1, e: "診察が終わって家に「帰る」ので đưa em về nhà（家に連れて帰る）です。đến は「行く・着く」で方向が合いません。", key: ["về nhà", "家に帰る", "表現"] },
+    ],
+    t: "今朝、弟が歯が痛いと言うので、母は弟をクリニックへ連れて行きました。医者は弟の歯をとても丁寧に診て、あめを食べすぎだと言いました。医者は1日2回歯を磨くこと、甘い物を食べすぎないことを弟に言いつけました。母は医者にお礼を言って、弟を家に連れて帰りました。",
+    cat: "病院",
+  },
+  {
+    text: "Tháng trước, lớp tôi đi Đà Nẵng ba ngày. Chúng tôi đi bằng tàu hỏa. Trước khi đi, cô giáo dặn cả lớp __1__ vé cẩn thận. Ở Đà Nẵng, trời nắng đẹp nên chúng tôi đi __2__ biển mỗi sáng. Ngày cuối, tôi mua một ít quà để __3__ cho gia đình.",
+    blanks: [
+      { c: ["giữ", "vứt", "bán", "quên"], a: 0, e: "切符は「大切に持っておく（giữ ~ cẩn thận）」ものです。vứt（捨てる）・quên（忘れる）は注意の内容として逆です。", key: ["giữ", "保管する、持っておく", "動詞"] },
+      { c: ["uống", "giặt", "tắm", "nấu"], a: 2, e: "「海水浴をする」は tắm biển と言います。毎朝のビーチでの行動として自然です。", key: ["tắm biển", "海水浴をする", "表現"] },
+      { c: ["mượn", "trả", "hỏi", "tặng"], a: 3, e: "お土産を買うのは家族に「贈る（tặng）」ためです。mượn（借りる）・trả（返す）は場面に合いません。", key: ["tặng", "贈る、プレゼントする", "動詞"] },
+    ],
+    t: "先月、私のクラスは3日間ダナンへ行きました。列車で行きました。出発前に、先生はクラス全員に切符を大切に保管するよう言いました。ダナンは晴れて天気が良かったので、私たちは毎朝海水浴をしました。最終日、私は家族に贈るお土産を少し買いました。",
+    cat: "旅行",
+  },
+  {
+    text: "Hôm nay trời mưa to từ sáng. Tôi quên mang ô nên phải __1__ mưa tạnh ở trường. Gần một tiếng sau, mưa mới __2__. Trên đường về, đường rất trơn nên tôi đi xe __3__ hơn mọi ngày.",
+    blanks: [
+      { c: ["chờ", "chạy", "xem", "nghe"], a: 0, e: "傘を忘れたので、学校で雨がやむのを「待つ（chờ）」しかありません。", key: ["chờ", "待つ", "動詞"] },
+      { c: ["rơi", "đến", "tạnh", "lên"], a: 2, e: "「雨がやむ」は mưa tạnh。1時間後にやっと（mới）やんだ、という流れです。", key: ["tạnh", "（雨が）やむ", "動詞"] },
+      { c: ["nhanh", "chậm", "muộn", "sớm"], a: 1, e: "道が滑りやすい（trơn）ので、いつもより「ゆっくり（chậm）」運転します。nhanh（速く）だと危険で文脈に合いません。", key: ["chậm", "（速度が）遅い", "形容詞"] },
+    ],
+    t: "今日は朝から大雨です。傘を持って来るのを忘れたので、学校で雨がやむのを待たなければなりませんでした。1時間近く経って、やっと雨がやみました。帰り道は道がとても滑りやすかったので、いつもよりゆっくり運転しました。",
+    cat: "天気",
+  },
+  {
+    text: "Cuối tuần, tôi thường đến quán cà phê gần nhà để học bài. Quán này yên tĩnh và cà phê rất __1__. Tôi hay ngồi ở bàn bên cửa sổ vì ở đó có nhiều ánh sáng, dễ __2__ sách. Khi nào mệt, tôi nghỉ một chút rồi học __3__.",
+    blanks: [
+      { c: ["đắt", "ngon", "chật", "nặng"], a: 1, e: "お気に入りのカフェを説明する流れなので「おいしい（ngon）」が自然です。đắt（高い）は通う理由になりません。", key: ["ngon", "おいしい", "形容詞"] },
+      { c: ["đọc", "nghe", "bán", "mua"], a: 0, e: "明るい（có nhiều ánh sáng）と本が「読み（đọc sách）」やすい、というつながりです。", key: ["đọc sách", "本を読む", "表現"] },
+      { c: ["hết", "trước", "sau", "tiếp"], a: 3, e: "少し休んでから「続けて勉強する（học tiếp）」。tiếp は「引き続き～する」を表します。", key: ["tiếp", "続けて～する", "副詞"] },
+    ],
+    t: "週末、私はよく家の近くのカフェへ勉強しに行きます。この店は静かで、コーヒーがとてもおいしいです。窓際の席は明るくて本が読みやすいので、よくそこに座ります。疲れたら少し休んで、また続けて勉強します。",
+    cat: "カフェ",
+  },
+  {
+    text: "Tối qua, Hoa gọi điện __1__ tôi đi xem phim vào chủ nhật. Chúng tôi hẹn gặp nhau __2__ 2 giờ chiều ở trước rạp. Hoa nhắc tôi đừng đến muộn vì phim sẽ __3__ đúng giờ.",
+    blanks: [
+      { c: ["rủ", "hỏi", "trả", "đưa"], a: 0, e: "「誘う」は rủ。rủ ~ đi xem phim（映画に誘う）は友達同士の定番表現です。", key: ["rủ", "誘う", "動詞"] },
+      { c: ["khi", "lúc", "giờ", "ngày"], a: 1, e: "時刻の前に付けて「～時に」は lúc。lúc 2 giờ chiều＝午後2時に。khi は「～するとき」で時刻には使いません。", key: ["lúc", "～時に", "前置詞"] },
+      { c: ["kết thúc", "dừng", "bắt đầu", "nghỉ"], a: 2, e: "「映画は時間どおりに始まる（bắt đầu đúng giờ）」から遅れないで、という注意です。kết thúc（終わる）だと理由になりません。", key: ["bắt đầu", "始まる、始める", "動詞"] },
+    ],
+    t: "昨夜、ホアが電話をかけてきて、日曜日に映画を観に行こうと誘ってくれました。私たちは午後2時に映画館の前で会う約束をしました。映画は時間どおりに始まるから遅れないでね、とホアは念を押しました。",
+    cat: "約束",
+  },
+];
+
+// 読解の正解語・登場語を辞書へ登録
+for (const p of PASSAGE_BANK) for (const b of p.blanks) addDictEntry(b.key[0], b.key[1], b.key[2]);
+const PASSAGE_SUPPLEMENT = {
+  "hằng ngày": ["毎日", "副詞"], "xe máy": ["バイク", "名詞"], "đồng nghiệp": ["同僚", "名詞"],
+  "bữa sáng": ["朝食", "名詞"], "hoa quả": ["果物", "名詞"], "tủ lạnh": ["冷蔵庫", "名詞"],
+  "phòng khám": ["クリニック、診療所", "名詞"], "đồ ngọt": ["甘い物", "名詞"], "tàu hỏa": ["列車", "名詞"],
+  "ánh sáng": ["光、明かり", "名詞"], "yên tĩnh": ["静かな", "形容詞"], "đúng giờ": ["時間どおり", "表現"],
+  "đà nẵng": ["ダナン（地名）", "地名"], "chợ": "市場", "rau": "野菜", "tươi": ["新鮮な", "形容詞"],
+  "cam": "オレンジ", "cân": "キログラム・はかり", "nghìn": "千（数字）", "kêu": "訴える・叫ぶ",
+  "răng": "歯", "kẹo": "あめ、キャンディー", "trơn": ["滑りやすい", "形容詞"], "biển": "海",
+  "quà": "プレゼント、お土産", "nhắc": ["念を押す、注意する", "動詞"], "vẽ": ["描く", "動詞"],
+  "tranh": "絵", "tuổi": "歳", "lớp": "クラス・教室", "buổi": "（朝・昼などの）時間帯",
+  "trưa": "昼", "cơm": "ご飯", "vé": "チケット、切符", "rửa": ["洗う", "動詞"],
+  "gội": "（髪を）洗う", "giặt": "（服を）洗濯する", "vứt": "捨てる", "rơi": "落ちる・（雨が）降る",
+  "dễ": ["～しやすい、簡単な", "形容詞"], "mệt": ["疲れた", "形容詞"], "ít": "少しの",
+  "bốn": "4（数字）", "sáu": "6（数字）", "gái": "（em gái）妹・女の", "ngọt": ["甘い", "形容詞"],
+};
+for (const [word, value] of Object.entries(PASSAGE_SUPPLEMENT)) {
+  if (Array.isArray(value)) addDictEntry(word, value[0], value[1]);
+  else addDictEntry(word, value, "");
+}
+
+const passage = { p: null, blankIndex: 0, correct: 0, wrong: [], results: [], answered: false };
+
+function startPassage() {
+  passage.p = shuffle(PASSAGE_BANK)[0];
+  passage.blankIndex = 0;
+  passage.correct = 0;
+  passage.wrong = [];
+  passage.results = [];
+  passage.answered = false;
+  showScreen("passage");
+  $("pg-question").classList.remove("hidden");
+  $("pg-result").classList.add("hidden");
+  renderPassageBlank();
+}
+
+// 文章の描画：回答済みは正誤色で埋め、現在の空欄をハイライトする
+function renderPassageText() {
+  const p = passage.p;
+  let index = 0;
+  $("pg-text").innerHTML = escapeHtml(p.text).replace(/__(\d+)__/g, () => {
+    const i = index++;
+    const blank = p.blanks[i];
+    if (i < passage.blankIndex || (i === passage.blankIndex && passage.answered)) {
+      const result = passage.results[i];
+      return `<span class="blank-num ${result ? "done-correct" : "done-wrong"}">${escapeHtml(blank.c[blank.a])}</span>`;
+    }
+    if (i === passage.blankIndex) return `<span class="blank-num current">（${i + 1}）？</span>`;
+    return `<span class="blank-num">（${i + 1}）</span>`;
+  });
+}
+
+function renderPassageBlank() {
+  window.scrollTo(0, 0);
+  const p = passage.p;
+  const blank = p.blanks[passage.blankIndex];
+  passage.answered = false;
+
+  $("pg-current").textContent = passage.blankIndex + 1;
+  $("pg-total").textContent = p.blanks.length;
+  $("pg-correct-count").textContent = passage.correct;
+  $("pg-progress-fill").style.width = (passage.blankIndex / p.blanks.length) * 100 + "%";
+  $("pg-blank-label").textContent = `空欄（${passage.blankIndex + 1}）に入る語を選んでください`;
+  $("pg-tap-hint").classList.add("hidden");
+
+  renderPassageText();
+
+  const letters = ["A", "B", "C", "D"];
+  $("pg-choices").innerHTML = "";
+  blank.c.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.dataset.index = i;
+    btn.innerHTML = `<span class="choice-id">${letters[i]}</span><span>${escapeHtml(text)}</span><span class="verdict"></span>`;
+    btn.addEventListener("click", () => {
+      if (!passage.answered) answerPassageBlank(i);
+    });
+    $("pg-choices").appendChild(btn);
+  });
+  $("pg-feedback").classList.add("hidden");
+}
+
+function answerPassageBlank(selectedIndex) {
+  const p = passage.p;
+  const blank = p.blanks[passage.blankIndex];
+  const isCorrect = selectedIndex === blank.a;
+  passage.answered = true;
+  passage.results.push(isCorrect);
+  if (isCorrect) passage.correct++;
+  else passage.wrong.push({ word: blank.key[0], meaning: blank.key[1], selected: blank.c[selectedIndex] });
+
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+  if (!isCorrect) addWordToFlashcards(blank.key[0]);
+  saveStore();
+
+  document.querySelectorAll("#pg-choices .choice").forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    if (i === blank.a) {
+      btn.classList.add("correct");
+      btn.querySelector(".verdict").textContent = "正解";
+    } else if (i === selectedIndex) {
+      btn.classList.add("wrong");
+      btn.querySelector(".verdict").textContent = "不正解";
+    } else {
+      btn.classList.add("dimmed");
+    }
+  });
+
+  renderPassageText();
+
+  const letters = ["A", "B", "C", "D"];
+  const banner = $("pg-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent =
+    (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[blank.a]}. ${blank.c[blank.a]}`;
+  $("pg-explanation").textContent = blank.e;
+  $("pg-next").textContent =
+    passage.blankIndex + 1 < p.blanks.length ? "次の空欄へ" : "結果を見る";
+  $("pg-feedback").classList.remove("hidden");
+  $("pg-correct-count").textContent = passage.correct;
+}
+
+function finishPassage() {
+  const p = passage.p;
+  store.sessions.push({
+    at: nowIso(),
+    mode: "passage",
+    total: p.blanks.length,
+    correct: passage.correct,
+    wrong: passage.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("pg-question").classList.add("hidden");
+  $("pg-result").classList.remove("hidden");
+  $("pg-result-correct").textContent = passage.correct;
+  $("pg-result-total").textContent = p.blanks.length;
+  $("pg-result-note").textContent = `正答率 ${Math.round((passage.correct / p.blanks.length) * 100)}%`;
+  $("pg-translation").textContent = p.t;
+  $("pg-wrong-wrap").classList.toggle("hidden", passage.wrong.length === 0);
+  $("pg-wrong-list").innerHTML = passage.wrong
+    .map(
+      (w) =>
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-passage").addEventListener("click", startPassage);
+$("pg-next").addEventListener("click", () => {
+  if (passage.blankIndex + 1 < passage.p.blanks.length) {
+    passage.blankIndex++;
+    renderPassageBlank();
+  } else {
+    // 全空欄回答後：文章を全単語タップ可能にして結果表示
+    passage.blankIndex++;
+    renderPassageInteractive();
+    finishPassage();
+  }
+});
+$("pg-again").addEventListener("click", startPassage);
+
+// 完了後：結果画面に文章全体をタップ可能な形で表示（空欄は正解で埋める）
+function renderPassageInteractive() {
+  const p = passage.p;
+  const segments = p.text.split(/__\d+__/);
+  let html = "";
+  segments.forEach((segment, i) => {
+    html += interactiveHtml(segment);
+    if (i < p.blanks.length) {
+      const blank = p.blanks[i];
+      html += ` <span class="filled-sentence">${interactiveHtml(blank.c[blank.a])}</span> `;
+    }
+  });
+  $("pg-text-final").innerHTML = html;
+}
+
+$("pg-text-final").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+$("pg-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 
 /* ---------------------------------------------------------------------------
    聴解練習 — 音声を聞いて正しい単語を選ぶ
