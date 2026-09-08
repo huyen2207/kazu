@@ -13,6 +13,7 @@
       <nav class="nav">
         <button data-nav="home">ホーム</button>
         <button data-nav="flashcards">フラッシュカード</button>
+        <button data-nav="history">学習履歴</button>
       </nav>
     </div>
   </header>
@@ -103,8 +104,31 @@
       </div>
       <div class="cta-row">
         <button class="btn btn-primary" data-nav="home">ホームへ</button>
-        <button id="btn-result-cards" class="btn btn-secondary">Flash Cardで復習</button>
+        <button id="btn-result-cards" class="btn btn-secondary">間違えた語をFlash Cardで復習</button>
       </div>
+    </section>
+
+    <!-- 学習履歴画面 -->
+    <section id="screen-history" class="screen hidden">
+      <div class="page-head">
+        <div>
+          <h1>学習履歴</h1>
+          <p class="sub">過去のクイズの記録。間違えた語はFlash Cardで復習できます。</p>
+        </div>
+      </div>
+
+      <div class="cta-row" id="history-actions">
+        <button id="btn-review-all-wrong" class="btn btn-primary">
+          間違えた語をすべて復習（<span id="all-wrong-count">0</span>語）
+        </button>
+      </div>
+
+      <div id="history-empty" class="card center hidden">
+        <p>まだ学習履歴がありません。クイズを完了すると記録されます。</p>
+        <button class="btn btn-primary" data-nav="home">クイズを始める</button>
+      </div>
+
+      <ul id="history-list" class="history-list"></ul>
     </section>
 
     <!-- フラッシュカード画面 -->

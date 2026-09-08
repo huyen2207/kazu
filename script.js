@@ -19,12 +19,14 @@ function loadStore() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch (_) { /* 壊れたデータは初期化する */ }
-  return { answered: {}, vocab: {}, days: {} };
+  return { answered: {}, vocab: {}, days: {}, sessions: [] };
 }
 function saveStore() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
 }
 const store = loadStore();
+// 旧バージョンのデータにはsessionsが無いため補完する
+if (!Array.isArray(store.sessions)) store.sessions = [];
 
 const DAY_MS = 86400000;
 function todayStr(offset = 0) {
@@ -100,13 +102,14 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
   $("screen-" + name).classList.remove("hidden");
   window.scrollTo(0, 0);
   if (name === "home") renderHome();
+  if (name === "history") renderHistory();
 }
 
 function escapeHtml(text) {
@@ -247,6 +250,7 @@ $("btn-start-quiz").addEventListener("click", () => {
 });
 
 function renderQuestion() {
+  window.scrollTo(0, 0);
   const q = quiz.questions[quiz.index];
   $("quiz-current").textContent = quiz.index + 1;
   $("quiz-total").textContent = quiz.questions.length;
@@ -346,10 +350,30 @@ $("btn-next").addEventListener("click", () => {
     quiz.index++;
     renderQuestion();
   } else {
+    saveSession();
     renderResult();
     showScreen("result");
   }
 });
+
+// 学習履歴の保存：1回のクイズ＝1セッション（間違えた語も記録する）
+function saveSession() {
+  store.sessions.push({
+    at: nowIso(),
+    mode: selectedMode,
+    total: quiz.questions.length,
+    correct: quiz.correct,
+    wrong: quiz.wrong.map(({ q, selected }) => ({
+      word: q.targetVocabulary,
+      meaning:
+        (q.vocabulary.find((v) => norm(v.word) === norm(q.targetVocabulary)) || {}).meaningJP || "",
+      selected: (q.choices.find((c) => c.id === selected) || {}).text || "",
+    })),
+  });
+  // 履歴は最新200件まで保持する
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+}
 
 /* ---------------------------------------------------------------------------
    結果画面
@@ -369,14 +393,83 @@ function renderResult() {
     .join("");
 }
 
-$("btn-result-cards").addEventListener("click", () => startFlashcards());
+// 結果画面から：今回間違えた語をそのままFlash Cardで復習する
+// （全問正解だった場合は通常の復習デッキを開く）
+$("btn-result-cards").addEventListener("click", () => {
+  if (quiz.wrong.length > 0) {
+    startFlashcardsFromWords(quiz.wrong.map(({ q }) => q.targetVocabulary));
+  } else {
+    startFlashcards();
+  }
+});
+
+/* ---------------------------------------------------------------------------
+   学習履歴画面
+--------------------------------------------------------------------------- */
+const MODE_LABEL = { new: "New", review: "Review", random: "Random" };
+
+function formatDateTime(iso) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+function renderHistory() {
+  const sessions = [...store.sessions].reverse();
+  const wrongTotal = allWrongWords().length;
+
+  $("all-wrong-count").textContent = wrongTotal;
+  $("btn-review-all-wrong").disabled = wrongTotal === 0;
+  $("history-actions").classList.toggle("hidden", sessions.length === 0 && wrongTotal === 0);
+  $("history-empty").classList.toggle("hidden", sessions.length > 0);
+
+  $("history-list").innerHTML = sessions
+    .map((s, i) => {
+      const percent = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+      const wrongChips = s.wrong
+        .map(
+          (w) =>
+            `<span class="chip-wrong" title="あなたの回答：${escapeHtml(w.selected)}">${escapeHtml(w.word)}${w.meaning ? `（${escapeHtml(w.meaning)}）` : ""}</span>`,
+        )
+        .join("");
+      const footer =
+        s.wrong.length > 0
+          ? `<div class="history-wrong">${wrongChips}</div>
+             <button class="history-review-btn" data-session="${sessions.length - 1 - i}">この回の間違い${s.wrong.length}語をFlash Cardで復習</button>`
+          : `<p class="history-perfect">全問正解でした 🎉</p>`;
+      return `<li class="history-item">
+        <div class="history-head">
+          <span class="history-date">${formatDateTime(s.at)}</span>
+          <span class="history-mode">${MODE_LABEL[s.mode] || s.mode}</span>
+          <span class="history-score"><strong>${s.correct}</strong> / ${s.total}問（${percent}%）</span>
+        </div>
+        ${footer}
+      </li>`;
+    })
+    .join("");
+}
+
+// セッションごとの「この回の間違いを復習」ボタン
+$("history-list").addEventListener("click", (e) => {
+  const btn = e.target.closest(".history-review-btn");
+  if (!btn) return;
+  const session = store.sessions[Number(btn.dataset.session)];
+  if (session && session.wrong.length > 0) {
+    startFlashcardsFromWords(session.wrong.map((w) => w.word));
+  }
+});
+
+// 間違えたことのある語をすべて復習
+$("btn-review-all-wrong").addEventListener("click", () => {
+  const words = allWrongWords();
+  if (words.length > 0) startFlashcardsFromWords(words);
+});
 
 /* ---------------------------------------------------------------------------
    フラッシュカード（今日の復習：forgotten → unsure → 期限到来の順）
 --------------------------------------------------------------------------- */
 const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 } };
 
-const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規" };
+const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規", wrong: "間違えた語" };
 
 function buildDeck(limit = 10) {
   const now = nowIso();
@@ -394,8 +487,8 @@ function buildDeck(limit = 10) {
     .slice(0, limit);
 }
 
-function startFlashcards() {
-  fc.deck = buildDeck(10);
+function openDeck(deck) {
+  fc.deck = deck;
   fc.index = 0;
   fc.flipped = false;
   fc.results = { forgotten: 0, unsure: 0, remembered: 0 };
@@ -405,9 +498,36 @@ function startFlashcards() {
   if (fc.deck.length > 0) renderCard();
 }
 
+function startFlashcards() {
+  openDeck(buildDeck(10));
+}
+
+// 指定した語のリストからデッキを作る（間違えた語の復習用）
+function startFlashcardsFromWords(words) {
+  const seen = new Set();
+  const deck = [];
+  for (const word of words) {
+    const key = norm(word);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const v = store.vocab[key];
+    if (v) deck.push({ v, bucket: "wrong" });
+  }
+  openDeck(deck);
+}
+
+// 今までに1回でも間違えたことのある語すべて（間違い回数の多い順）
+function allWrongWords() {
+  return Object.values(store.vocab)
+    .filter((v) => (v.wrongCount || 0) >= 1)
+    .sort((a, b) => (b.wrongCount || 0) - (a.wrongCount || 0))
+    .map((v) => v.word);
+}
+
 $("btn-start-cards").addEventListener("click", startFlashcards);
 
 function renderCard() {
+  window.scrollTo(0, 0);
   const { v, bucket } = fc.deck[fc.index];
   $("card-current").textContent = fc.index + 1;
   $("card-total").textContent = fc.deck.length;
