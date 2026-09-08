@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=13" />
+  <link rel="stylesheet" href="style.css?v=14" />
 </head>
 <body>
   <header class="site-header">
@@ -38,6 +38,10 @@
         <div class="stat-card"><p class="stat-value" id="stat-vocab-total">0語</p><p class="stat-label">学習語彙</p></div>
         <div class="stat-card"><p class="stat-value" id="stat-due">0語</p><p class="stat-label">今日の復習</p></div>
       </div>
+
+      <h2 class="section-title">レベルを選択</h2>
+      <div class="level-control" id="level-control"></div>
+      <p id="level-note" class="hint level-note"></p>
 
       <h2 class="section-title">モードを選択</h2>
       <div class="mode-grid" id="mode-grid">
@@ -456,7 +460,7 @@
         <div class="card">
           <div class="readiness-head">
             <div>
-              <h2 class="analysis-title">A2語彙 準備度スコア</h2>
+              <h2 class="analysis-title" id="rd-title">A2語彙 準備度スコア</h2>
               <p class="sub">このアプリの出題範囲（A2基礎語彙）における到達度の目安です</p>
             </div>
             <p class="readiness-score"><span id="rd-score">0</span><span class="readiness-max">/100</span></p>
@@ -577,6 +581,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=13"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>
