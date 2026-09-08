@@ -132,6 +132,40 @@ function lookupWord(word) {
 }
 
 /* ---------------------------------------------------------------------------
+   発音再生（Web Speech API）
+   ブラウザ内蔵のベトナム語音声（vi-VN）を使用する。外部APIは不要。
+--------------------------------------------------------------------------- */
+let viVoice = null;
+
+function pickVietnameseVoice() {
+  if (!("speechSynthesis" in window)) return;
+  const voices = speechSynthesis.getVoices();
+  viVoice =
+    voices.find((v) => v.lang.toLowerCase().replace("_", "-").startsWith("vi")) || null;
+}
+if ("speechSynthesis" in window) {
+  pickVietnameseVoice();
+  speechSynthesis.onvoiceschanged = pickVietnameseVoice;
+}
+
+// テキストを読み上げる。button指定時は再生中の見た目に切り替える。
+function speak(text, button) {
+  if (!("speechSynthesis" in window) || !text) return;
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "vi-VN";
+  if (viVoice) utterance.voice = viVoice;
+  utterance.rate = 0.85; // 学習者向けに少しゆっくり
+  if (button) {
+    button.classList.add("speaking");
+    const done = () => button.classList.remove("speaking");
+    utterance.onend = done;
+    utterance.onerror = done;
+  }
+  speechSynthesis.speak(utterance);
+}
+
+/* ---------------------------------------------------------------------------
    簡易SRS（CLAUDE.md セクション18準拠の簡略版）
 --------------------------------------------------------------------------- */
 const INTERVAL_DAYS = { new: 1, forgotten: 1, unsure: 2, learning: 3, reviewing: 5, mastered: 14 };
@@ -372,6 +406,8 @@ function renderSentenceInteractive(q) {
   const segments = q.sentence.split(/_{2,}/);
   const filled = `<span class="tap-word filled" data-word="${escapeHtml(correctText)}">${escapeHtml(correctText)}</span>`;
   $("quiz-sentence").innerHTML = segments.map(interactiveHtml).join(filled);
+  // 音声再生用に空欄を埋めた文を保持する
+  quiz.filledSentence = q.sentence.replace(/_{2,}/, correctText);
 }
 
 function startQuiz(mode, count) {
@@ -414,6 +450,7 @@ function renderQuestion() {
   }
   quiz.answered = false;
   $("tap-hint").classList.add("hidden");
+  $("btn-speak-sentence").classList.add("hidden");
   $("quiz-feedback").classList.add("hidden");
 }
 
@@ -457,6 +494,7 @@ function answer(choiceId) {
   // 問題文をタップ可能にし、空欄を正解で埋める
   renderSentenceInteractive(q);
   $("tap-hint").classList.remove("hidden");
+  $("btn-speak-sentence").classList.remove("hidden");
 
   renderExplanation(q, isCorrect);
   $("quiz-correct-count").textContent = quiz.correct;
@@ -704,12 +742,36 @@ function renderCard() {
     .join("");
 }
 
-$("flashcard").addEventListener("click", () => {
+function flipCard() {
   fc.flipped = !fc.flipped;
   $("fc-front").classList.toggle("hidden", fc.flipped);
   $("fc-back").classList.toggle("hidden", !fc.flipped);
   $("fc-controls").classList.toggle("hidden", !fc.flipped);
   $("fc-tap-hint").classList.toggle("hidden", fc.flipped);
+}
+
+$("flashcard").addEventListener("click", (e) => {
+  // 発音ボタンはめくり動作にしない
+  const speakBtn = e.target.closest(".speak-btn");
+  if (speakBtn) {
+    const card = fc.deck[fc.index];
+    if (!card) return;
+    if (speakBtn.hasAttribute("data-speak-example")) {
+      speak(card.v.example || card.v.word, speakBtn);
+    } else {
+      speak(card.v.word, speakBtn);
+    }
+    return;
+  }
+  flipCard();
+});
+
+// キーボード操作（Enter / Space）でもめくれるようにする
+$("flashcard").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    flipCard();
+  }
 });
 
 $("fc-controls").addEventListener("click", (e) => {
@@ -806,6 +868,18 @@ function addWordToFlashcards(word) {
 $("quiz-sentence").addEventListener("click", (e) => {
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
+});
+
+// ポップアップ内の発音再生
+$("wp-speak").addEventListener("click", () => {
+  if (!popupWord) return;
+  const entry = lookupWord(popupWord);
+  speak(entry ? entry.word : popupWord, $("wp-speak"));
+});
+
+// 文全体の発音再生（回答後）
+$("btn-speak-sentence").addEventListener("click", () => {
+  speak(quiz.filledSentence, $("btn-speak-sentence"));
 });
 
 $("wp-close").addEventListener("click", closeWordPopup);

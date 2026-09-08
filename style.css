@@ -197,6 +197,25 @@ h1 { font-size: 22px; font-weight: 700; }
 .rate-remembered:hover { background: #dcfce7; }
 .hint { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 10px; }
 
+/* 発音再生ボタン */
+.speak-btn {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.speak-btn:hover { background: #e0e7ff; }
+.speak-btn.speaking { background: var(--primary); color: #fff; }
+.speak-btn.speak-inline { padding: 2px 10px; font-size: 12px; margin-left: 6px; vertical-align: middle; }
+.speak-sentence { margin-top: 12px; }
+.fc-example .speak-inline { margin: 6px 0 0; }
+
 /* タップで意味を表示できる単語（回答後） */
 .tap-word {
   border-bottom: 1px dashed #a5b4fc;

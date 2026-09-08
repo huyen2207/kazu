@@ -73,7 +73,10 @@
       </div>
       <div class="progress-bar"><div id="quiz-progress-fill" class="progress-fill"></div></div>
 
-      <div class="card sentence-card"><p id="quiz-sentence"></p></div>
+      <div class="card sentence-card">
+        <p id="quiz-sentence"></p>
+        <button id="btn-speak-sentence" class="speak-btn speak-sentence hidden" type="button">🔊 文を聞く</button>
+      </div>
       <p id="tap-hint" class="hint hidden">単語をタップすると意味を確認できます（選択肢も）</p>
 
       <div id="quiz-choices" class="choices"></div>
@@ -145,22 +148,28 @@
       </div>
 
       <div id="fc-deck">
-        <button id="flashcard" class="flashcard">
+        <div id="flashcard" class="flashcard" role="button" tabindex="0">
           <div id="fc-front">
             <p id="fc-word" class="fc-word"></p>
             <p id="fc-pos" class="fc-pos"></p>
+            <button class="speak-btn" data-speak-card type="button">🔊 発音を聞く</button>
             <p class="fc-hint">タップして意味を表示</p>
           </div>
           <div id="fc-back" class="hidden">
-            <p class="fc-word-small"><span id="fc-back-word"></span> <span id="fc-back-pos" class="fc-pos-inline"></span></p>
+            <p class="fc-word-small">
+              <span id="fc-back-word"></span>
+              <span id="fc-back-pos" class="fc-pos-inline"></span>
+              <button class="speak-btn speak-inline" data-speak-card type="button">🔊</button>
+            </p>
             <p id="fc-meaning" class="fc-meaning"></p>
             <div id="fc-example" class="fc-example hidden">
               <p id="fc-example-vi"></p>
               <p id="fc-example-ja" class="muted"></p>
+              <button class="speak-btn speak-inline" data-speak-example type="button">🔊 例文を聞く</button>
             </div>
             <ul id="fc-colloc" class="chip-list"></ul>
           </div>
-        </button>
+        </div>
         <div id="fc-controls" class="fc-controls hidden">
           <button class="btn rate rate-forgotten" data-rate="forgotten">覚えていない</button>
           <button class="btn rate rate-unsure" data-rate="unsure">あやふや</button>
@@ -195,6 +204,7 @@
         <p class="word-popup-word">
           <span id="wp-word"></span>
           <span id="wp-pos" class="word-popup-pos"></span>
+          <button id="wp-speak" class="speak-btn speak-inline" type="button">🔊</button>
         </p>
         <button id="wp-close" class="word-popup-close" aria-label="閉じる">×</button>
       </div>
