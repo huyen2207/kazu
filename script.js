@@ -232,7 +232,7 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
@@ -594,7 +594,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -1429,6 +1429,262 @@ $("pg-text-final").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("pg-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+
+/* ---------------------------------------------------------------------------
+   文章読解 — お知らせ・短い文章を読んで質問に答える（8題・17問）
+   kind: "notice"（お知らせ枠で表示）| "story"（通常の段落）
+   questions: {q:質問文, c:選択肢, a:正解index, e:解説, key:[語, 意味, 品詞]}
+--------------------------------------------------------------------------- */
+const READING_BANK = [
+  {
+    kind: "notice",
+    text: "Siêu thị Hoa Mai sẽ đóng cửa lúc 20:00 ngày 15/9 để sửa chữa.\nSiêu thị mở cửa trở lại vào 8:00 ngày 17/9.\nXin cảm ơn quý khách!",
+    questions: [
+      { q: "Ngày 16/9, khách hàng có thể đến mua hàng không?", c: ["Có, vào buổi sáng.", "Có, sau 20 giờ.", "Không.", "Chỉ có thể đến buổi chiều."], a: 2, e: "15日20時に閉店し、再開は17日8時です。つまり16日は一日中休業なので「Không（買い物できない）」が正解です。", key: ["đóng cửa", "閉店する、閉まる", "動詞句"] },
+      { q: "Khi nào siêu thị hoạt động trở lại?", c: ["20:00 ngày 15/9", "8:00 ngày 16/9", "20:00 ngày 16/9", "8:00 ngày 17/9"], a: 3, e: "「mở cửa trở lại vào 8:00 ngày 17/9（17日8時に再開）」と書かれています。「trở lại」は「再び」という意味です。", key: ["trở lại", "再び、戻る", "副詞"] },
+    ],
+    t: "【お知らせ】ホアマイスーパーは修理のため9月15日20時に閉店します。9月17日8時に営業を再開します。ご利用ありがとうございます！",
+    cat: "買い物",
+  },
+  {
+    kind: "notice",
+    text: "Lớp tiếng Việt tối thứ năm (ngày 12/10) nghỉ học vì cô giáo bị ốm.\nLớp sẽ học bù vào tối thứ bảy (ngày 14/10) từ 7 giờ đến 9 giờ.\nCác em nhớ đến đúng giờ.",
+    questions: [
+      { q: "Vì sao lớp tối thứ năm nghỉ học?", c: ["Vì cô giáo bận việc.", "Vì cô giáo bị ốm.", "Vì trời mưa to.", "Vì học sinh muốn nghỉ."], a: 1, e: "「vì cô giáo bị ốm（先生が病気のため）」と理由が書かれています。「bị ốm」は「病気になる」です。", key: ["bị ốm", "病気になる", "表現"] },
+      { q: "Lớp học bù bắt đầu lúc mấy giờ?", c: ["7 giờ tối thứ bảy", "9 giờ tối thứ bảy", "7 giờ tối thứ năm", "8 giờ tối thứ bảy"], a: 0, e: "「học bù vào tối thứ bảy từ 7 giờ đến 9 giờ（土曜夜7時から9時まで補講）」なので、開始は土曜夜7時です。「học bù」は「補講を受ける」という意味です。", key: ["học bù", "補講を受ける", "表現"] },
+    ],
+    t: "【お知らせ】木曜夜（10月12日）のベトナム語クラスは、先生が病気のため休講です。補講は土曜夜（10月14日）の7時から9時に行います。時間どおりに来てください。",
+    cat: "学校",
+  },
+  {
+    kind: "notice",
+    text: "Tòa nhà sẽ cắt nước từ 9:00 đến 16:00 ngày 20/8 để sửa đường ống.\nXin quý khách chứa nước trước để dùng.\nBan quản lý xin cảm ơn.",
+    questions: [
+      { q: "Người sống trong tòa nhà nên làm gì trước ngày 20/8?", c: ["Sửa đường ống.", "Đi mua nước uống.", "Ra khỏi tòa nhà.", "Chứa nước trước để dùng."], a: 3, e: "「Xin quý khách chứa nước trước để dùng（使う水を前もってためておいてください）」とお願いしています。「chứa」は「ためる・入れておく」です。", key: ["chứa", "ためる、入れておく", "動詞"] },
+      { q: "Mấy giờ tòa nhà có nước trở lại?", c: ["16:00", "9:00", "20:00", "8:00"], a: 0, e: "断水は「từ 9:00 đến 16:00（9時から16時まで）」なので、16時に水が戻ります。", key: ["cắt nước", "断水する", "表現"] },
+    ],
+    t: "【お知らせ】当ビルは水道管修理のため、8月20日9時から16時まで断水します。使用する水は前もってためておいてください。管理組合より。",
+    cat: "家",
+  },
+  {
+    kind: "notice",
+    text: "Từ ngày 1/6 đến ngày 7/6, quán cà phê Mây giảm giá 20% tất cả đồ uống cho khách đến trước 10 giờ sáng.\nXin mời quý khách!",
+    questions: [
+      { q: "Ai được giảm giá 20%?", c: ["Khách đến trước 10 giờ sáng.", "Tất cả khách trong ngày.", "Khách đến sau 10 giờ sáng.", "Chỉ khách mua cà phê đen."], a: 0, e: "「cho khách đến trước 10 giờ sáng（午前10時前に来た客に）」という条件が付いています。", key: ["giảm giá", "値引きする", "表現"] },
+      { q: "Ngày 8/6 khách có được giảm giá không?", c: ["Có, cả ngày.", "Có, nếu đến sớm.", "Không, chương trình đã kết thúc.", "Có, nhưng chỉ 10%."], a: 2, e: "キャンペーンは「từ ngày 1/6 đến ngày 7/6（6月1日～7日）」なので、8日はすでに終了しています。", key: ["kết thúc", "終わる、終了する", "動詞"] },
+    ],
+    t: "【お知らせ】6月1日から7日まで、カフェ・マイは午前10時前にご来店のお客様に全ドリンク20%引きいたします。ぜひお越しください！",
+    cat: "カフェ",
+  },
+  {
+    kind: "story",
+    text: "Tuần trước, Mai cùng hai người bạn đi Đà Lạt. Họ định đi bằng xe máy nhưng vì trời mưa nên quyết định đi xe khách. Ba người ở đó hai ngày. Buổi sáng họ đi tham quan, còn buổi tối thường đến chợ đêm ăn uống và mua quà. Mai rất thích chuyến đi và muốn quay lại Đà Lạt vào năm sau.",
+    questions: [
+      { q: "Tại sao Mai và các bạn không đi xe máy?", c: ["Vì xe máy bị hỏng.", "Vì đường quá xa.", "Vì trời mưa.", "Vì họ không biết lái xe."], a: 2, e: "「vì trời mưa nên quyết định đi xe khách（雨だったのでバスで行くことにした）」と書かれています。「vì ~ nên …（～なので…）」の因果関係を読み取ります。", key: ["xe khách", "長距離バス", "名詞"] },
+      { q: "Mai cảm thấy thế nào về chuyến đi?", c: ["Cô ấy không hài lòng.", "Cô ấy thích chuyến đi.", "Cô ấy thấy chuyến đi quá dài.", "Cô ấy không muốn đến Đà Lạt nữa."], a: 1, e: "「Mai rất thích chuyến đi và muốn quay lại（旅をとても気に入り、また戻りたい）」とあるのでBが正解。「また来たい」＝満足していた証拠です。", key: ["chuyến đi", "旅、旅行", "名詞"] },
+    ],
+    t: "先週、マイは友達2人とダラットへ行きました。バイクで行くつもりでしたが、雨だったので長距離バスで行くことにしました。3人はそこに2日間滞在しました。朝は観光をして、夜はよくナイトマーケットへ行って食事をしたりお土産を買ったりしました。マイはこの旅がとても気に入り、来年またダラットに戻りたいと思っています。",
+    cat: "旅行",
+  },
+  {
+    kind: "story",
+    text: "Minh mới bắt đầu làm việc ở một nhà hàng Nhật. Lúc đầu, anh ấy thấy công việc rất khó vì phải nhớ tên nhiều món ăn. Nhưng đồng nghiệp rất tốt bụng và thường giúp anh ấy. Bây giờ, sau ba tháng, Minh đã quen với công việc và được khách hàng khen.",
+    questions: [
+      { q: "Lúc đầu, vì sao Minh thấy công việc khó?", c: ["Vì đồng nghiệp không giúp anh ấy.", "Vì nhà hàng quá đông khách.", "Vì anh ấy không thích món ăn Nhật.", "Vì phải nhớ tên nhiều món ăn."], a: 3, e: "「vì phải nhớ tên nhiều món ăn（多くの料理名を覚えなければならないから）」と理由が明記されています。", key: ["món ăn", "料理", "名詞"] },
+      { q: "Bây giờ công việc của Minh thế nào?", c: ["Anh ấy đã quen với công việc.", "Anh ấy vẫn thấy rất khó.", "Anh ấy muốn nghỉ việc.", "Anh ấy chuyển sang nhà hàng khác."], a: 0, e: "「Minh đã quen với công việc và được khách hàng khen（仕事に慣れ、客にほめられている）」とあります。「quen với ~」は「～に慣れる」です。", key: ["quen với ~", "～に慣れる", "表現"] },
+    ],
+    t: "ミンは日本食レストランで働き始めたばかりです。最初は多くの料理名を覚えなければならず、仕事がとても難しいと感じました。しかし同僚はとても親切で、よく彼を助けてくれました。3か月経った今、ミンは仕事に慣れ、お客さんにほめられています。",
+    cat: "仕事",
+  },
+  {
+    kind: "story",
+    text: "Chị gái tôi rất thích nấu ăn. Cuối tuần nào chị ấy cũng vào bếp làm món mới. Hôm qua chị làm bánh xèo nhưng quên mua rau sống, nên tôi phải chạy ra chợ mua giúp. Bánh xèo chị làm hơi mặn nhưng cả nhà vẫn ăn hết vì không muốn chị buồn.",
+    questions: [
+      { q: "Vì sao \"tôi\" phải chạy ra chợ?", c: ["Vì muốn mua bánh xèo.", "Vì chị gái quên mua rau sống.", "Vì mẹ bảo đi mua thịt.", "Vì nhà hết gạo."], a: 1, e: "「chị làm bánh xèo nhưng quên mua rau sống, nên tôi phải chạy ra chợ（姉が生野菜を買い忘れたので、私が市場へ走った）」という流れです。", key: ["rau sống", "生野菜", "名詞"] },
+      { q: "Vì sao cả nhà ăn hết bánh xèo?", c: ["Vì bánh rất ngon.", "Vì mọi người đói.", "Vì bánh rất rẻ.", "Vì không muốn chị buồn."], a: 3, e: "「hơi mặn nhưng cả nhà vẫn ăn hết vì không muốn chị buồn（少ししょっぱかったが、姉を悲しませたくないから全部食べた）」— 理由は味ではなく気持ちです。", key: ["mặn", "しょっぱい、塩辛い", "形容詞"] },
+    ],
+    t: "私の姉は料理が大好きです。毎週末、台所で新しい料理を作ります。昨日はバインセオを作りましたが、生野菜を買い忘れたので、私が代わりに市場へ走って買いました。姉のバインセオは少ししょっぱかったけれど、姉を悲しませたくないので家族みんなで全部食べました。",
+    cat: "家族",
+  },
+  {
+    kind: "story",
+    text: "Sáng nay, Nam để quên ví trên xe buýt. Trong ví có tiền và thẻ sinh viên. Nam rất lo lắng. Buổi chiều, một cô lái xe buýt gọi điện cho Nam vì tìm thấy ví của anh. Nam đến bến xe nhận lại ví và cảm ơn cô ấy nhiều lần. May mắn là không mất gì cả.",
+    questions: [
+      { q: "Nam để quên ví ở đâu?", c: ["Trên xe buýt.", "Ở trường học.", "Ở bến xe.", "Ở nhà."], a: 0, e: "冒頭に「Nam để quên ví trên xe buýt（バスに財布を置き忘れた）」とあります。「để quên」は「置き忘れる」です。", key: ["để quên", "置き忘れる", "表現"] },
+      { q: "Ai đã tìm thấy ví của Nam?", c: ["Một người bạn của Nam.", "Một học sinh.", "Cô lái xe buýt.", "Nhân viên bến xe."], a: 2, e: "「một cô lái xe buýt gọi điện cho Nam vì tìm thấy ví（バス運転手の女性が財布を見つけて電話をくれた）」とあります。", key: ["tìm thấy", "見つける", "動詞"] },
+      { q: "Cuối cùng, ví của Nam thế nào?", c: ["Mất hết tiền bên trong.", "Nam nhận lại đủ, không mất gì.", "Chỉ còn thẻ sinh viên.", "Không tìm thấy nữa."], a: 1, e: "最後に「May mắn là không mất gì cả（幸い何もなくならなかった）」とあり、無事に全部戻ってきました。", key: ["may mắn", "幸運な、ラッキーな", "形容詞"] },
+    ],
+    t: "今朝、ナムはバスに財布を置き忘れました。財布にはお金と学生証が入っていました。ナムはとても心配しました。午後、バス運転手の女性が財布を見つけて、ナムに電話をくれました。ナムはバスターミナルへ行って財布を受け取り、何度もお礼を言いました。幸い、何もなくなっていませんでした。",
+    cat: "交通",
+  },
+];
+
+// 読解のキーフレーズ・登場語を辞書へ登録
+for (const r of READING_BANK) for (const q of r.questions) addDictEntry(q.key[0], q.key[1], q.key[2]);
+const READING_SUPPLEMENT = {
+  "mở cửa": ["開く、開店する", "動詞句"], "sửa chữa": ["修理する", "動詞"], "quý khách": ["お客様", "名詞"],
+  "hoạt động": ["活動する、営業する", "動詞"], "tham quan": ["観光する、見学する", "動詞"],
+  "chợ đêm": ["ナイトマーケット", "名詞"], "quay lại": ["戻る、また来る", "動詞"],
+  "hài lòng": ["満足する", "形容詞"], "đường ống": ["（水道の）配管", "名詞"],
+  "ban quản lý": ["管理組合、管理事務所", "名詞"], "tòa nhà": ["ビル、建物", "名詞"],
+  "đồ uống": ["飲み物", "名詞"], "tốt bụng": ["親切な、心優しい", "形容詞"],
+  "khen": ["ほめる", "動詞"], "bếp": "台所", "bánh xèo": ["バインセオ（ベトナム風お好み焼き）", "名詞"],
+  "ví": "財布", "thẻ sinh viên": ["学生証", "名詞"], "lái xe": ["運転する・運転手", "動詞・名詞"],
+  "bến xe": ["バスターミナル", "名詞"], "khách hàng": ["顧客、お客", "名詞"], "tất cả": ["すべて、全部", "名詞"],
+  "chương trình": ["プログラム、キャンペーン", "名詞"], "đà lạt": ["ダラット（地名）", "地名"],
+  "gạo": "米", "thịt": "肉", "mây": "雲", "sống": "生の・生きる", "đủ": "十分な・そろっている",
+  "lần": "回・度", "cả": "全部・～さえ", "gì": "何", "nhà hàng": ["レストラン", "名詞"],
+};
+for (const [word, value] of Object.entries(READING_SUPPLEMENT)) {
+  if (Array.isArray(value)) addDictEntry(word, value[0], value[1]);
+  else addDictEntry(word, value, "");
+}
+
+const reading = { r: null, qIndex: 0, correct: 0, wrong: [], answered: false };
+
+function readingTextHtml(r, interactive) {
+  const lines = r.text.split("\n");
+  const bodyHtml = lines
+    .map((line) => (interactive ? interactiveHtml(line) : escapeHtml(line)))
+    .join("<br>");
+  if (r.kind === "notice") {
+    return `<div class="notice-box"><p class="notice-title">THÔNG BÁO</p><p>${bodyHtml}</p></div>`;
+  }
+  return `<div class="card passage-card"><p>${bodyHtml}</p></div>`;
+}
+
+function startReading() {
+  reading.r = shuffle(READING_BANK)[0];
+  reading.qIndex = 0;
+  reading.correct = 0;
+  reading.wrong = [];
+  reading.answered = false;
+  showScreen("reading");
+  $("rd-question").classList.remove("hidden");
+  $("rdg-result").classList.add("hidden");
+  $("rdg-lead").textContent =
+    reading.r.kind === "notice"
+      ? "お知らせを読んで、質問に答えてください"
+      : "文章を読んで、質問に答えてください";
+  $("rdg-text-wrap").innerHTML = readingTextHtml(reading.r, false);
+  renderReadingQuestion();
+}
+
+function renderReadingQuestion() {
+  window.scrollTo(0, 0);
+  const r = reading.r;
+  const question = r.questions[reading.qIndex];
+  reading.answered = false;
+
+  $("rdg-current").textContent = reading.qIndex + 1;
+  $("rdg-total").textContent = r.questions.length;
+  $("rdg-correct-count").textContent = reading.correct;
+  $("rdg-progress-fill").style.width = (reading.qIndex / r.questions.length) * 100 + "%";
+  $("rdg-tap-hint").classList.add("hidden");
+  $("rdg-q").textContent = `質問${reading.qIndex + 1}：${question.q}`;
+
+  const letters = ["A", "B", "C", "D"];
+  $("rdg-choices").innerHTML = "";
+  question.c.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.dataset.index = i;
+    btn.innerHTML = `<span class="choice-id">${letters[i]}</span><span>${escapeHtml(text)}</span><span class="verdict"></span>`;
+    btn.addEventListener("click", () => {
+      if (!reading.answered) answerReading(i);
+    });
+    $("rdg-choices").appendChild(btn);
+  });
+  $("rdg-feedback").classList.add("hidden");
+}
+
+function answerReading(selectedIndex) {
+  const r = reading.r;
+  const question = r.questions[reading.qIndex];
+  const isCorrect = selectedIndex === question.a;
+  reading.answered = true;
+  if (isCorrect) reading.correct++;
+  else reading.wrong.push({ word: question.key[0], meaning: question.key[1], selected: question.c[selectedIndex] });
+
+  const day = store.days[todayStr()] || { questions: 0, correct: 0 };
+  day.questions++;
+  if (isCorrect) day.correct++;
+  store.days[todayStr()] = day;
+  if (!isCorrect) addWordToFlashcards(question.key[0]);
+  saveStore();
+
+  document.querySelectorAll("#rdg-choices .choice").forEach((btn) => {
+    const i = Number(btn.dataset.index);
+    if (i === question.a) {
+      btn.classList.add("correct");
+      btn.querySelector(".verdict").textContent = "正解";
+    } else if (i === selectedIndex) {
+      btn.classList.add("wrong");
+      btn.querySelector(".verdict").textContent = "不正解";
+    } else {
+      btn.classList.add("dimmed");
+    }
+  });
+
+  const letters = ["A", "B", "C", "D"];
+  const banner = $("rdg-banner");
+  banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
+  banner.textContent =
+    (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[question.a]}. ${question.c[question.a]}`;
+  $("rdg-explanation").textContent = question.e;
+  $("rdg-next").textContent =
+    reading.qIndex + 1 < r.questions.length ? "次の問題へ" : "結果を見る";
+  $("rdg-feedback").classList.remove("hidden");
+  $("rdg-correct-count").textContent = reading.correct;
+}
+
+function finishReading() {
+  const r = reading.r;
+  store.sessions.push({
+    at: nowIso(),
+    mode: "reading",
+    total: r.questions.length,
+    correct: reading.correct,
+    wrong: reading.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+
+  $("rd-question").classList.add("hidden");
+  $("rdg-result").classList.remove("hidden");
+  $("rdg-result-correct").textContent = reading.correct;
+  $("rdg-result-total").textContent = r.questions.length;
+  $("rdg-result-note").textContent = `正答率 ${Math.round((reading.correct / r.questions.length) * 100)}%`;
+  $("rdg-text-final-wrap").innerHTML = readingTextHtml(r, true);
+  $("rdg-translation").textContent = r.t;
+  $("rdg-wrong-wrap").classList.toggle("hidden", reading.wrong.length === 0);
+  $("rdg-wrong-list").innerHTML = reading.wrong
+    .map(
+      (w) =>
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></li>`,
+    )
+    .join("");
+  window.scrollTo(0, 0);
+}
+
+$("btn-start-reading").addEventListener("click", startReading);
+$("rdg-next").addEventListener("click", () => {
+  if (reading.qIndex + 1 < reading.r.questions.length) {
+    reading.qIndex++;
+    renderReadingQuestion();
+  } else {
+    finishReading();
+  }
+});
+$("rdg-again").addEventListener("click", startReading);
+$("rdg-text-final-wrap").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+$("rdg-wrong-list").addEventListener("click", (e) => {
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });

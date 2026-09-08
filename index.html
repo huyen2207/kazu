@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
   <header class="site-header">
@@ -65,6 +65,7 @@
         <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
         <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
         <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）</button>
+        <button id="btn-start-reading" class="btn btn-secondary btn-lg">📰 文章読解（お知らせ・文を読んで答える）</button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -275,6 +276,52 @@
       </div>
     </section>
 
+    <!-- 文章読解画面（お知らせ・文章を読んで答える） -->
+    <section id="screen-reading" class="screen hidden">
+      <div id="rd-question">
+        <div class="progress-row">
+          <span>問題 <strong id="rdg-current">1</strong> / <span id="rdg-total">2</span></span>
+          <span>正解 <span id="rdg-correct-count">0</span></span>
+        </div>
+        <div class="progress-bar"><div id="rdg-progress-fill" class="progress-fill"></div></div>
+
+        <p class="sub st-lead" id="rdg-lead">文章を読んで、質問に答えてください</p>
+        <div id="rdg-text-wrap"></div>
+        <p id="rdg-tap-hint" class="hint hidden">単語をタップすると意味を確認できます</p>
+
+        <div class="card question-card"><p id="rdg-q"></p></div>
+        <div id="rdg-choices" class="choices"></div>
+
+        <div id="rdg-feedback" class="hidden">
+          <div id="rdg-banner" class="feedback-banner"></div>
+          <div class="card"><p id="rdg-explanation"></p></div>
+          <button id="rdg-next" class="btn btn-primary btn-block">次の問題へ</button>
+        </div>
+      </div>
+
+      <div id="rdg-result" class="hidden">
+        <div class="card result-card">
+          <h2>文章読解の結果</h2>
+          <p class="result-score"><span id="rdg-result-correct">0</span><span class="result-total"> / <span id="rdg-result-total">0</span></span></p>
+          <p class="sub" id="rdg-result-note"></p>
+        </div>
+        <div id="rdg-text-final-wrap"></div>
+        <p class="hint">単語をタップすると意味を確認できます</p>
+        <div class="card explanation">
+          <h3>日本語訳</h3>
+          <p id="rdg-translation"></p>
+        </div>
+        <div id="rdg-wrong-wrap" class="card hidden">
+          <h3>間違えた問題のキーフレーズ（Flash Cardに追加済み）</h3>
+          <ul id="rdg-wrong-list" class="wrong-list"></ul>
+        </div>
+        <div class="cta-row">
+          <button id="rdg-again" class="btn btn-primary">別の文章に挑戦</button>
+          <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+        </div>
+      </div>
+    </section>
+
     <!-- 実力分析画面 -->
     <section id="screen-analysis" class="screen hidden">
       <div class="page-head">
@@ -414,6 +461,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>
