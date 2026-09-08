@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=12" />
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 <body>
   <header class="site-header">
@@ -83,7 +83,10 @@
 
       <div class="card sentence-card">
         <p id="quiz-sentence"></p>
-        <button id="btn-speak-sentence" class="speak-btn speak-sentence hidden" type="button">🔊 文を聞く</button>
+        <div id="quiz-audio-row" class="audio-row hidden">
+          <button id="btn-speak-sentence" class="speak-btn" type="button">🔊 文を聞く</button>
+          <div class="speed-control" data-speed-control></div>
+        </div>
       </div>
       <p id="tap-hint" class="hint hidden">単語をタップすると意味を確認できます（選択肢も）</p>
 
@@ -155,6 +158,7 @@
         <div class="card center listen-card">
           <p class="sub">音声を聞いて、正しい単語を選んでください</p>
           <button id="ls-play" class="listen-play" type="button" aria-label="再生">🔊</button>
+          <div class="speed-control speed-center" data-speed-control></div>
           <p class="hint">ボタンをタップすると何度でも再生できます</p>
         </div>
 
@@ -349,7 +353,10 @@
           <div class="card explanation">
             <h3>正解の文</h3>
             <p id="bd-sentence" class="bd-sentence"></p>
-            <button id="bd-speak" class="speak-btn" type="button">🔊 文を聞く</button>
+            <div class="audio-row">
+              <button id="bd-speak" class="speak-btn" type="button">🔊 文を聞く</button>
+              <div class="speed-control" data-speed-control></div>
+            </div>
             <h3>文法</h3>
             <div class="card exp-grammar-inline">
               <p><span id="bd-pattern" class="pattern"></span><span id="bd-pattern-jp" class="muted"></span></p>
@@ -389,7 +396,8 @@
         <div class="card center listen-card">
           <p class="sub">文を聞いて、正しい意味を選んでください</p>
           <button id="sl-play" class="listen-play" type="button" aria-label="再生">🔊</button>
-          <p class="hint">ボタンをタップすると何度でも再生できます（少しゆっくり読み上げます）</p>
+          <div class="speed-control speed-center" data-speed-control></div>
+          <p class="hint">ボタンをタップすると何度でも再生できます</p>
         </div>
 
         <div id="sl-choices" class="choices"></div>
@@ -399,6 +407,10 @@
           <div class="card">
             <h3 class="fb-label">読み上げた文</h3>
             <p id="sl-sentence" class="bd-sentence"></p>
+            <div class="audio-row">
+              <button id="sl-speak-again" class="speak-btn" type="button">🔊 もう一度聞く</button>
+              <div class="speed-control" data-speed-control></div>
+            </div>
             <p class="hint">単語をタップすると意味を確認できます</p>
             <h3 class="fb-label">意味</h3>
             <p id="sl-meaning"></p>
@@ -490,6 +502,7 @@
         <span>カード <strong id="card-current">1</strong> / <span id="card-total">0</span></span>
         <span id="card-bucket" class="bucket-badge"></span>
       </div>
+      <div class="speed-control speed-right" data-speed-control></div>
 
       <div id="fc-empty" class="card center hidden">
         <p>今日復習するカードはありません。まずはクイズで語彙を増やしましょう。</p>
@@ -564,6 +577,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=12"></script>
+  <script src="script.js?v=13"></script>
 </body>
 </html>

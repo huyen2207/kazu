@@ -216,6 +216,27 @@ h1 { font-size: 22px; font-weight: 700; }
 .speak-sentence { margin-top: 12px; }
 .fc-example .speak-inline { margin: 6px 0 0; }
 
+/* 音声の再生速度切り替え */
+.audio-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.speed-control {
+  display: inline-flex; align-items: center; gap: 0;
+  border: 1px solid var(--border); border-radius: 999px; overflow: hidden;
+  background: var(--card);
+}
+.speed-control::before {
+  content: "速度";
+  font-size: 11px; color: var(--muted); padding: 0 8px 0 12px;
+}
+.speed-control button {
+  border: none; background: none; font-family: inherit; cursor: pointer;
+  font-size: 12px; padding: 5px 12px; color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+.speed-control button:hover { background: #f3f4f6; }
+.speed-control button.active { background: var(--primary); color: #fff; font-weight: 600; }
+.speed-center { margin: 10px auto 4px; }
+.speed-right { margin: 8px 0 0 auto; width: fit-content; display: flex; }
+
 /* タップで意味を表示できる単語（回答後） */
 .tap-word {
   border-bottom: 1px dashed #a5b4fc;

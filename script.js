@@ -148,6 +148,40 @@ if ("speechSynthesis" in window) {
   speechSynthesis.onvoiceschanged = pickVietnameseVoice;
 }
 
+// 再生速度の設定（全ての音声で共通・localStorageに保存）
+const SPEED_OPTIONS = [
+  { key: "slow", label: "遅い", rate: 0.65 },
+  { key: "normal", label: "普通", rate: 0.85 },
+  { key: "fast", label: "速い", rate: 1.05 },
+];
+
+function currentSpeedKey() {
+  return SPEED_OPTIONS.some((o) => o.key === store.speechSpeed)
+    ? store.speechSpeed
+    : "normal";
+}
+function currentRate() {
+  return SPEED_OPTIONS.find((o) => o.key === currentSpeedKey()).rate;
+}
+
+// ページ内すべての速度切り替えUI（[data-speed-control]）を描画・同期する
+function renderSpeedControls() {
+  const active = currentSpeedKey();
+  document.querySelectorAll("[data-speed-control]").forEach((el) => {
+    el.innerHTML = SPEED_OPTIONS.map(
+      (o) =>
+        `<button type="button" data-speed="${o.key}" class="${o.key === active ? "active" : ""}">${o.label}</button>`,
+    ).join("");
+  });
+}
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-speed]");
+  if (!btn) return;
+  store.speechSpeed = btn.dataset.speed;
+  saveStore();
+  renderSpeedControls();
+});
+
 // テキストを読み上げる。button指定時は再生中の見た目に切り替える。
 function speak(text, button) {
   if (!("speechSynthesis" in window) || !text) return;
@@ -155,7 +189,7 @@ function speak(text, button) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "vi-VN";
   if (viVoice) utterance.voice = viVoice;
-  utterance.rate = 0.85; // 学習者向けに少しゆっくり
+  utterance.rate = currentRate(); // 速度切り替え（遅い/普通/速い）に連動
   if (button) {
     button.classList.add("speaking");
     const done = () => button.classList.remove("speaking");
@@ -406,7 +440,8 @@ function renderSentenceInteractive(q) {
   const correctText = q.choices.find((c) => c.id === q.correctChoice).text;
   const segments = q.sentence.split(/_{2,}/);
   const filled = `<span class="tap-word filled" data-word="${escapeHtml(correctText)}">${escapeHtml(correctText)}</span>`;
-  $("quiz-sentence").innerHTML = segments.map(interactiveHtml).join(filled);
+  // interactiveHtmlは前後の空白を落とすため、空欄の前後に明示的にスペースを入れる
+  $("quiz-sentence").innerHTML = segments.map(interactiveHtml).join(` ${filled} `);
   // 音声再生用に空欄を埋めた文を保持する
   quiz.filledSentence = q.sentence.replace(/_{2,}/, correctText);
 }
@@ -451,7 +486,7 @@ function renderQuestion() {
   }
   quiz.answered = false;
   $("tap-hint").classList.add("hidden");
-  $("btn-speak-sentence").classList.add("hidden");
+  $("quiz-audio-row").classList.add("hidden");
   $("quiz-feedback").classList.add("hidden");
 }
 
@@ -495,7 +530,7 @@ function answer(choiceId) {
   // 問題文をタップ可能にし、空欄を正解で埋める
   renderSentenceInteractive(q);
   $("tap-hint").classList.remove("hidden");
-  $("btn-speak-sentence").classList.remove("hidden");
+  $("quiz-audio-row").classList.remove("hidden");
 
   renderExplanation(q, isCorrect);
   $("quiz-correct-count").textContent = quiz.correct;
@@ -992,7 +1027,7 @@ function renderSituationDialogue(q, interactive) {
           segments.length > 1
             ? segments
                 .map(interactiveHtml)
-                .join(`<span class="filled-sentence">${interactiveHtml(q.c[q.a])}</span>`)
+                .join(` <span class="filled-sentence">${interactiveHtml(q.c[q.a])}</span> `)
             : interactiveHtml(text);
       }
       return `<div class="dialogue-line">
@@ -2238,25 +2273,8 @@ function renderSentListenQuestion() {
   });
 
   $("sl-feedback").classList.add("hidden");
-  // 文をゆっくり読み上げる（自動再生がブロックされても🔊で再生できる）
-  speakSlow(q.sentence, $("sl-play"));
-}
-
-// 文の聴解用：単語再生より少しゆっくり
-function speakSlow(text, button) {
-  if (!("speechSynthesis" in window) || !text) return;
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "vi-VN";
-  if (viVoice) utterance.voice = viVoice;
-  utterance.rate = 0.75;
-  if (button) {
-    button.classList.add("speaking");
-    const done = () => button.classList.remove("speaking");
-    utterance.onend = done;
-    utterance.onerror = done;
-  }
-  speechSynthesis.speak(utterance);
+  // 文を読み上げる（速度は切り替え設定に連動。自動再生がブロックされても🔊で再生できる）
+  speak(q.sentence, $("sl-play"));
 }
 
 function answerSentListen(selectedIndex) {
@@ -2340,7 +2358,11 @@ $("btn-start-sentlisten").addEventListener("click", () => {
 });
 $("sl-play").addEventListener("click", () => {
   const q = sentListen.questions[sentListen.index];
-  if (q) speakSlow(q.sentence, $("sl-play"));
+  if (q) speak(q.sentence, $("sl-play"));
+});
+$("sl-speak-again").addEventListener("click", () => {
+  const q = sentListen.questions[sentListen.index];
+  if (q) speak(q.sentence, $("sl-speak-again"));
 });
 $("sl-next").addEventListener("click", () => {
   if (sentListen.index + 1 < sentListen.questions.length) {
@@ -2691,5 +2713,6 @@ selectedCount = 10;
 document.querySelector('.mode-card[data-mode="random"]').classList.add("selected");
 document.querySelector('.count-card[data-count="10"]').classList.add("selected");
 updateStartButton();
+renderSpeedControls();
 renderHome();
 startQuiz(selectedMode, selectedCount);
