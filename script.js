@@ -9520,6 +9520,13 @@ $("fc-controls").addEventListener("click", (e) => {
   const rate = btn.dataset.rate;
   const card = fc.deck[fc.index];
   applyVocabEvent(card.v, rate);
+  // 「覚えた」を選んだ語はFlash Cardのデッキから外れたままにする
+  // （applyVocabEventが入れる「数日後に再登場」の予定を取り消す）。
+  // deleteではなく空文字にするのは、読み込み時のnormalizeVocabRecordが
+  // 欠けたnextReviewAtを「今すぐ復習」で埋め戻してしまうため（空文字は保持される）。
+  // 「覚えていない」「あやふや」はstatusがそのままデッキ対象なので、次回も残る。
+  // 覚えた語は、あとで＋カードで追加し直すか、クイズで間違えると再びデッキに戻る。
+  if (rate === "remembered") card.v.nextReviewAt = "";
   saveStore();
   fc.results[rate]++;
   // まだ覚えていない語は「もう一度」の対象に残す
