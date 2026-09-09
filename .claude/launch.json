@@ -4,7 +4,10 @@
     {
       "name": "kazu-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000
     },
     {
@@ -15,7 +18,10 @@
     {
       "name": "kazu-static",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["/private/tmp/claude-501/-Users-thanhhuyen-Desktop-KAZU/05f430c6-02c8-44d9-8c6c-c0f1bb157a80/scratchpad/static-server.mjs"],
+      "runtimeArgs": [
+        "-e",
+        "const http=require('http'),fs=require('fs'),path=require('path');const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json'};http.createServer((req,res)=>{const url=decodeURIComponent(req.url.split('?')[0]);const rel=url==='/'?'index.html':url.replace(/^\\/+/,'');const file=path.join(process.cwd(),rel);if(!file.startsWith(process.cwd())){res.writeHead(403).end('forbidden');return;}fs.readFile(file,(err,buf)=>{if(err){res.writeHead(404).end('not found');return;}res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});res.end(buf);});}).listen(8080,()=>console.log('static server on http://localhost:8080'));"
+      ],
       "port": 8080
     }
   ]
