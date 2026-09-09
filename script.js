@@ -9266,6 +9266,113 @@ function periodAccuracy(fromOffset, days) {
   };
 }
 
+/* --- レベル別の内訳（日ごと） ---
+   解答ログの各エントリからレベル（A2/B1/B2）を割り出す。
+   ログにはレベルを保存していないが、問題キーから元の問題バンクを
+   引けるので、表示時に導き出せる（過去のログにもそのまま効く）。 */
+let LEVEL_INDEX = null;
+
+function buildLevelIndex() {
+  const idx = {
+    quiz: new Map(),
+    sentlisten: new Map(),
+    situation: new Map(),
+    builder: new Map(),
+    passage: new Map(),
+    reading: new Map(),
+  };
+  for (const [lvl, bank] of [
+    ["A2", QUESTION_BANK], ["A2", A2_EXTRA_QUESTION_BANK],
+    ["B1", B1_QUESTION_BANK], ["B2", B2_QUESTION_BANK],
+  ]) {
+    for (const q of bank) {
+      idx.quiz.set(q.sentence, lvl);
+      // 文の聴解のキーは「空欄を正解で埋めた文」
+      const filled = q.sentence.replace(/_{2,}/, q.choices.find((c) => c.id === q.correctChoice).text);
+      idx.sentlisten.set(filled, lvl);
+    }
+  }
+  for (const [lvl, bank] of [["A2", SITUATION_BANK], ["B1", B1_SITUATION_BANK], ["B2", B2_SITUATION_BANK]]) {
+    for (const q of bank) idx.situation.set(q.t, lvl);
+  }
+  for (const [lvl, bank] of [["A2", BUILDER_BANK], ["B1", B1_BUILDER_BANK], ["B2", B2_BUILDER_BANK]]) {
+    for (const q of bank) idx.builder.set(builderKey(q.w), lvl);
+  }
+  for (const [lvl, bank] of [["A2", PASSAGE_BANK], ["B1", B1_PASSAGE_BANK], ["B2", B2_PASSAGE_BANK]]) {
+    for (const p of bank) idx.passage.set(p.text, lvl);
+  }
+  for (const [lvl, bank] of [["A2", READING_BANK], ["B1", B1_READING_BANK], ["B2", B2_READING_BANK]]) {
+    for (const r of bank) idx.reading.set(r.text, lvl);
+  }
+  return idx;
+}
+
+// ログ1件のレベル。割り出せない場合（聴解＝単語単位など）はnull
+function levelForLogEntry(e) {
+  if (!LEVEL_INDEX) LEVEL_INDEX = buildLevelIndex();
+  if (e.type === "passage" || e.type === "reading") {
+    const text = e.key.slice(0, e.key.lastIndexOf("#"));
+    return LEVEL_INDEX[e.type].get(text) || null;
+  }
+  const map = LEVEL_INDEX[e.type];
+  return (map && map.get(e.key)) || null;
+}
+
+// 日ごと×レベル別の「問題数と正答率」テーブル。
+// その日に何問解き、A2/B1/B2それぞれ何問・何%だったかを比べられるようにする。
+function renderDailyLevelTable(rows) {
+  const LEVELS = ["A2", "B1", "B2"];
+  const byDate = new Map();
+  for (const e of store.log) {
+    const date = e.t.slice(0, 10);
+    if (!byDate.has(date)) byDate.set(date, []);
+    byDate.get(date).push(e);
+  }
+
+  // 集計セル：問題数と、正誤が分かる分だけの正答率
+  const cellStats = (entries) => {
+    const total = entries.length;
+    const known = entries.filter((e) => e.correct !== null);
+    const acc = known.length > 0 ? Math.round((known.filter((e) => e.correct).length / known.length) * 100) : null;
+    return { total, acc };
+  };
+  const cellHtml = ({ total, acc }) =>
+    total === 0
+      ? '<td class="dp-cell empty">—</td>'
+      : `<td class="dp-cell"><span class="dp-q">${total}問</span><span class="dp-a">${acc === null ? "—" : acc + "%"}</span></td>`;
+
+  // 期間内で「その他」（レベルを割り出せない＝聴解など）があるときだけ列を出す
+  const studied = rows.filter((r) => r.questions > 0);
+  let hasOther = false;
+  const dayCells = studied.map((r) => {
+    const entries = byDate.get(r.date) || [];
+    const perLevel = { A2: [], B1: [], B2: [], other: [] };
+    for (const e of entries) {
+      const lvl = levelForLogEntry(e);
+      (perLevel[lvl] || perLevel.other).push(e);
+    }
+    if (perLevel.other.length > 0) hasOther = true;
+    return { r, entries, perLevel };
+  });
+
+  const header = `<tr><th>日付</th><th>問題数</th>${LEVELS.map((l) => `<th>${l}</th>`).join("")}${hasOther ? "<th>その他</th>" : ""}</tr>`;
+  // 新しい日が上に来るように逆順で並べる
+  const body = dayCells
+    .slice()
+    .reverse()
+    .map(({ r, entries, perLevel }) => {
+      const [, m, d] = r.date.split("-");
+      const totalCell = cellHtml(cellStats(entries));
+      const levelCells = LEVELS.map((l) => cellHtml(cellStats(perLevel[l]))).join("");
+      const otherCell = hasOther ? cellHtml(cellStats(perLevel.other)) : "";
+      return `<tr><th class="dp-date-cell">${Number(m)}/${Number(d)}</th>${totalCell}${levelCells}${otherCell}</tr>`;
+    })
+    .join("");
+
+  $("dp-level-table").innerHTML = header + body;
+  $("dp-levels").classList.toggle("hidden", studied.length === 0);
+}
+
 function renderDailyProgress() {
   const days = dpRangeDays;
   const rows = dailyProgressData(days);
@@ -9274,6 +9381,7 @@ function renderDailyProgress() {
   $("dp-empty").classList.toggle("hidden", hasData);
   $("dp-chart").classList.toggle("hidden", !hasData);
   $("dp-summary").classList.toggle("hidden", !hasData);
+  if (!hasData) $("dp-levels").classList.add("hidden");
 
   for (const btn of document.querySelectorAll("#dp-range button")) {
     btn.classList.toggle("active", Number(btn.dataset.days) === days);
@@ -9325,6 +9433,8 @@ function renderDailyProgress() {
       </div>`;
     })
     .join("");
+
+  renderDailyLevelTable(rows);
 }
 
 $("dp-range").addEventListener("click", (e) => {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=34" />
+  <link rel="stylesheet" href="style.css?v=35" />
 </head>
 <body>
   <header class="site-header">
@@ -186,6 +186,12 @@
           <span><span class="dp-key flat"></span>変わらない・初回</span>
           <span><span class="dp-key none"></span>学習なし</span>
         </p>
+        <!-- 日ごとのレベル別内訳（問題数と正答率） -->
+        <div id="dp-levels" class="hidden">
+          <h3 class="dp-levels-title">レベル別の内訳</h3>
+          <div class="dp-table-wrap"><table class="dp-table" id="dp-level-table"></table></div>
+          <p class="hint dp-levels-note">解答ログ（1問ごとの記録）に基づく集計です。記録導入前に解いた分は正答率が「—」になります。</p>
+        </div>
       </div>
 
       <div id="history-empty" class="card center hidden">
@@ -693,6 +699,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=34"></script>
+  <script src="script.js?v=35"></script>
 </body>
 </html>
