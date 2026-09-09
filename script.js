@@ -5528,12 +5528,14 @@ function upsertVocabFromQuestion(q, isCorrect) {
    画面制御
 --------------------------------------------------------------------------- */
 const $ = (id) => document.getElementById(id);
-const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading", "builder", "sentlisten"];
+const SCREENS = ["home", "quiz", "result", "flashcards", "fc-done", "history", "analysis", "listening", "situation", "passage", "reading", "builder", "sentlisten", "mixedresult"];
 
 function showScreen(name) {
   for (const s of SCREENS) $("screen-" + s).classList.add("hidden");
   $("screen-" + name).classList.remove("hidden");
   window.scrollTo(0, 0);
+  // ホームへ戻ったらミックス練習を中断扱いにする（次の単独練習の完了を乗っ取らないため）
+  if (name === "home") mixed.active = false;
   if (name === "home") renderHome();
   if (name === "history") renderHistory();
   if (name === "analysis") renderAnalysis();
@@ -5599,7 +5601,9 @@ let selectedMode = null;
 let selectedCount = null;
 
 function updateStartButton() {
-  $("btn-start-quiz").disabled = !(selectedMode && selectedCount);
+  const notReady = !(selectedMode && selectedCount);
+  $("btn-start-quiz").disabled = notReady;
+  $("btn-start-quiz-only").disabled = notReady;
 }
 
 $("mode-grid").addEventListener("click", (e) => {
@@ -5719,6 +5723,10 @@ function startQuiz(mode, count) {
 }
 
 $("btn-start-quiz").addEventListener("click", () => {
+  startMixed(selectedMode, selectedCount);
+});
+
+$("btn-start-quiz-only").addEventListener("click", () => {
   startQuiz(selectedMode, selectedCount);
 });
 
@@ -5901,6 +5909,8 @@ $("btn-next").addEventListener("click", () => {
   if (quiz.index + 1 < quiz.questions.length) {
     quiz.index++;
     renderQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("quiz");
   } else {
     saveSession();
     renderResult();
@@ -5958,7 +5968,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え", sentListening: "文の聴解" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", mixed: "ミックス", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え", sentListening: "文の聴解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -6974,6 +6984,8 @@ $("st-next").addEventListener("click", () => {
   if (situation.index + 1 < situation.questions.length) {
     situation.index++;
     renderSituationQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("situation");
   } else {
     finishSituation();
   }
@@ -7405,6 +7417,8 @@ $("pg-next").addEventListener("click", () => {
   if (passage.blankIndex + 1 < passage.p.blanks.length) {
     passage.blankIndex++;
     renderPassageBlank();
+  } else if (mixed.active) {
+    mixedUnitDone("passage");
   } else {
     // 全空欄回答後：文章を全単語タップ可能にして結果表示
     passage.blankIndex++;
@@ -8055,6 +8069,8 @@ $("bd-next").addEventListener("click", () => {
   if (builder.index + 1 < builder.questions.length) {
     builder.index++;
     renderBuilderQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("builder");
   } else {
     finishBuilder();
   }
@@ -8499,6 +8515,8 @@ $("rdg-next").addEventListener("click", () => {
   if (reading.qIndex + 1 < reading.r.questions.length) {
     reading.qIndex++;
     renderReadingQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("reading");
   } else {
     finishReading();
   }
@@ -8723,6 +8741,8 @@ $("ls-next").addEventListener("click", () => {
   if (listening.index + 1 < listening.questions.length) {
     listening.index++;
     renderListeningQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("listening");
   } else {
     finishListening();
   }
@@ -8885,6 +8905,8 @@ $("sl-next").addEventListener("click", () => {
   if (sentListen.index + 1 < sentListen.questions.length) {
     sentListen.index++;
     renderSentListenQuestion();
+  } else if (mixed.active) {
+    mixedUnitDone("sentlisten");
   } else {
     finishSentListen();
   }
@@ -9405,6 +9427,294 @@ $("import-overlay").addEventListener("click", (e) => {
 });
 
 /* ---------------------------------------------------------------------------
+   ミックス練習：レベル→モード→問題数を選ぶと、全練習タイプから
+   ランダムに混ぜて出題する。各タイプの既存画面をそのまま使い、
+   1ユニット（1問。読解系は1文章＝複数問）終わるごとに次のタイプへ切り替える。
+--------------------------------------------------------------------------- */
+const MIXED_TYPE_LABELS = {
+  quiz: "📝 語彙クイズ",
+  listening: "🎧 聴解",
+  situation: "💬 会話",
+  passage: "📖 読解空欄",
+  reading: "📰 文章読解",
+  builder: "🧩 並べ替え",
+  sentlisten: "🔉 文の聴解",
+};
+
+const mixed = {
+  active: false,
+  units: [],
+  step: 0,
+  slotsDone: 0,
+  totalSlots: 0,
+  correct: 0,
+  wrong: [],
+  perType: {},
+};
+
+// 出題プランを組み立てる。1スロット＝1問。読解系は文章単位でまとめて消費する。
+// クイズはモード（new/review/random）の選択ロジックをそのまま使う。
+function buildMixedUnits(mode, count) {
+  const units = [];
+  let remaining = count;
+
+  const quizPool = pickQuestions(mode, count);
+  let quizUsed = 0;
+  const situationPool = shuffle(pickBankByLevel({ A2: SITUATION_BANK, B1: B1_SITUATION_BANK, B2: B2_SITUATION_BANK }));
+  const builderPool = shuffle(pickBankByLevel({ A2: BUILDER_BANK, B1: B1_BUILDER_BANK, B2: B2_BUILDER_BANK }));
+  const passagePool = shuffle(pickBankByLevel({ A2: PASSAGE_BANK, B1: B1_PASSAGE_BANK, B2: B2_PASSAGE_BANK }));
+  const readingPool = shuffle(pickBankByLevel({ A2: READING_BANK, B1: B1_READING_BANK, B2: B2_READING_BANK }));
+  const listeningPool = shuffle(listeningAnswerPool());
+  const sentBank = sentListenBank();
+  const sentPool = shuffle(sentBank);
+
+  // 読解系は時間がかかるため、1セッションに文章1本ずつまで
+  let usedPassage = false;
+  let usedReading = false;
+
+  while (remaining > 0) {
+    // クイズ（語彙の中心）は他タイプより出やすくする（重み2）
+    const options = [];
+    if (quizUsed < quizPool.length) options.push("quiz", "quiz");
+    if (situationPool.length) options.push("situation");
+    if (builderPool.length) options.push("builder");
+    if (listeningPool.length) options.push("listening");
+    if (sentPool.length) options.push("sentlisten");
+    if (!usedPassage && passagePool.some((p) => p.blanks.length <= remaining)) options.push("passage");
+    if (!usedReading && readingPool.some((r) => r.questions.length <= remaining)) options.push("reading");
+    if (options.length === 0) break;
+
+    const type = options[Math.floor(Math.random() * options.length)];
+    if (type === "quiz") {
+      units.push({ type, q: quizPool[quizUsed++], slots: 1 });
+      remaining -= 1;
+    } else if (type === "situation") {
+      units.push({ type, q: situationPool.shift(), slots: 1 });
+      remaining -= 1;
+    } else if (type === "builder") {
+      units.push({ type, q: builderPool.shift(), slots: 1 });
+      remaining -= 1;
+    } else if (type === "listening") {
+      const entry = listeningPool.shift();
+      units.push({ type, q: { entry, choices: shuffle([entry.word, ...getSoundAlikes(entry.word, 3)]) }, slots: 1 });
+      remaining -= 1;
+    } else if (type === "sentlisten") {
+      const item = sentPool.shift();
+      const others = sentBank.filter((o) => o.translationJP !== item.translationJP);
+      const sameCat = shuffle(others.filter((o) => o.category === item.category));
+      const rest = shuffle(others.filter((o) => o.category !== item.category));
+      const distractors = [...sameCat, ...rest].slice(0, 3).map((o) => o.translationJP);
+      units.push({ type, q: { ...item, choices: shuffle([item.translationJP, ...distractors]) }, slots: 1 });
+      remaining -= 1;
+    } else if (type === "passage") {
+      const idx = passagePool.findIndex((p) => p.blanks.length <= remaining);
+      const p = passagePool.splice(idx, 1)[0];
+      units.push({ type, q: p, slots: p.blanks.length });
+      remaining -= p.blanks.length;
+      usedPassage = true;
+    } else if (type === "reading") {
+      const idx = readingPool.findIndex((r) => r.questions.length <= remaining);
+      const r = readingPool.splice(idx, 1)[0];
+      units.push({ type, q: r, slots: r.questions.length });
+      remaining -= r.questions.length;
+      usedReading = true;
+    }
+  }
+  return shuffle(units);
+}
+
+function startMixed(mode, count) {
+  const units = buildMixedUnits(mode, count);
+  if (units.length === 0) return;
+  mixed.active = true;
+  mixed.units = units;
+  mixed.step = 0;
+  mixed.slotsDone = 0;
+  mixed.totalSlots = units.reduce((sum, u) => sum + u.slots, 0);
+  mixed.correct = 0;
+  mixed.wrong = [];
+  mixed.perType = {};
+  mixedShowUnit();
+}
+
+// 単問タイプの進捗表示を「ミックス全体の進捗」に差し替える
+// （読解系は文章内の空欄・設問の進捗のほうが分かりやすいのでそのまま）
+function mixedPatchProgress(prefix) {
+  $(prefix + "-current").textContent = mixed.slotsDone + 1;
+  $(prefix + "-total").textContent = mixed.totalSlots;
+  $(prefix + "-progress-fill").style.width = (mixed.slotsDone / mixed.totalSlots) * 100 + "%";
+}
+
+function mixedShowUnit() {
+  const unit = mixed.units[mixed.step];
+  if (unit.type === "quiz") {
+    quiz.questions = [unit.q];
+    quiz.index = 0;
+    quiz.correct = 0;
+    quiz.wrong = [];
+    showScreen("quiz");
+    renderQuestion();
+    mixedPatchProgress("quiz");
+  } else if (unit.type === "situation") {
+    situation.questions = [unit.q];
+    situation.index = 0;
+    situation.correct = 0;
+    situation.wrong = [];
+    situation.answered = false;
+    showScreen("situation");
+    $("st-question").classList.remove("hidden");
+    $("st-result").classList.add("hidden");
+    renderSituationQuestion();
+    mixedPatchProgress("st");
+  } else if (unit.type === "builder") {
+    builder.questions = [unit.q];
+    builder.index = 0;
+    builder.correct = 0;
+    builder.wrong = [];
+    showScreen("builder");
+    $("bd-question").classList.remove("hidden");
+    $("bd-result").classList.add("hidden");
+    renderBuilderQuestion();
+    mixedPatchProgress("bd");
+  } else if (unit.type === "listening") {
+    listening.questions = [unit.q];
+    listening.index = 0;
+    listening.correct = 0;
+    listening.wrong = [];
+    showScreen("listening");
+    $("ls-question").classList.remove("hidden");
+    $("ls-result").classList.add("hidden");
+    renderListeningQuestion();
+    mixedPatchProgress("ls");
+  } else if (unit.type === "sentlisten") {
+    sentListen.questions = [unit.q];
+    sentListen.index = 0;
+    sentListen.correct = 0;
+    sentListen.wrong = [];
+    showScreen("sentlisten");
+    $("sl-question").classList.remove("hidden");
+    $("sl-result").classList.add("hidden");
+    renderSentListenQuestion();
+    mixedPatchProgress("sl");
+  } else if (unit.type === "passage") {
+    passage.p = unit.q;
+    passage.blankIndex = 0;
+    passage.correct = 0;
+    passage.wrong = [];
+    passage.results = [];
+    passage.answered = false;
+    showScreen("passage");
+    $("pg-question").classList.remove("hidden");
+    $("pg-result").classList.add("hidden");
+    renderPassageBlank();
+  } else if (unit.type === "reading") {
+    reading.r = unit.q;
+    reading.qIndex = 0;
+    reading.correct = 0;
+    reading.wrong = [];
+    reading.answered = false;
+    showScreen("reading");
+    $("rd-question").classList.remove("hidden");
+    $("rdg-result").classList.add("hidden");
+    $("rdg-lead").textContent =
+      reading.r.kind === "notice"
+        ? "お知らせを読んで、質問に答えてください"
+        : "文章を読んで、質問に答えてください";
+    $("rdg-text-wrap").innerHTML = readingTextHtml(reading.r, false);
+    renderReadingQuestion();
+  }
+}
+
+// 1ユニット終了：そのタイプのstateから成績を回収し、次のユニットへ
+function mixedUnitDone(type) {
+  const unit = mixed.units[mixed.step];
+  let correct = 0;
+  let wrong = [];
+  if (type === "quiz") {
+    correct = quiz.correct;
+    wrong = quiz.wrong.map(({ q, selected }) => ({
+      word: q.targetVocabulary,
+      meaning:
+        (q.vocabulary.find((v) => norm(v.word) === norm(q.targetVocabulary)) || {}).meaningJP || "",
+      selected: (q.choices.find((c) => c.id === selected) || {}).text || "",
+    }));
+  } else if (type === "situation") {
+    correct = situation.correct;
+    wrong = situation.wrong;
+  } else if (type === "builder") {
+    correct = builder.correct;
+    wrong = builder.wrong;
+  } else if (type === "listening") {
+    correct = listening.correct;
+    wrong = listening.wrong;
+  } else if (type === "sentlisten") {
+    correct = sentListen.correct;
+    wrong = sentListen.wrong;
+  } else if (type === "passage") {
+    correct = passage.correct;
+    wrong = passage.wrong;
+  } else if (type === "reading") {
+    correct = reading.correct;
+    wrong = reading.wrong;
+  }
+
+  mixed.correct += correct;
+  mixed.wrong.push(...wrong);
+  const pt = mixed.perType[type] || { correct: 0, total: 0 };
+  pt.correct += correct;
+  pt.total += unit.slots;
+  mixed.perType[type] = pt;
+  mixed.slotsDone += unit.slots;
+
+  mixed.step++;
+  if (mixed.step < mixed.units.length) mixedShowUnit();
+  else finishMixed();
+}
+
+function finishMixed() {
+  mixed.active = false;
+  store.sessions.push({
+    at: nowIso(),
+    mode: "mixed",
+    total: mixed.totalSlots,
+    correct: mixed.correct,
+    wrong: mixed.wrong,
+  });
+  if (store.sessions.length > 200) store.sessions = store.sessions.slice(-200);
+  saveStore();
+  renderMixedResult();
+  showScreen("mixedresult");
+}
+
+function renderMixedResult() {
+  $("mx-correct").textContent = mixed.correct;
+  $("mx-total").textContent = mixed.totalSlots;
+  $("mx-accuracy").textContent = `正答率 ${Math.round((mixed.correct / mixed.totalSlots) * 100)}%`;
+
+  $("mx-type-list").innerHTML = Object.keys(MIXED_TYPE_LABELS)
+    .filter((type) => mixed.perType[type])
+    .map((type) => {
+      const s = mixed.perType[type];
+      return `<li><span>${MIXED_TYPE_LABELS[type]}</span><span class="muted">　${s.correct} / ${s.total}問</span></li>`;
+    })
+    .join("");
+
+  $("mx-wrong-wrap").classList.toggle("hidden", mixed.wrong.length === 0);
+  $("mx-wrong-list").innerHTML = mixed.wrong
+    .map(
+      (w) =>
+        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+    )
+    .join("");
+}
+
+$("mx-again").addEventListener("click", () => startMixed(selectedMode || "random", selectedCount || 10));
+$("mx-wrong-list").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
+
+/* ---------------------------------------------------------------------------
    ナビゲーション
 --------------------------------------------------------------------------- */
 document.querySelectorAll("[data-nav]").forEach((el) => {
@@ -9417,7 +9727,7 @@ document.querySelectorAll("[data-nav]").forEach((el) => {
 
 /* ---------------------------------------------------------------------------
    初期表示
-   リンクを開いたらすぐ問題を解けるように、ランダム10問のクイズを自動開始する。
+   リンクを開いたらすぐ問題を解けるように、ランダム10問のミックス練習を自動開始する。
    モードや問題数を変えたい場合はヘッダーの「ホーム」から選び直せる。
 --------------------------------------------------------------------------- */
 selectedMode = "random";
@@ -9428,4 +9738,4 @@ updateStartButton();
 renderSpeedControls();
 renderLevelControl();
 renderHome();
-startQuiz(selectedMode, selectedCount);
+startMixed(selectedMode, selectedCount);

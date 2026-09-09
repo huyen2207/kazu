@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=18" />
+  <link rel="stylesheet" href="style.css?v=19" />
 </head>
 <body>
   <header class="site-header">
@@ -67,7 +67,8 @@
       </div>
 
       <div class="cta-row">
-        <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>クイズを始める</button>
+        <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>ミックス練習を始める（全タイプからランダム）</button>
+        <button id="btn-start-quiz-only" class="btn btn-secondary btn-lg" disabled>📝 語彙クイズだけ（4択）</button>
         <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
         <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
         <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
@@ -463,6 +464,27 @@
     </section>
 
     <!-- 実力分析画面 -->
+    <!-- ミックス練習の結果画面 -->
+    <section id="screen-mixedresult" class="screen hidden">
+      <div class="card result-card">
+        <h2>ミックス練習の結果</h2>
+        <p class="result-score"><span id="mx-correct">0</span><span class="result-total"> / <span id="mx-total">0</span></span></p>
+        <p class="sub" id="mx-accuracy"></p>
+      </div>
+      <div class="card">
+        <h3>タイプ別の成績</h3>
+        <ul id="mx-type-list" class="wrong-list"></ul>
+      </div>
+      <div id="mx-wrong-wrap" class="card hidden">
+        <h3>間違えた語彙（復習候補に追加されました）</h3>
+        <ul id="mx-wrong-list" class="wrong-list"></ul>
+      </div>
+      <div class="cta-row">
+        <button id="mx-again" class="btn btn-primary">もう一度ミックス練習</button>
+        <button class="btn btn-secondary" data-nav="home">ホームへ</button>
+      </div>
+    </section>
+
     <section id="screen-analysis" class="screen hidden">
       <div class="page-head">
         <div>
@@ -615,6 +637,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=18"></script>
+  <script src="script.js?v=19"></script>
 </body>
 </html>
