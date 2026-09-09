@@ -11630,6 +11630,13 @@ $("rdg-next").addEventListener("click", () => {
   }
 });
 $("rdg-again").addEventListener("click", startReading);
+// プレイ中の本文（回答後にタップ可能なHTMLへ差し替わる）。ミックス練習は
+// 単体の結果画面（rdg-text-final-wrap）を通らないため、ここに委譲が無いと
+// 本文の語がタップできない。
+$("rdg-text-wrap").addEventListener("click", (e) => {
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 $("rdg-text-final-wrap").addEventListener("click", (e) => {
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
