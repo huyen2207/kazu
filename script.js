@@ -10783,15 +10783,41 @@ function renderMixedResult() {
   $("mx-wrong-list").innerHTML = mixed.wrong
     .map(
       (w) =>
-        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+        `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></span>${addCardBtnHtml(w.word, w.meaning, "")}</li>`,
     )
     .join("");
 }
 
 $("mx-again").addEventListener("click", () => startMixed(selectedMode || "random", selectedCount || 10));
+
+// 間違えた語のタップ＝意味ポップアップ、「＋カード」＝Flash Cardへ追加
+// （辞書に無い語も、ミックス結果が持つ意味を予備データとして使えるようにする）
 $("mx-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
+});
+
+// 今回間違えた語をそのままFlash Cardで復習する。
+// 辞書に無い語も意味の予備データ付きで登録してからデッキを開く。
+// （全問正解だった場合は通常の復習デッキを開く）
+$("mx-cards").addEventListener("click", () => {
+  if (mixed.wrong.length > 0) {
+    for (const w of mixed.wrong) {
+      addWordToFlashcards(w.word, { meaningJP: w.meaning });
+    }
+    startFlashcardsFromWords(mixed.wrong.map((w) => w.word));
+  } else {
+    startFlashcards();
+  }
 });
 
 /* ---------------------------------------------------------------------------
