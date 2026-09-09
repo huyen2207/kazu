@@ -691,6 +691,8 @@ h1 { font-size: 22px; font-weight: 700; }
   .rate-unsure:hover { background: #38310f; }
   .rate-remembered:hover { background: #143020; }
   .add-card-btn:hover,
-  .speak-btn:hover { background: #2f3350; }
+  .speak-btn:hover,
+  .sp-redo:hover { background: #2f3350; }
+  .sp-redo { border-color: #3a4150; }
   .btn-secondary { border-color: #3a4150; }
 }
