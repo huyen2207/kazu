@@ -566,11 +566,13 @@ h1 { font-size: 22px; font-weight: 700; }
 
   .exp-choice-list li,
   .exp-grammar-list li,
+  .mx-exp-list li,
   .exp-grammar-inline,
   .fc-example,
   .btn-secondary:hover:not(:disabled) { background: #1f232c; }
 
-  .exp-choice-list li { border-color: #2b303b; }
+  .exp-choice-list li,
+  .mx-exp-list li { border-color: #2b303b; }
 
   .progress-bar,
   .factor-bar,
