@@ -8966,7 +8966,133 @@ function formatDateTime(iso) {
   return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
+/* ---------------------------------------------------------------------------
+   日ごとの伸び（学習履歴）
+   その日の正答率を、前に学習した日と比べて上がったか下がったかで色分けする。
+   1問しか解かなかった日は0%か100%に振れるため、問題数も併記する。
+--------------------------------------------------------------------------- */
+let dpRangeDays = 7;
+
+// 期間内の各日を古い順に返す。deltaは「前に学習した日」との差（学習していない日は飛ばす）
+function dailyProgressData(days) {
+  const rows = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const date = todayStr(i);
+    const rec = store.days[date] || { questions: 0, correct: 0 };
+    const questions = Math.max(0, rec.questions || 0);
+    const correct = Math.max(0, rec.correct || 0);
+    rows.push({
+      date,
+      questions,
+      correct,
+      accuracy: questions > 0 ? Math.round((correct / questions) * 100) : null,
+    });
+  }
+
+  // 期間の1日目にも前日比を出せるよう、期間より前の直近の学習日を探す（最大60日）
+  let prev = null;
+  for (let i = days; i < days + 60 && prev === null; i++) {
+    const rec = store.days[todayStr(i)];
+    if (rec && rec.questions > 0) prev = Math.round((rec.correct / rec.questions) * 100);
+  }
+
+  for (const row of rows) {
+    row.delta = row.accuracy !== null && prev !== null ? row.accuracy - prev : null;
+    if (row.accuracy !== null) prev = row.accuracy;
+  }
+  return rows;
+}
+
+// 期間の合計から正答率を出す（日ごとの率を平均すると、少ししか解かなかった日に引っ張られる）
+function periodAccuracy(fromOffset, days) {
+  let questions = 0;
+  let correct = 0;
+  let studiedDays = 0;
+  for (let i = fromOffset; i < fromOffset + days; i++) {
+    const rec = store.days[todayStr(i)];
+    if (!rec || !rec.questions) continue;
+    questions += rec.questions;
+    correct += rec.correct;
+    studiedDays++;
+  }
+  return {
+    questions,
+    correct,
+    studiedDays,
+    accuracy: questions > 0 ? Math.round((correct / questions) * 100) : null,
+  };
+}
+
+function renderDailyProgress() {
+  const days = dpRangeDays;
+  const rows = dailyProgressData(days);
+  const hasData = rows.some((r) => r.questions > 0);
+
+  $("dp-empty").classList.toggle("hidden", hasData);
+  $("dp-chart").classList.toggle("hidden", !hasData);
+  $("dp-summary").classList.toggle("hidden", !hasData);
+
+  for (const btn of document.querySelectorAll("#dp-range button")) {
+    btn.classList.toggle("active", Number(btn.dataset.days) === days);
+  }
+
+  if (!hasData) {
+    $("dp-chart").innerHTML = "";
+    return;
+  }
+
+  // 要約：直近N日と、その前のN日を比べる
+  const now = periodAccuracy(0, days);
+  const before = periodAccuracy(days, days);
+  let summary = `直近${days}日：正答率 ${now.accuracy}%（${now.questions}問・学習${now.studiedDays}日）`;
+  if (before.accuracy !== null) {
+    const diff = now.accuracy - before.accuracy;
+    const word = diff > 0 ? `+${diff}pt 上がりました` : diff < 0 ? `${diff}pt 下がりました` : "変わっていません";
+    summary += `。その前の${days}日は ${before.accuracy}% → ${word}`;
+  }
+  $("dp-summary").textContent = summary;
+
+  // 日付ラベルは狭い画面で潰れるため、30日表示では5日おきに出す
+  const labelEvery = days <= 7 ? 1 : days <= 14 ? 2 : 5;
+  const showDelta = days <= 14;
+  // 30日表示は棒が細く（375pxで約6px）、問題数の数字が切れて読めないので隠す
+  // （数字はホバー／長押しで出る説明に残る）
+  $("dp-chart").classList.toggle("dense", days > 14);
+
+  $("dp-chart").innerHTML = rows
+    .map((row, i) => {
+      const [, m, d] = row.date.split("-");
+      const label = i % labelEvery === 0 || i === rows.length - 1 ? `${Number(m)}/${Number(d)}` : "";
+      if (row.accuracy === null) {
+        return `<div class="dp-col" title="${row.date}：学習なし">
+          <span class="dp-delta"></span>
+          <div class="dp-bar-area"><div class="dp-bar none"></div></div>
+          <span class="dp-date">${label}</span>
+        </div>`;
+      }
+      const state = row.delta === null || row.delta === 0 ? "flat" : row.delta > 0 ? "up" : "down";
+      const deltaText = !showDelta || row.delta === null || row.delta === 0
+        ? ""
+        : row.delta > 0 ? `▲${row.delta}` : `▼${Math.abs(row.delta)}`;
+      const deltaTitle = row.delta === null ? "前に学習した日なし" : row.delta === 0 ? "前と同じ" : row.delta > 0 ? `前より+${row.delta}` : `前より${row.delta}`;
+      return `<div class="dp-col" title="${row.date}：${row.questions}問・正答率${row.accuracy}%（${deltaTitle}）">
+        <span class="dp-delta ${state}">${deltaText}</span>
+        <div class="dp-bar-area"><div class="dp-bar ${state}" style="height:${Math.max(4, row.accuracy)}%"><span class="dp-count">${row.questions}</span></div></div>
+        <span class="dp-date">${label}</span>
+      </div>`;
+    })
+    .join("");
+}
+
+$("dp-range").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-days]");
+  if (!btn) return;
+  dpRangeDays = Number(btn.dataset.days);
+  renderDailyProgress();
+});
+
 function renderHistory() {
+  renderDailyProgress();
   const sessions = [...store.sessions].reverse();
   const wrongTotal = allWrongWords().length;
 
