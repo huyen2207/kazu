@@ -117,8 +117,18 @@ h1 { font-size: 22px; font-weight: 700; }
 .vocab-status span { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; }
 
 /* クイズ */
-.progress-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.progress-row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); }
 .progress-row strong { color: var(--fg); }
+/* 練習画面：そのタイプで今まで解いた数 / 総数 */
+.lifetime-progress { color: #9ca3af; font-size: 12px; white-space: nowrap; }
+
+/* ホームの練習ボタンに出す「解いた数 / 総数」 */
+.btn-count {
+  margin-left: 8px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  color: var(--primary); background: var(--primary-light);
+  border-radius: 999px; padding: 2px 10px;
+}
+.btn-primary .btn-count { color: #fff; background: rgba(255, 255, 255, 0.22); }
 .progress-bar { height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin: 6px 0 18px; }
 .progress-fill { height: 100%; width: 0; background: var(--primary); border-radius: 999px; transition: width 0.3s; }
 

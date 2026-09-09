@@ -17,15 +17,18 @@ const QUESTION_BANK = [{"sentence":"Vì căn phòng quá bừa bộn, tôi phả
    変換の分岐は MIGRATIONS の1か所だけにまとめる（あちこちで補完しない）。 */
 const STORAGE_KEY = "kazu-static-v1";
 const BROKEN_STORAGE_KEY = "kazu-static-v1-broken"; // 読み取れなかったデータの退避先
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 const VOCAB_STATUSES = ["new", "learning", "forgotten", "unsure", "reviewing", "mastered"];
+// 練習タイプ（進捗「解いた数 / 総数」の集計単位）。読み込み時のmigrateから参照するため、
+// storeを作る前のここで定義する。ミックス練習はこの全タイプの合計として扱う。
+const PRACTICE_TYPES = ["quiz", "listening", "situation", "passage", "reading", "builder", "sentlisten"];
 
 const isPlainObject = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
 const numOr = (x, fallback) => (typeof x === "number" && Number.isFinite(x) ? x : fallback);
 const strOr = (x, fallback) => (typeof x === "string" ? x : fallback);
 
 function emptyStore() {
-  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [] };
+  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [], progress: {} };
 }
 
 // 保存・読み込みの失敗を画面に出す（黙って失敗させない）
@@ -104,6 +107,20 @@ function normalizeSessions(sessions) {
   }));
 }
 
+// 練習タイプごとの「解いた問題」の記録：{ タイプ名: { 問題キー: 1 } }
+// 値は1固定（解いたかどうかだけを持つ）。キーは practiceKey() のハッシュ。
+function normalizeProgress(progress) {
+  const out = {};
+  if (!isPlainObject(progress)) return out;
+  for (const [type, done] of Object.entries(progress)) {
+    if (!PRACTICE_TYPES.includes(type) || !isPlainObject(done)) continue;
+    const entry = {};
+    for (const key of Object.keys(done)) if (done[key]) entry[key] = 1;
+    out[type] = entry;
+  }
+  return out;
+}
+
 /* --- 移行処理 ---
    キーは「変換前のversion」。1つ実行するたびに version が1つ上がる。
    スキーマを変えたら、ここに次のversionのエントリを1つ足す。 */
@@ -117,6 +134,19 @@ const MIGRATIONS = {
     vocab: normalizeVocab(s.vocab),
     days: normalizeDays(s.days),
     sessions: normalizeSessions(s.sessions),
+  }),
+  // 2 → 3: 練習タイプごとの「解いた問題」の記録（progress）を導入する。
+  //   これまで解いた問題を進捗0からやり直させないため、語彙クイズだけは
+  //   既存の answered（キー＝問題文）から解答済みキーを作って引き継ぐ。
+  2: (s) => ({
+    ...s,
+    progress: {
+      ...normalizeProgress(s.progress),
+      quiz: Object.keys(isPlainObject(s.answered) ? s.answered : {}).reduce((acc, sentence) => {
+        acc[hashKey(sentence)] = 1;
+        return acc;
+      }, {}),
+    },
   }),
 };
 
@@ -132,6 +162,7 @@ function migrate(data) {
   if (!isPlainObject(s.vocab)) s.vocab = {};
   if (!isPlainObject(s.days)) s.days = {};
   if (!Array.isArray(s.sessions)) s.sessions = [];
+  s.progress = normalizeProgress(s.progress);
   return s;
 }
 
@@ -8445,6 +8476,88 @@ function streakDays() {
   return streak;
 }
 
+/* ---------------------------------------------------------------------------
+   練習の進捗（解いた数 / 総数）
+   各練習タイプについて「今のレベルで出題されうる問題数」と「これまでに解いた数」を
+   数え、ホームのボタンと各練習画面の進捗行に表示する。
+   解答の記録は各タイプの answer 系関数から markPracticeDone() を呼んで行う。
+   （ミックス練習も同じ answer 関数を通るため、そのまま数えられる）
+--------------------------------------------------------------------------- */
+
+// 問題を識別する短いキー（FNV-1a 32bit）。問題文をそのまま保存すると
+// localStorageが膨らむため、8桁の16進に畳んで保存する。
+function hashKey(text) {
+  let h = 0x811c9dc5;
+  const s = String(text);
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, "0");
+}
+
+// 今のレベルで出題されうる全問題のキー（記録側と同じ文字列から作ること）
+function practiceItemKeys(type) {
+  switch (type) {
+    case "quiz":
+      return activeQuestionBank().map((q) => q.sentence);
+    case "listening":
+      return listeningAnswerPool().map((e) => norm(e.word));
+    case "situation":
+      return pickBankByLevel({ A2: SITUATION_BANK, B1: B1_SITUATION_BANK, B2: B2_SITUATION_BANK }).map((q) => q.t);
+    case "passage":
+      // 空欄1つを1問として数える
+      return pickBankByLevel({ A2: PASSAGE_BANK, B1: B1_PASSAGE_BANK, B2: B2_PASSAGE_BANK })
+        .flatMap((p) => p.blanks.map((_, i) => p.text + "#" + i));
+    case "reading":
+      return pickBankByLevel({ A2: READING_BANK, B1: B1_READING_BANK, B2: B2_READING_BANK })
+        .flatMap((r) => r.questions.map((_, i) => r.text + "#" + i));
+    case "builder":
+      return pickBankByLevel({ A2: BUILDER_BANK, B1: B1_BUILDER_BANK, B2: B2_BUILDER_BANK }).map((q) => builderKey(q.w));
+    case "sentlisten":
+      return sentListenBank().map((q) => q.sentence);
+    default:
+      return [];
+  }
+}
+
+// 1問解いたことを記録する。表示もその場で更新する（画面上の「累計」が即座に増える）
+function markPracticeDone(type, rawKey) {
+  if (!PRACTICE_TYPES.includes(type)) return;
+  if (!store.progress[type]) store.progress[type] = {};
+  store.progress[type][hashKey(rawKey)] = 1;
+  renderPracticeProgress();
+}
+
+// 今のレベルでの { 解いた数, 総数 }
+function practiceStats(type) {
+  const done = store.progress[type] || {};
+  const keys = practiceItemKeys(type);
+  let count = 0;
+  for (const key of keys) if (done[hashKey(key)]) count++;
+  return { done: count, total: keys.length };
+}
+
+// ホームのボタンと各練習画面の進捗行をまとめて更新する
+function renderPracticeProgress() {
+  let doneAll = 0;
+  let totalAll = 0;
+  for (const type of PRACTICE_TYPES) {
+    const { done, total } = practiceStats(type);
+    doneAll += done;
+    totalAll += total;
+
+    const btn = $("cnt-" + type);
+    if (btn) btn.textContent = `${done}/${total}問`;
+
+    const row = $("lp-" + type);
+    if (row) row.textContent = `${done}/${total}問`;
+  }
+  // ミックス練習は全タイプから出題するため、合計を出す
+  const mixedCount = $("cnt-mixed");
+  if (mixedCount) mixedCount.textContent = `${doneAll}/${totalAll}問`;
+}
+
 function renderHome() {
   const today = store.days[todayStr()] || { questions: 0, correct: 0 };
   $("stat-today-questions").textContent = today.questions + "問";
@@ -8466,6 +8579,8 @@ function renderHome() {
   $("vocab-status").innerHTML = labels
     .map(([key, label]) => `<span>${label} ${counts[key] || 0}</span>`)
     .join("");
+
+  renderPracticeProgress();
 }
 
 /* ---------------------------------------------------------------------------
@@ -8654,6 +8769,7 @@ function answer(choiceId) {
   store.days[todayStr()] = day;
 
   upsertVocabFromQuestion(q, isCorrect);
+  markPracticeDone("quiz", q.sentence);
   saveStore();
 
   quiz.answered = true;
@@ -9768,6 +9884,7 @@ function answerSituation(selectedIndex) {
 
   // 間違えた場面のキーフレーズをFlash Cardへ
   if (!isCorrect) addWordToFlashcards(q.key[0]);
+  markPracticeDone("situation", q.t);
   saveStore();
 
   document.querySelectorAll("#st-choices .choice").forEach((btn) => {
@@ -10229,6 +10346,7 @@ function answerPassageBlank(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(blank.key[0]);
+  markPracticeDone("passage", p.text + "#" + passage.blankIndex);
   saveStore();
 
   document.querySelectorAll("#pg-choices .choice").forEach((btn) => {
@@ -10883,6 +11001,7 @@ function checkBuilder() {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(q.key[0]);
+  markPracticeDone("builder", builderKey(q.w));
   saveStore();
 
   const banner = $("bd-banner");
@@ -11328,6 +11447,7 @@ function answerReading(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(question.key[0]);
+  markPracticeDone("reading", r.text + "#" + reading.qIndex);
   saveStore();
 
   document.querySelectorAll("#rdg-choices .choice").forEach((btn) => {
@@ -11545,6 +11665,7 @@ function answerListening(selectedText) {
 
   // 聞き取れなかった語はFlash Cardへ（復習候補）
   if (!isCorrect) addWordToFlashcards(q.entry.word);
+  markPracticeDone("listening", norm(q.entry.word));
   saveStore();
 
   document.querySelectorAll("#ls-choices .choice").forEach((btn) => {
@@ -11707,6 +11828,7 @@ function answerSentListen(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(q.targetVocabulary);
+  markPracticeDone("sentlisten", q.sentence);
   saveStore();
 
   document.querySelectorAll("#sl-choices .choice").forEach((btn) => {
@@ -12223,6 +12345,13 @@ function mergeStores(base, incoming) {
   const byAt = new Map();
   for (const s of [...base.sessions, ...incoming.sessions]) byAt.set(s.at, s);
   merged.sessions = [...byAt.values()].sort((a, b) => (a.at < b.at ? -1 : a.at > b.at ? 1 : 0)).slice(-200);
+
+  // 練習の進捗は「どちらかで解いていれば解いた」とみなして両方を足し合わせる
+  merged.progress = {};
+  for (const type of PRACTICE_TYPES) {
+    const union = { ...((base.progress || {})[type] || {}), ...((incoming.progress || {})[type] || {}) };
+    if (Object.keys(union).length > 0) merged.progress[type] = union;
+  }
 
   return merged;
 }

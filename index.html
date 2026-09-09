@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=21" />
+  <link rel="stylesheet" href="style.css?v=22" />
 </head>
 <body>
   <header class="site-header">
@@ -67,15 +67,15 @@
       </div>
 
       <div class="cta-row">
-        <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>ミックス練習を始める（全タイプからランダム）</button>
-        <button id="btn-start-quiz-only" class="btn btn-secondary btn-lg" disabled>📝 語彙クイズだけ（4択）</button>
+        <button id="btn-start-quiz" class="btn btn-primary btn-lg" disabled>ミックス練習を始める（全タイプからランダム）<span class="btn-count" id="cnt-mixed"></span></button>
+        <button id="btn-start-quiz-only" class="btn btn-secondary btn-lg" disabled>📝 語彙クイズだけ（4択）<span class="btn-count" id="cnt-quiz"></span></button>
         <button id="btn-start-cards" class="btn btn-secondary btn-lg">Flash Card復習（<span id="due-count">0</span>語）</button>
-        <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）</button>
-        <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）</button>
-        <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）</button>
-        <button id="btn-start-reading" class="btn btn-secondary btn-lg">📰 文章読解（お知らせ・文を読んで答える）</button>
-        <button id="btn-start-builder" class="btn btn-secondary btn-lg">🧩 並べ替え練習（語を並べて文を作る）</button>
-        <button id="btn-start-sentlisten" class="btn btn-secondary btn-lg">🔉 文の聴解（文を聞いて意味を選ぶ）</button>
+        <button id="btn-start-listening" class="btn btn-secondary btn-lg">🎧 聴解練習（音を聞いて選ぶ）<span class="btn-count" id="cnt-listening"></span></button>
+        <button id="btn-start-situation" class="btn btn-secondary btn-lg">💬 会話練習（場面に合う文を選ぶ）<span class="btn-count" id="cnt-situation"></span></button>
+        <button id="btn-start-passage" class="btn btn-secondary btn-lg">📖 読解練習（文章の空欄を埋める）<span class="btn-count" id="cnt-passage"></span></button>
+        <button id="btn-start-reading" class="btn btn-secondary btn-lg">📰 文章読解（お知らせ・文を読んで答える）<span class="btn-count" id="cnt-reading"></span></button>
+        <button id="btn-start-builder" class="btn btn-secondary btn-lg">🧩 並べ替え練習（語を並べて文を作る）<span class="btn-count" id="cnt-builder"></span></button>
+        <button id="btn-start-sentlisten" class="btn btn-secondary btn-lg">🔉 文の聴解（文を聞いて意味を選ぶ）<span class="btn-count" id="cnt-sentlisten"></span></button>
       </div>
 
       <div class="vocab-status" id="vocab-status"></div>
@@ -102,6 +102,7 @@
       <div class="progress-row">
         <span>問題 <strong id="quiz-current">1</strong> / <span id="quiz-total">10</span></span>
         <span>正解 <span id="quiz-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-quiz">—</span></span>
       </div>
       <div class="progress-bar"><div id="quiz-progress-fill" class="progress-fill"></div></div>
 
@@ -178,6 +179,7 @@
         <div class="progress-row">
           <span>問題 <strong id="ls-current">1</strong> / <span id="ls-total">10</span></span>
           <span>正解 <span id="ls-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-listening">—</span></span>
         </div>
         <div class="progress-bar"><div id="ls-progress-fill" class="progress-fill"></div></div>
 
@@ -224,6 +226,7 @@
         <div class="progress-row">
           <span>問題 <strong id="st-current">1</strong> / <span id="st-total">8</span></span>
           <span>正解 <span id="st-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-situation">—</span></span>
         </div>
         <div class="progress-bar"><div id="st-progress-fill" class="progress-fill"></div></div>
 
@@ -268,6 +271,7 @@
         <div class="progress-row">
           <span>空欄 <strong id="pg-current">1</strong> / <span id="pg-total">3</span></span>
           <span>正解 <span id="pg-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-passage">—</span></span>
         </div>
         <div class="progress-bar"><div id="pg-progress-fill" class="progress-fill"></div></div>
 
@@ -314,6 +318,7 @@
         <div class="progress-row">
           <span>問題 <strong id="rdg-current">1</strong> / <span id="rdg-total">2</span></span>
           <span>正解 <span id="rdg-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-reading">—</span></span>
         </div>
         <div class="progress-bar"><div id="rdg-progress-fill" class="progress-fill"></div></div>
 
@@ -360,6 +365,7 @@
         <div class="progress-row">
           <span>問題 <strong id="bd-current">1</strong> / <span id="bd-total">8</span></span>
           <span>正解 <span id="bd-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-builder">—</span></span>
         </div>
         <div class="progress-bar"><div id="bd-progress-fill" class="progress-fill"></div></div>
 
@@ -416,6 +422,7 @@
         <div class="progress-row">
           <span>問題 <strong id="sl-current">1</strong> / <span id="sl-total">8</span></span>
           <span>正解 <span id="sl-correct-count">0</span></span>
+        <span class="lifetime-progress">累計 <span id="lp-sentlisten">—</span></span>
         </div>
         <div class="progress-bar"><div id="sl-progress-fill" class="progress-fill"></div></div>
 
@@ -639,6 +646,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=21"></script>
+  <script src="script.js?v=22"></script>
 </body>
 </html>
