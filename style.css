@@ -214,7 +214,9 @@ h1 { font-size: 22px; font-weight: 700; }
 .mx-exp-list li { font-size: 13px; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 8px; padding: 10px 12px; }
 .mx-exp-head { font-weight: 600; margin-bottom: 4px; }
 .mx-exp-list .exp-vocab-row { margin-top: 6px; }
-#exp-colloc li { display: inline-flex; align-items: center; gap: 8px; }
+#exp-colloc li { display: inline-flex; align-items: flex-start; gap: 8px; }
+/* 狭い画面では文字側が縮んで折り返し、＋カードを押し出さないようにする */
+.colloc-body { min-width: 0; }
 .exp-grammar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .exp-grammar-list li { font-size: 13px; background: #f9fafb; border-radius: 8px; padding: 8px 12px; }
 .exp-grammar-list .pattern { font-weight: 600; }
