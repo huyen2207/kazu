@@ -17,7 +17,7 @@ const QUESTION_BANK = [{"sentence":"Vì căn phòng quá bừa bộn, tôi phả
    変換の分岐は MIGRATIONS の1か所だけにまとめる（あちこちで補完しない）。 */
 const STORAGE_KEY = "kazu-static-v1";
 const BROKEN_STORAGE_KEY = "kazu-static-v1-broken"; // 読み取れなかったデータの退避先
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 const VOCAB_STATUSES = ["new", "learning", "forgotten", "unsure", "reviewing", "mastered"];
 // 練習タイプ（進捗「解いた数 / 総数」の集計単位）。読み込み時のmigrateから参照するため、
 // storeを作る前のここで定義する。ミックス練習はこの全タイプの合計として扱う。
@@ -28,7 +28,7 @@ const numOr = (x, fallback) => (typeof x === "number" && Number.isFinite(x) ? x 
 const strOr = (x, fallback) => (typeof x === "string" ? x : fallback);
 
 function emptyStore() {
-  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [], progress: {} };
+  return { version: SCHEMA_VERSION, answered: {}, vocab: {}, days: {}, sessions: [], progress: {}, log: [] };
 }
 
 // 保存・読み込みの失敗を画面に出す（黙って失敗させない）
@@ -121,6 +121,25 @@ function normalizeProgress(progress) {
   return out;
 }
 
+// 解答ログ：1問解くごとに1件。「今日どの問題を解いたか」を出すために使う。
+// t=時刻 / type=練習タイプ / key=問題を特定するキー / label=表示用 / correct=正誤（不明はnull）
+const LOG_LIMIT = 500;
+
+function normalizeLog(log) {
+  if (!Array.isArray(log)) return [];
+  return log
+    .filter(isPlainObject)
+    .map((e) => ({
+      t: strOr(e.t, ""),
+      type: PRACTICE_TYPES.includes(e.type) ? e.type : "quiz",
+      key: strOr(e.key, ""),
+      label: strOr(e.label, ""),
+      correct: typeof e.correct === "boolean" ? e.correct : null,
+    }))
+    .filter((e) => e.t && e.key)
+    .slice(-LOG_LIMIT);
+}
+
 /* --- 移行処理 ---
    キーは「変換前のversion」。1つ実行するたびに version が1つ上がる。
    スキーマを変えたら、ここに次のversionのエントリを1つ足す。 */
@@ -148,6 +167,25 @@ const MIGRATIONS = {
       }, {}),
     },
   }),
+  // 3 → 4: 解答ログ（log）を導入する。
+  //   これまでは件数しか持っておらず「今日どの問題を解いたか」を復元できない。
+  //   語彙クイズだけは answered に最後に解いた日時が残っているので、
+  //   正誤は不明（null）として埋め戻す。他タイプの過去分は復元できない。
+  3: (s) => ({
+    ...s,
+    log: normalizeLog(
+      Object.entries(isPlainObject(s.answered) ? s.answered : {})
+        .filter(([, rec]) => isPlainObject(rec) && rec.last)
+        .map(([sentence, rec]) => ({
+          t: rec.last,
+          type: "quiz",
+          key: sentence,
+          label: sentence.replace(/_{2,}/, "（　）"),
+          correct: null,
+        }))
+        .sort((a, b) => (a.t < b.t ? -1 : 1)),
+    ),
+  }),
 };
 
 function migrate(data) {
@@ -163,6 +201,7 @@ function migrate(data) {
   if (!isPlainObject(s.days)) s.days = {};
   if (!Array.isArray(s.sessions)) s.sessions = [];
   s.progress = normalizeProgress(s.progress);
+  s.log = normalizeLog(s.log);
   return s;
 }
 
@@ -8522,11 +8561,24 @@ function practiceItemKeys(type) {
 }
 
 // 1問解いたことを記録する。表示もその場で更新する（画面上の「累計」が即座に増える）
-function markPracticeDone(type, rawKey) {
+// opts に { label, correct } を渡すと、解答ログ（store.log）にも1件残す。
+function markPracticeDone(type, rawKey, opts) {
   if (!PRACTICE_TYPES.includes(type)) return;
   if (!store.progress[type]) store.progress[type] = {};
   store.progress[type][hashKey(rawKey)] = 1;
+
+  if (opts) {
+    store.log.push({
+      t: nowIso(),
+      type,
+      key: String(rawKey),
+      label: String(opts.label || rawKey),
+      correct: typeof opts.correct === "boolean" ? opts.correct : null,
+    });
+    if (store.log.length > LOG_LIMIT) store.log = store.log.slice(-LOG_LIMIT);
+  }
   renderPracticeProgress();
+  renderStatPanel();
 }
 
 // 今のレベルでの { 解いた数, 総数 }
@@ -8557,6 +8609,197 @@ function renderPracticeProgress() {
   const mixedCount = $("cnt-mixed");
   if (mixedCount) mixedCount.textContent = `${doneAll}/${totalAll}問`;
 }
+
+/* ---------------------------------------------------------------------------
+   ホームの統計カードの内訳
+   カードをタップすると、その数字の中身（今日解いた問題・語彙など）を出す。
+   「今日の問題数」からは、その問題だけをもう一度解ける（解き直し）。
+--------------------------------------------------------------------------- */
+let statPanelKey = null;
+
+const PRACTICE_LABELS = {
+  quiz: "語彙クイズ", listening: "聴解", situation: "会話",
+  passage: "読解空欄", reading: "文章読解", builder: "並べ替え", sentlisten: "文の聴解",
+};
+
+// 全レベルのバンクを対象に、ログのキーから元の問題を探す（レベルを変えていても解き直せる）
+function allBanks(kind) {
+  switch (kind) {
+    case "quiz": return [...QUESTION_BANK, ...A2_EXTRA_QUESTION_BANK, ...B1_QUESTION_BANK, ...B2_QUESTION_BANK];
+    case "situation": return [...SITUATION_BANK, ...B1_SITUATION_BANK, ...B2_SITUATION_BANK];
+    case "passage": return [...PASSAGE_BANK, ...B1_PASSAGE_BANK, ...B2_PASSAGE_BANK];
+    case "reading": return [...READING_BANK, ...B1_READING_BANK, ...B2_READING_BANK];
+    case "builder": return [...BUILDER_BANK, ...B1_BUILDER_BANK, ...B2_BUILDER_BANK];
+    default: return [];
+  }
+}
+
+// ログ1件から、ミックスと同じ形の出題ユニットを組み立てる。作れない場合はnull。
+// 読解・空欄補充は1問だけ差し替える描画が無いため、その文章1本を単位にする。
+function replayUnitFromLog(entry) {
+  const { type, key } = entry;
+  if (type === "quiz") {
+    const q = allBanks("quiz").find((x) => x.sentence === key);
+    return q ? { type, q, slots: 1 } : null;
+  }
+  if (type === "situation") {
+    const q = allBanks("situation").find((x) => x.t === key);
+    return q ? { type, q, slots: 1 } : null;
+  }
+  if (type === "builder") {
+    const q = allBanks("builder").find((x) => builderKey(x.w) === key);
+    return q ? { type, q, slots: 1 } : null;
+  }
+  if (type === "passage" || type === "reading") {
+    const text = key.slice(0, key.lastIndexOf("#"));
+    const q = allBanks(type).find((x) => x.text === text);
+    if (!q) return null;
+    return { type, q, slots: type === "passage" ? q.blanks.length : q.questions.length };
+  }
+  if (type === "sentlisten") {
+    const src = allBanks("quiz").find(
+      (x) => x.sentence.replace(/_{2,}/, x.choices.find((c) => c.id === x.correctChoice).text) === key,
+    );
+    if (!src) return null;
+    const item = {
+      sentence: key,
+      translationJP: src.translationJP,
+      targetVocabulary: src.targetVocabulary,
+      category: src.category,
+    };
+    const others = sentListenBank().filter((o) => o.translationJP !== item.translationJP);
+    const distractors = shuffle(others).slice(0, 3).map((o) => o.translationJP);
+    return { type, q: { ...item, choices: shuffle([item.translationJP, ...distractors]) }, slots: 1 };
+  }
+  if (type === "listening") {
+    const entryWord = lookupWord(key);
+    if (!entryWord) return null;
+    const e = { word: entryWord.word, meaningJP: entryWord.meaningJP, partOfSpeech: entryWord.partOfSpeech };
+    return { type, q: { entry: e, choices: shuffle([e.word, ...getSoundAlikes(e.word, 3)]) }, slots: 1 };
+  }
+  return null;
+}
+
+// 指定したログの問題をまとめて解き直す
+function replayFromLog(entries) {
+  const seen = new Set();
+  const units = [];
+  for (const e of entries) {
+    const id = e.type + "|" + e.key;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const unit = replayUnitFromLog(e);
+    if (unit) units.push(unit);
+  }
+  if (units.length === 0) {
+    showStorageWarning("この問題は現在の問題データから見つからないため、解き直せませんでした。");
+    return;
+  }
+  startMixedUnits(units, { replay: true });
+}
+
+function todayLog() {
+  const today = todayStr();
+  return store.log.filter((e) => e.t.slice(0, 10) === today);
+}
+
+function logRowHtml(e, i) {
+  const mark = e.correct === null ? '<span class="sp-mark unknown">—</span>'
+    : e.correct ? '<span class="sp-mark ok">正解</span>' : '<span class="sp-mark ng">不正解</span>';
+  const time = e.t.length >= 16 ? new Date(e.t).toTimeString().slice(0, 5) : "";
+  return `<li class="sp-row">
+    <span class="sp-meta"><span class="sp-type">${PRACTICE_LABELS[e.type] || e.type}</span>${mark}<span class="sp-time">${time}</span></span>
+    <span class="sp-label">${escapeHtml(e.label || e.key)}</span>
+    <button type="button" class="sp-redo" data-log-index="${i}">もう一度</button>
+  </li>`;
+}
+
+function renderStatPanel() {
+  const panel = $("stat-panel");
+  panel.classList.toggle("hidden", statPanelKey === null);
+  for (const card of document.querySelectorAll(".stat-card")) {
+    card.classList.toggle("selected", card.dataset.stat === statPanelKey);
+  }
+  if (statPanelKey === null) return;
+
+  const log = todayLog();
+  const missingNote = log.some((e) => e.correct === null)
+    ? '<p class="hint sp-note">「—」は、この一覧の機能を追加する前に解いた分です（正誤が記録されていません）。</p>'
+    : "";
+
+  if (statPanelKey === "questions" || statPanelKey === "accuracy") {
+    const wrongOnly = statPanelKey === "accuracy";
+    const rows = log.map((e, i) => ({ e, i })).filter(({ e }) => (wrongOnly ? e.correct === false : true));
+    const title = wrongOnly ? "今日 間違えた問題" : "今日 解いた問題";
+    const correctCount = log.filter((e) => e.correct === true).length;
+    const wrongCount = log.filter((e) => e.correct === false).length;
+    const head = wrongOnly
+      ? `<p class="sub">今日：正解 ${correctCount}問 / 不正解 ${wrongCount}問</p>`
+      : `<p class="sub">今日の記録 ${log.length}件（正解 ${correctCount} / 不正解 ${wrongCount}）</p>`;
+    const list = rows.length
+      ? `<ul class="sp-list">${rows.map(({ e, i }) => logRowHtml(e, i)).join("")}</ul>`
+      : `<p class="hint">${wrongOnly ? "今日はまだ間違えた問題がありません。" : "今日はまだ記録がありません。問題を解くとここに並びます。"}</p>`;
+    const replayAll = wrongCount > 0
+      ? `<button type="button" id="sp-replay-wrong" class="btn btn-primary btn-block">今日 間違えた${wrongCount}問を解き直す</button>`
+      : "";
+    panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">${title}</h3>${head}${list}${replayAll}${missingNote}</div>`;
+    return;
+  }
+
+  if (statPanelKey === "vocab") {
+    const words = Object.values(store.vocab).sort((a, b) => (b.firstSeenAt || "").localeCompare(a.firstSeenAt || ""));
+    const list = words.length
+      ? `<ul class="sp-list">${words.slice(0, 100).map((v) => `<li class="sp-row">
+          <span class="sp-meta"><span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span></span>
+          <span class="sp-label"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span>${v.meaningJP ? `<span class="muted">（${escapeHtml(v.meaningJP)}）</span>` : ""}</span>
+        </li>`).join("")}</ul>`
+      : `<p class="hint">まだ語彙が登録されていません。</p>`;
+    const more = words.length > 100 ? `<p class="hint">新しい順に100語まで表示しています（全${words.length}語）。</p>` : "";
+    panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">学習した語彙</h3><p class="sub">語をタップすると意味が出ます</p>${list}${more}</div>`;
+    return;
+  }
+
+  // 今日の復習
+  const due = dueVocabList();
+  const list = due.length
+    ? `<ul class="sp-list">${due.slice(0, 100).map((v) => `<li class="sp-row">
+        <span class="sp-meta"><span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span></span>
+        <span class="sp-label"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span>${v.meaningJP ? `<span class="muted">（${escapeHtml(v.meaningJP)}）</span>` : ""}</span>
+        <button type="button" class="sp-redo" data-fc-word="${escapeHtml(v.word)}">カードで復習</button>
+      </li>`).join("")}</ul>`
+    : `<p class="hint">今日復習する語はありません。</p>`;
+  const all = due.length ? `<button type="button" id="sp-review-all" class="btn btn-primary btn-block">${due.length}語をまとめて復習</button>` : "";
+  panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">今日の復習</h3><p class="sub">期限が来ている語です</p>${list}${all}</div>`;
+}
+
+const VOCAB_STATUS_LABELS = {
+  new: "新規", learning: "学習中", forgotten: "覚えていない",
+  unsure: "あやふや", reviewing: "復習中", mastered: "定着",
+};
+
+// カードのタップで開閉する（同じカードをもう一度押すと閉じる）
+$("today-stats").addEventListener("click", (e) => {
+  const card = e.target.closest(".stat-card");
+  if (!card) return;
+  statPanelKey = statPanelKey === card.dataset.stat ? null : card.dataset.stat;
+  renderStatPanel();
+  if (statPanelKey !== null) $("stat-panel").scrollIntoView({ block: "nearest" });
+});
+
+$("stat-panel").addEventListener("click", (e) => {
+  const redo = e.target.closest(".sp-redo[data-log-index]");
+  if (redo) {
+    const entry = todayLog()[Number(redo.dataset.logIndex)];
+    if (entry) replayFromLog([entry]);
+    return;
+  }
+  const fc = e.target.closest(".sp-redo[data-fc-word]");
+  if (fc) { startFlashcardsFromWords([fc.dataset.fcWord]); return; }
+  if (e.target.closest("#sp-replay-wrong")) { replayFromLog(todayLog().filter((x) => x.correct === false)); return; }
+  if (e.target.closest("#sp-review-all")) { startFlashcards(); return; }
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 
 function renderHome() {
   const today = store.days[todayStr()] || { questions: 0, correct: 0 };
@@ -8769,7 +9012,7 @@ function answer(choiceId) {
   store.days[todayStr()] = day;
 
   upsertVocabFromQuestion(q, isCorrect);
-  markPracticeDone("quiz", q.sentence);
+  markPracticeDone("quiz", q.sentence, { label: q.sentence.replace(/_{2,}/, "（　）"), correct: isCorrect });
   saveStore();
 
   quiz.answered = true;
@@ -8959,7 +9202,7 @@ $("btn-result-cards").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    学習履歴画面
 --------------------------------------------------------------------------- */
-const MODE_LABEL = { new: "New", review: "Review", random: "Random", mixed: "ミックス", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え", sentListening: "文の聴解" };
+const MODE_LABEL = { new: "New", review: "Review", random: "Random", mixed: "ミックス", replay: "解き直し", listening: "聴解", situation: "会話", passage: "読解", reading: "文章読解", builder: "並べ替え", sentListening: "文の聴解" };
 
 function formatDateTime(iso) {
   const d = new Date(iso);
@@ -10011,7 +10254,7 @@ function answerSituation(selectedIndex) {
 
   // 間違えた場面のキーフレーズをFlash Cardへ
   if (!isCorrect) addWordToFlashcards(q.key[0]);
-  markPracticeDone("situation", q.t);
+  markPracticeDone("situation", q.t, { label: q.t, correct: isCorrect });
   saveStore();
 
   document.querySelectorAll("#st-choices .choice").forEach((btn) => {
@@ -10483,7 +10726,7 @@ function answerPassageBlank(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(blank.key[0]);
-  markPracticeDone("passage", p.text + "#" + passage.blankIndex);
+  markPracticeDone("passage", p.text + "#" + passage.blankIndex, { label: `空欄${passage.blankIndex + 1}：${blank.c[blank.a]}`, correct: isCorrect });
   saveStore();
 
   document.querySelectorAll("#pg-choices .choice").forEach((btn) => {
@@ -11160,7 +11403,7 @@ function checkBuilder() {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(q.key[0]);
-  markPracticeDone("builder", builderKey(q.w));
+  markPracticeDone("builder", builderKey(q.w), { label: q.w.join(" "), correct: isCorrect });
   saveStore();
 
   const banner = $("bd-banner");
@@ -11678,7 +11921,7 @@ function answerReading(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(question.key[0]);
-  markPracticeDone("reading", r.text + "#" + reading.qIndex);
+  markPracticeDone("reading", r.text + "#" + reading.qIndex, { label: question.q, correct: isCorrect });
   saveStore();
 
   document.querySelectorAll("#rdg-choices .choice").forEach((btn) => {
@@ -11934,7 +12177,7 @@ function answerListening(selectedText) {
 
   // 聞き取れなかった語はFlash Cardへ（復習候補）
   if (!isCorrect) addWordToFlashcards(q.entry.word);
-  markPracticeDone("listening", norm(q.entry.word));
+  markPracticeDone("listening", norm(q.entry.word), { label: q.entry.word, correct: isCorrect });
   saveStore();
 
   document.querySelectorAll("#ls-choices .choice").forEach((btn) => {
@@ -12097,7 +12340,7 @@ function answerSentListen(selectedIndex) {
   if (isCorrect) day.correct++;
   store.days[todayStr()] = day;
   if (!isCorrect) addWordToFlashcards(q.targetVocabulary);
-  markPracticeDone("sentlisten", q.sentence);
+  markPracticeDone("sentlisten", q.sentence, { label: q.sentence, correct: isCorrect });
   saveStore();
 
   document.querySelectorAll("#sl-choices .choice").forEach((btn) => {
@@ -12638,6 +12881,15 @@ function mergeStores(base, incoming) {
     if (Object.keys(union).length > 0) merged.progress[type] = union;
   }
 
+  // 解答ログは時刻＋タイプ＋問題キーで重複を除き、古い順に並べて上限まで残す
+  const byEntry = new Map();
+  for (const e of [...(base.log || []), ...(incoming.log || [])]) {
+    byEntry.set(`${e.t}|${e.type}|${e.key}`, e);
+  }
+  merged.log = [...byEntry.values()]
+    .sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
+    .slice(-LOG_LIMIT);
+
   return merged;
 }
 
@@ -12738,6 +12990,7 @@ const mixed = {
   correct: 0,
   wrong: [],
   perType: {},
+  replay: false,
 };
 
 // 出題プランを組み立てる。1スロット＝1問。読解系は文章単位でまとめて消費する。
@@ -12811,10 +13064,13 @@ function buildMixedUnits(mode, count) {
   return shuffle(units);
 }
 
-function startMixed(mode, count) {
-  const units = buildMixedUnits(mode, count);
-  if (units.length === 0) return;
+// 出題ユニットを受け取ってセッションを開始する。
+// 解き直し（ホームの「今日の問題数」から1問だけ解く場合）もここを通す。
+// mixedUnitDone / finishMixed がこれらの値をすべて参照するため、初期化を欠かさないこと。
+function startMixedUnits(units, opts) {
+  if (!units || units.length === 0) return;
   mixed.active = true;
+  mixed.replay = Boolean(opts && opts.replay);
   mixed.units = units;
   mixed.step = 0;
   mixed.slotsDone = 0;
@@ -12823,6 +13079,10 @@ function startMixed(mode, count) {
   mixed.wrong = [];
   mixed.perType = {};
   mixedShowUnit();
+}
+
+function startMixed(mode, count) {
+  startMixedUnits(buildMixedUnits(mode, count));
 }
 
 // 単問タイプの進捗表示を「ミックス全体の進捗」に差し替える
@@ -12963,7 +13223,7 @@ function finishMixed() {
   mixed.active = false;
   store.sessions.push({
     at: nowIso(),
-    mode: "mixed",
+    mode: mixed.replay ? "replay" : "mixed",
     total: mixed.totalSlots,
     correct: mixed.correct,
     wrong: mixed.wrong,
