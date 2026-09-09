@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=31" />
+  <link rel="stylesheet" href="style.css?v=32" />
 </head>
 <body>
   <header class="site-header">
@@ -36,11 +36,13 @@
       </div>
 
       <div class="stat-grid" id="today-stats">
-        <div class="stat-card"><p class="stat-value" id="stat-today-questions">0問</p><p class="stat-label">今日の問題数</p></div>
-        <div class="stat-card"><p class="stat-value" id="stat-today-accuracy">—</p><p class="stat-label">今日の正答率</p></div>
-        <div class="stat-card"><p class="stat-value" id="stat-vocab-total">0語</p><p class="stat-label">学習語彙</p></div>
-        <div class="stat-card"><p class="stat-value" id="stat-due">0語</p><p class="stat-label">今日の復習</p></div>
+        <button type="button" class="stat-card" data-stat="questions"><p class="stat-value" id="stat-today-questions">0問</p><p class="stat-label">今日の問題数</p></button>
+        <button type="button" class="stat-card" data-stat="accuracy"><p class="stat-value" id="stat-today-accuracy">—</p><p class="stat-label">今日の正答率</p></button>
+        <button type="button" class="stat-card" data-stat="vocab"><p class="stat-value" id="stat-vocab-total">0語</p><p class="stat-label">学習語彙</p></button>
+        <button type="button" class="stat-card" data-stat="due"><p class="stat-value" id="stat-due">0語</p><p class="stat-label">今日の復習</p></button>
       </div>
+      <p class="hint stat-hint">カードをタップすると、その中身を見られます</p>
+      <div id="stat-panel" class="hidden"></div>
 
       <h2 class="section-title">レベルを選択</h2>
       <div class="level-control" id="level-control"></div>
@@ -689,6 +691,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=31"></script>
+  <script src="script.js?v=32"></script>
 </body>
 </html>
