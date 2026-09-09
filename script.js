@@ -9915,14 +9915,15 @@ function answerSituation(selectedIndex) {
     (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[q.a]}. ${q.c[q.a]}`;
 
   $("st-translation").textContent = q.t;
-  $("st-explanation").textContent = q.e;
+  $("st-explanation").innerHTML = explanationHtml(q.e);
+  $("st-added-note").classList.add("hidden");
   $("st-choice-exp").innerHTML = q.ce
     .map(
       (text, i) =>
-        `<li class="${i === q.a ? "is-correct" : ""}"><strong>${letters[i]}.</strong>${escapeHtml(text)}</li>`,
+        `<li class="${i === q.a ? "is-correct" : ""}"><strong>${letters[i]}.</strong>${explanationHtml(text)}</li>`,
     )
     .join("");
-  $("st-key").innerHTML = `<span class="key-phrase">${escapeHtml(q.key[0])}</span>${q.key[2] ? `〔${escapeHtml(q.key[2])}〕` : ""} ＝ ${escapeHtml(q.key[1])}`;
+  $("st-key").innerHTML = keyPhraseHtml(q.key);
   $("st-next").textContent =
     situation.index + 1 < situation.questions.length ? "次の問題へ" : "結果を見る";
   $("st-feedback").classList.remove("hidden");
@@ -9949,7 +9950,7 @@ function finishSituation() {
   $("st-wrong-list").innerHTML = situation.wrong
     .map(
       (w) =>
-        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+        `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></span>${addCardBtnHtml(w.word, w.meaning, "")}</li>`,
     )
     .join("");
   window.scrollTo(0, 0);
@@ -9968,6 +9969,15 @@ $("st-choices").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("st-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
@@ -10369,7 +10379,11 @@ function answerPassageBlank(selectedIndex) {
   banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
   banner.textContent =
     (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[blank.a]}. ${blank.c[blank.a]}`;
-  $("pg-explanation").textContent = blank.e;
+  $("pg-explanation").innerHTML = explanationHtml(blank.e);
+  $("pg-key-wrap").classList.toggle("hidden", !blank.key || !blank.key[0]);
+  $("pg-key").innerHTML = keyPhraseHtml(blank.key);
+  $("pg-jp").textContent = p.t || "";
+  $("pg-added-note").classList.add("hidden");
   $("pg-next").textContent =
     passage.blankIndex + 1 < p.blanks.length ? "次の空欄へ" : "結果を見る";
   $("pg-feedback").classList.remove("hidden");
@@ -10398,7 +10412,7 @@ function finishPassage() {
   $("pg-wrong-list").innerHTML = passage.wrong
     .map(
       (w) =>
-        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></li>`,
+        `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></span>${addCardBtnHtml(w.word, w.meaning, "")}</li>`,
     )
     .join("");
   window.scrollTo(0, 0);
@@ -10440,6 +10454,15 @@ $("pg-text-final").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("pg-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
@@ -11013,6 +11036,9 @@ function checkBuilder() {
   const sentence = q.w.join(" ").replace(/\s+([.,!?])/g, "$1");
   $("bd-sentence").innerHTML = interactiveHtml(sentence);
   builder.sentence = sentence;
+  $("bd-key-wrap").classList.toggle("hidden", !q.key || !q.key[0]);
+  $("bd-key").innerHTML = keyPhraseHtml(q.key);
+  $("bd-added-note").classList.add("hidden");
   $("bd-pattern").textContent = q.g[0];
   $("bd-pattern-jp").textContent = `「${q.g[1]}」`;
   $("bd-grammar-exp").textContent = q.g[2];
@@ -11043,7 +11069,7 @@ function finishBuilder() {
   $("bd-wrong-list").innerHTML = builder.wrong
     .map(
       (w) =>
-        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></li>`,
+        `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）</span></span>${addCardBtnHtml(w.word, w.meaning, "")}</li>`,
     )
     .join("");
   window.scrollTo(0, 0);
@@ -11077,6 +11103,15 @@ $("bd-sentence").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("bd-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
@@ -11406,6 +11441,66 @@ function startReading() {
   renderReadingQuestion();
 }
 
+/* ---------------------------------------------------------------------------
+   フィードバック（回答後）の共通表示
+   解説文の中のベトナム語をタップ可能にし、重要語彙をFlash Cardへ追加できるようにする。
+   クイズの解説（renderExplanation）と同じ操作感を、他の練習タイプでも使えるようにまとめる。
+--------------------------------------------------------------------------- */
+
+// 解説文（日本語）のうち「」で囲まれたベトナム語だけを辞書タップ可能にする。
+// 日本語部分に interactiveHtml をかけると誤検出するため、引用部分だけを通す。
+function explanationHtml(text) {
+  const raw = String(text || "");
+  let out = "";
+  let i = 0;
+  while (i < raw.length) {
+    const open = raw.indexOf("「", i);
+    if (open === -1) {
+      out += escapeHtml(raw.slice(i));
+      break;
+    }
+    const close = raw.indexOf("」", open + 1);
+    if (close === -1) {
+      out += escapeHtml(raw.slice(i));
+      break;
+    }
+    out += escapeHtml(raw.slice(i, open + 1));
+    out += interactiveHtml(raw.slice(open + 1, close));
+    out += escapeHtml("」");
+    i = close + 1;
+  }
+  return out;
+}
+
+// キーフレーズ（[語, 意味, 品詞]）の1行。語はタップで辞書、＋カードでFlash Cardへ。
+function keyPhraseHtml(key) {
+  if (!key || !key[0]) return "";
+  const [word, meaning, pos] = key;
+  return `<span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(word)}">${escapeHtml(word)}</span>${pos ? `<span class="pos">〔${escapeHtml(pos)}〕</span>` : ""}${escapeHtml(meaning || "")}</span>${addCardBtnHtml(word, meaning || "", pos || "")}`;
+}
+
+// フィードバック領域のクリックを1か所で受ける（語タップ＝意味、＋カード＝Flash Card追加）
+function bindFeedbackInteractions(elementId, addedNoteId) {
+  const el = $(elementId);
+  if (!el) return;
+  el.addEventListener("click", (e) => {
+    const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+    if (addBtn) {
+      const added = addWordToFlashcards(addBtn.dataset.addWord, {
+        meaningJP: addBtn.dataset.addMeaning,
+        partOfSpeech: addBtn.dataset.addPos,
+      });
+      if (added) {
+        markAddedButtons(addBtn.dataset.addWord);
+        if (addedNoteId && $(addedNoteId)) $(addedNoteId).classList.remove("hidden");
+      }
+      return;
+    }
+    const span = e.target.closest(".tap-word");
+    if (span) openWordPopup(span.dataset.word);
+  });
+}
+
 function renderReadingQuestion() {
   window.scrollTo(0, 0);
   const r = reading.r;
@@ -11468,7 +11563,15 @@ function answerReading(selectedIndex) {
   banner.className = "feedback-banner " + (isCorrect ? "ok" : "ng");
   banner.textContent =
     (isCorrect ? "正解です！ " : "不正解… ") + `正解は ${letters[question.a]}. ${question.c[question.a]}`;
-  $("rdg-explanation").textContent = question.e;
+  $("rdg-explanation").innerHTML = explanationHtml(question.e);
+  // 重要語彙（データのキーフレーズ）と、読み違いを確かめるための日本語訳
+  $("rdg-key-wrap").classList.toggle("hidden", !question.key || !question.key[0]);
+  $("rdg-key").innerHTML = keyPhraseHtml(question.key);
+  $("rdg-jp").textContent = r.t || "";
+  $("rdg-added-note").classList.add("hidden");
+  // 回答後は本文の語もタップして意味を確認できるようにする
+  $("rdg-text-wrap").innerHTML = readingTextHtml(r, true);
+  $("rdg-tap-hint").classList.remove("hidden");
   $("rdg-next").textContent =
     reading.qIndex + 1 < r.questions.length ? "次の問題へ" : "結果を見る";
   $("rdg-feedback").classList.remove("hidden");
@@ -11498,13 +11601,20 @@ function finishReading() {
   $("rdg-wrong-list").innerHTML = reading.wrong
     .map(
       (w) =>
-        `<li><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></li>`,
+        `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(w.word)}">${escapeHtml(w.word)}</span><span class="muted">（${escapeHtml(w.meaning)}）— あなたの回答：${escapeHtml(w.selected)}</span></span>${addCardBtnHtml(w.word, w.meaning, "")}</li>`,
     )
     .join("");
   window.scrollTo(0, 0);
 }
 
 $("btn-start-reading").addEventListener("click", startReading);
+// 回答後の解説内：語タップで意味、＋カードでFlash Cardへ（クイズの解説と同じ操作）
+bindFeedbackInteractions("rdg-feedback", "rdg-added-note");
+bindFeedbackInteractions("pg-feedback", "pg-added-note");
+bindFeedbackInteractions("st-feedback", "st-added-note");
+bindFeedbackInteractions("bd-feedback", "bd-added-note");
+bindFeedbackInteractions("sl-feedback", "sl-added-note");
+
 $("rdg-next").addEventListener("click", () => {
   if (reading.qIndex + 1 < reading.r.questions.length) {
     reading.qIndex++;
@@ -11521,6 +11631,15 @@ $("rdg-text-final-wrap").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("rdg-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
@@ -11849,6 +11968,13 @@ function answerSentListen(selectedIndex) {
   banner.textContent = isCorrect ? "正解です！" : "不正解…";
   $("sl-sentence").innerHTML = interactiveHtml(q.sentence);
   $("sl-meaning").textContent = q.translationJP;
+  const slEntry = lookupWord(q.targetVocabulary);
+  $("sl-key-wrap").classList.toggle("hidden", !q.targetVocabulary);
+  $("sl-key").innerHTML = keyPhraseHtml([
+    q.targetVocabulary,
+    slEntry ? slEntry.meaningJP : "",
+    slEntry ? slEntry.partOfSpeech : "",
+  ]);
   $("sl-added-note").classList.toggle("hidden", isCorrect);
   $("sl-next").textContent =
     sentListen.index + 1 < sentListen.questions.length ? "次の問題へ" : "結果を見る";
@@ -11913,6 +12039,15 @@ $("sl-sentence").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 $("sl-wrong-list").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const added = addWordToFlashcards(addBtn.dataset.addWord, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) markAddedButtons(addBtn.dataset.addWord);
+    return;
+  }
   const span = e.target.closest(".tap-word");
   if (span) openWordPopup(span.dataset.word);
 });
