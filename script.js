@@ -3640,6 +3640,40 @@ function answer(choiceId) {
   $("btn-next").textContent = quiz.index + 1 < quiz.questions.length ? "次の問題へ" : "結果を見る";
 }
 
+/* --- 解説からFlash Cardへ追加 ---
+   解説に出てくる語（重要語彙・選択肢の語・コロケーション）を、その場で
+   「覚えていない語」としてFlash Cardの復習リストに入れられるようにする。
+   すでに復習リストにある語はボタンを出さず「復習リスト」と表示する。 */
+
+// その語が今日のフラッシュカードに出る状態か（buildDeckの条件と揃える）
+function inReviewQueue(word) {
+  const v = store.vocab[norm(word)];
+  if (!v) return false;
+  return v.status === "forgotten" || v.status === "unsure" || (v.nextReviewAt && v.nextReviewAt <= nowIso());
+}
+
+// 追加ボタンのHTML。意味・品詞は辞書に無い語のための予備データとして持たせる。
+function addCardBtnHtml(word, meaningJP, partOfSpeech) {
+  if (inReviewQueue(word)) return '<span class="add-card-btn is-added">✓ 復習リスト</span>';
+  return `<button type="button" class="add-card-btn" data-add-word="${escapeHtml(word)}" data-add-meaning="${escapeHtml(meaningJP || "")}" data-add-pos="${escapeHtml(partOfSpeech || "")}">＋カード</button>`;
+}
+
+// 追加済みの見た目に差し替える（同じ語のボタンが複数箇所にあるためすべて更新する）
+function markAddedButtons(word) {
+  const key = norm(word);
+  for (const btn of document.querySelectorAll(".add-card-btn[data-add-word]")) {
+    if (norm(btn.dataset.addWord) === key) {
+      btn.outerHTML = '<span class="add-card-btn is-added">✓ 追加しました</span>';
+    }
+  }
+}
+
+// 選択肢解説「語＝意味。…」から意味部分を取り出す（辞書構築と同じ形式）
+function choiceMeaningFrom(explanationJP) {
+  const m = explanationJP.match(/[＝=]\s*([^。]+)/);
+  return m ? m[1].trim() : "";
+}
+
 function renderExplanation(q, isCorrect) {
   const correctText = q.choices.find((c) => c.id === q.correctChoice).text;
   const banner = $("feedback-banner");
@@ -3650,12 +3684,23 @@ function renderExplanation(q, isCorrect) {
   $("exp-main").textContent = q.explanationJP;
 
   $("exp-choices").innerHTML = q.choiceExplanations
-    .map((e) => `<li class="${e.choice === q.correctChoice ? "is-correct" : ""}"><strong>${e.choice}.</strong>${escapeHtml(e.explanationJP)}</li>`)
+    .map((e) => {
+      const choiceText = (q.choices.find((c) => c.id === e.choice) || {}).text || "";
+      // 解説の冒頭に出てくる選択肢の語をタップ可能にする
+      const body = choiceText && e.explanationJP.startsWith(choiceText)
+        ? `<span class="word tap-word" data-word="${escapeHtml(choiceText)}">${escapeHtml(choiceText)}</span>${escapeHtml(e.explanationJP.slice(choiceText.length))}`
+        : escapeHtml(e.explanationJP);
+      const meaning = choiceMeaningFrom(e.explanationJP);
+      const add = choiceText && (meaning || lookupWord(choiceText))
+        ? addCardBtnHtml(choiceText, meaning, "")
+        : "";
+      return `<li class="${e.choice === q.correctChoice ? "is-correct" : ""}"><span class="exp-choice-body"><strong>${e.choice}.</strong>${body}</span>${add}</li>`;
+    })
     .join("");
 
   $("exp-vocab-wrap").classList.toggle("hidden", !q.vocabulary.length);
   $("exp-vocab").innerHTML = q.vocabulary
-    .map((v) => `<li><span class="word">${escapeHtml(v.word)}</span><span class="pos">〔${escapeHtml(v.partOfSpeech)}〕</span>${escapeHtml(v.meaningJP)}${v.explanationJP ? `<span class="muted"> — ${escapeHtml(v.explanationJP)}</span>` : ""}</li>`)
+    .map((v) => `<li><span class="exp-vocab-body"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span><span class="pos">〔${escapeHtml(v.partOfSpeech)}〕</span>${escapeHtml(v.meaningJP)}${v.explanationJP ? `<span class="muted"> — ${escapeHtml(v.explanationJP)}</span>` : ""}</span>${addCardBtnHtml(v.word, v.meaningJP, v.partOfSpeech)}</li>`)
     .join("");
 
   $("exp-grammar-wrap").classList.toggle("hidden", !q.grammar.length);
@@ -3666,9 +3711,30 @@ function renderExplanation(q, isCorrect) {
   const colloc = q.collocations || [];
   $("exp-colloc-wrap").classList.toggle("hidden", !colloc.length);
   $("exp-colloc").innerHTML = colloc
-    .map((c) => `<li>${escapeHtml(c.expression)}＝${escapeHtml(c.meaningJP)}</li>`)
+    .map((c) => `<li><span class="tap-word" data-word="${escapeHtml(c.expression)}">${escapeHtml(c.expression)}</span>＝${escapeHtml(c.meaningJP)}${addCardBtnHtml(c.expression, c.meaningJP, "表現")}</li>`)
     .join("");
+
+  $("exp-added-note").classList.add("hidden");
 }
+
+// 解説カード内：語のタップで意味を表示 / ＋カードでFlash Cardに追加
+$("quiz-feedback").addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-card-btn[data-add-word]");
+  if (addBtn) {
+    const word = addBtn.dataset.addWord;
+    const added = addWordToFlashcards(word, {
+      meaningJP: addBtn.dataset.addMeaning,
+      partOfSpeech: addBtn.dataset.addPos,
+    });
+    if (added) {
+      markAddedButtons(word);
+      $("exp-added-note").classList.remove("hidden");
+    }
+    return;
+  }
+  const span = e.target.closest(".tap-word");
+  if (span) openWordPopup(span.dataset.word);
+});
 
 $("btn-next").addEventListener("click", () => {
   if (quiz.index + 1 < quiz.questions.length) {
@@ -6927,10 +6993,16 @@ function closeWordPopup() {
 
 // 「覚えていない → Flash Cardに追加」：
 // statusをforgottenにして今日の復習対象にする（次回のFlash Cardで出題される）
-function addWordToFlashcards(word) {
+// fallback は辞書に無い語のための予備データ（解説の＋カードから渡す）。
+// 追加できたかどうかを返す。
+function addWordToFlashcards(word, fallback) {
   const key = norm(word);
-  const entry = lookupWord(word);
-  if (!entry) return;
+  const entry =
+    lookupWord(word) ||
+    (fallback && fallback.meaningJP
+      ? { word, meaningJP: fallback.meaningJP, partOfSpeech: fallback.partOfSpeech || "" }
+      : null);
+  if (!entry) return false;
 
   const existing = store.vocab[key];
   if (existing) {
@@ -6956,6 +7028,7 @@ function addWordToFlashcards(word) {
     };
   }
   saveStore();
+  return true;
 }
 
 // 問題文中の単語タップ（イベント委譲）
@@ -6983,6 +7056,8 @@ $("word-popup-overlay").addEventListener("click", (e) => {
 $("wp-add").addEventListener("click", () => {
   if (!popupWord) return;
   addWordToFlashcards(popupWord);
+  // 解説カードに同じ語の＋カードが出ている場合は追加済みにする
+  markAddedButtons(popupWord);
   $("wp-add").disabled = true;
   $("wp-added").classList.remove("hidden");
 });

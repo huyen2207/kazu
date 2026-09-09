@@ -160,13 +160,33 @@ h1 { font-size: 22px; font-weight: 700; }
 .explanation h3:first-child { margin-top: 0; }
 .explanation p { font-size: 14px; }
 .exp-choice-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.exp-choice-list li { font-size: 13px; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 8px; padding: 8px 12px; }
+.exp-choice-list li {
+  font-size: 13px; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 8px; padding: 8px 12px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
 .exp-choice-list li.is-correct { background: var(--green-bg); border-color: #bbf7d0; }
 .exp-choice-list li strong { margin-right: 4px; }
+.exp-choice-body { flex: 1; }
 .exp-vocab-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-.exp-vocab-list li { font-size: 13px; }
+.exp-vocab-list li { font-size: 13px; display: flex; align-items: flex-start; gap: 8px; }
+.exp-vocab-body { flex: 1; }
 .exp-vocab-list .word { font-weight: 600; color: var(--primary); }
 .exp-vocab-list .pos { color: #9ca3af; margin: 0 4px; }
+
+/* 解説からFlash Cardに追加するボタン（重要語彙・選択肢・コロケーション） */
+.exp-add-hint { font-size: 11px; color: #9ca3af; margin-bottom: 12px; }
+.add-card-btn {
+  flex: none; white-space: nowrap;
+  font-family: inherit; font-size: 11px; font-weight: 600; line-height: 1.6;
+  border: 1px solid #c7d2fe; background: var(--primary-light); color: var(--primary);
+  border-radius: 999px; padding: 2px 10px; cursor: pointer;
+}
+.add-card-btn:hover { background: #e0e7ff; }
+.add-card-btn.is-added {
+  border-color: #bbf7d0; background: var(--green-bg); color: var(--green); cursor: default;
+}
+.exp-added-note { font-size: 12px; color: var(--green); margin-top: 14px; }
+#exp-colloc li { display: inline-flex; align-items: center; gap: 8px; }
 .exp-grammar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .exp-grammar-list li { font-size: 13px; background: #f9fafb; border-radius: 8px; padding: 8px 12px; }
 .exp-grammar-list .pattern { font-weight: 600; }
