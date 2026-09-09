@@ -8708,10 +8708,8 @@ function logRowHtml(e, i) {
     : e.correct ? '<span class="sp-mark ok">正解</span>' : '<span class="sp-mark ng">不正解</span>';
   const time = e.t.length >= 16 ? new Date(e.t).toTimeString().slice(0, 5) : "";
   return `<li class="sp-row">
-    <span class="sp-type">${PRACTICE_LABELS[e.type] || e.type}</span>
+    <span class="sp-meta"><span class="sp-type">${PRACTICE_LABELS[e.type] || e.type}</span>${mark}<span class="sp-time">${time}</span></span>
     <span class="sp-label">${escapeHtml(e.label || e.key)}</span>
-    ${mark}
-    <span class="sp-time">${time}</span>
     <button type="button" class="sp-redo" data-log-index="${i}">もう一度</button>
   </li>`;
 }
@@ -8752,7 +8750,7 @@ function renderStatPanel() {
     const words = Object.values(store.vocab).sort((a, b) => (b.firstSeenAt || "").localeCompare(a.firstSeenAt || ""));
     const list = words.length
       ? `<ul class="sp-list">${words.slice(0, 100).map((v) => `<li class="sp-row">
-          <span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span>
+          <span class="sp-meta"><span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span></span>
           <span class="sp-label"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span>${v.meaningJP ? `<span class="muted">（${escapeHtml(v.meaningJP)}）</span>` : ""}</span>
         </li>`).join("")}</ul>`
       : `<p class="hint">まだ語彙が登録されていません。</p>`;
@@ -8765,7 +8763,7 @@ function renderStatPanel() {
   const due = dueVocabList();
   const list = due.length
     ? `<ul class="sp-list">${due.slice(0, 100).map((v) => `<li class="sp-row">
-        <span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span>
+        <span class="sp-meta"><span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span></span>
         <span class="sp-label"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span>${v.meaningJP ? `<span class="muted">（${escapeHtml(v.meaningJP)}）</span>` : ""}</span>
         <button type="button" class="sp-redo" data-fc-word="${escapeHtml(v.word)}">カードで復習</button>
       </li>`).join("")}</ul>`

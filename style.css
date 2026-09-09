@@ -488,12 +488,14 @@ h1 { font-size: 22px; font-weight: 700; }
 .sp-card { margin-top: 10px; }
 .sp-title { font-size: 14px; font-weight: 700; }
 .sp-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+/* 1行目にタイプ・正誤・時刻、2行目に問題文。狭い画面で問題文が細く折り返すのを防ぐ */
 .sp-row {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 8px;
   font-size: 13px; background: var(--bg); border-radius: 8px; padding: 8px 10px;
 }
+.sp-meta { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; }
 .sp-type { font-size: 10px; color: var(--muted); background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
-.sp-label { flex: 1; min-width: 0; }
+.sp-label { grid-column: 1; min-width: 0; line-height: 1.5; }
 .sp-mark { font-size: 11px; font-weight: 600; white-space: nowrap; }
 /* 11pxと小さいので、明るい配色では濃いめの色にする（--greenだと3.2:1で不足） */
 .sp-mark.ok { color: #15803d; }
