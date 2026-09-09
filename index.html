@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=22" />
+  <link rel="stylesheet" href="style.css?v=23" />
 </head>
 <body>
   <header class="site-header">
@@ -242,7 +242,8 @@
             <h3>日本語訳</h3><p id="st-translation"></p>
             <h3>解説</h3><p id="st-explanation"></p>
             <h3>選択肢の解説</h3><ul id="st-choice-exp" class="exp-choice-list"></ul>
-            <div id="st-key-wrap"><h3>キーフレーズ</h3><p id="st-key"></p></div>
+            <div id="st-key-wrap"><h3>キーフレーズ</h3><p id="st-key" class="exp-vocab-row"></p></div>
+            <p id="st-added-note" class="exp-added-note hidden">✓ Flash Cardに追加しました。次回のフラッシュカードに出ます。</p>
           </div>
           <button id="st-next" class="btn btn-primary btn-block">次の問題へ</button>
         </div>
@@ -284,7 +285,13 @@
 
         <div id="pg-feedback" class="hidden">
           <div id="pg-banner" class="feedback-banner"></div>
-          <div class="card"><p id="pg-explanation"></p></div>
+          <div class="card explanation">
+            <p class="exp-add-hint">語をタップすると意味が出ます。知らない語は「＋カード」でFlash Cardに追加できます。</p>
+            <h3>解説</h3><p id="pg-explanation"></p>
+            <div id="pg-key-wrap"><h3>重要語彙</h3><p id="pg-key" class="exp-vocab-row"></p></div>
+            <details class="jp-details"><summary>文章の日本語訳を見る</summary><p id="pg-jp"></p></details>
+            <p id="pg-added-note" class="exp-added-note hidden">✓ Flash Cardに追加しました。次回のフラッシュカードに出ます。</p>
+          </div>
           <button id="pg-next" class="btn btn-primary btn-block">次の空欄へ</button>
         </div>
       </div>
@@ -331,7 +338,13 @@
 
         <div id="rdg-feedback" class="hidden">
           <div id="rdg-banner" class="feedback-banner"></div>
-          <div class="card"><p id="rdg-explanation"></p></div>
+          <div class="card explanation">
+            <p class="exp-add-hint">語をタップすると意味が出ます。知らない語は「＋カード」でFlash Cardに追加できます。</p>
+            <h3>解説</h3><p id="rdg-explanation"></p>
+            <div id="rdg-key-wrap"><h3>重要語彙</h3><p id="rdg-key" class="exp-vocab-row"></p></div>
+            <details class="jp-details"><summary>文章の日本語訳を見る</summary><p id="rdg-jp"></p></details>
+            <p id="rdg-added-note" class="exp-added-note hidden">✓ Flash Cardに追加しました。次回のフラッシュカードに出ます。</p>
+          </div>
           <button id="rdg-next" class="btn btn-primary btn-block">次の問題へ</button>
         </div>
       </div>
@@ -394,6 +407,8 @@
               <p><span id="bd-pattern" class="pattern"></span><span id="bd-pattern-jp" class="muted"></span></p>
               <p id="bd-grammar-exp" class="muted"></p>
             </div>
+            <div id="bd-key-wrap"><h3>重要語彙</h3><p id="bd-key" class="exp-vocab-row"></p></div>
+            <p id="bd-added-note" class="exp-added-note hidden">✓ Flash Cardに追加しました。次回のフラッシュカードに出ます。</p>
           </div>
           <button id="bd-next" class="btn btn-primary btn-block">次の問題へ</button>
         </div>
@@ -447,6 +462,7 @@
             <p class="hint">単語をタップすると意味を確認できます</p>
             <h3 class="fb-label">意味</h3>
             <p id="sl-meaning"></p>
+            <div id="sl-key-wrap"><h3 class="fb-label">重要語彙</h3><p id="sl-key" class="exp-vocab-row"></p></div>
             <p id="sl-added-note" class="hint hidden">✓ 聞き取れなかった文の重要語彙をFlash Cardに追加しました</p>
           </div>
           <button id="sl-next" class="btn btn-primary btn-block">次の問題へ</button>
@@ -646,6 +662,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=22"></script>
+  <script src="script.js?v=23"></script>
 </body>
 </html>

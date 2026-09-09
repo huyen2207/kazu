@@ -199,6 +199,14 @@ h1 { font-size: 22px; font-weight: 700; }
   border-color: #bbf7d0; background: var(--green-bg); color: var(--green); cursor: default;
 }
 .exp-added-note { font-size: 12px; color: var(--green); margin-top: 14px; }
+/* 解説内の重要語彙の1行（語＋品詞＋意味＋「＋カード」） */
+.exp-vocab-row { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; }
+.exp-vocab-row .word { font-weight: 600; color: var(--primary); }
+.exp-vocab-row .pos { color: #9ca3af; margin: 0 4px; }
+/* 「文章の日本語訳を見る」— 読む前に答えが見えないよう畳んでおく */
+.jp-details { margin-top: 14px; font-size: 13px; }
+.jp-details summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; }
+.jp-details p { margin-top: 8px; font-size: 13px; line-height: 1.7; }
 #exp-colloc li { display: inline-flex; align-items: center; gap: 8px; }
 .exp-grammar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .exp-grammar-list li { font-size: 13px; background: #f9fafb; border-radius: 8px; padding: 8px 12px; }
@@ -505,3 +513,93 @@ h1 { font-size: 22px; font-weight: 700; }
 .fc-sum.forgotten { background: var(--red-bg); color: #b91c1c; }
 .fc-sum.unsure { background: var(--yellow-bg); color: #a16207; }
 .fc-sum.remembered { background: var(--green-bg); color: #15803d; }
+
+/* ===========================================================================
+   スマートフォン向け：ヘッダーのメニューが折り返さないよう縮める
+   （狭い画面で「フラッシュカード」等が2行に割れるのを防ぐ）
+   =========================================================================== */
+.nav button { white-space: nowrap; }
+@media (max-width: 480px) {
+  .header-inner { padding: 10px 12px; }
+  .brand { font-size: 16px; }
+  .nav { gap: 10px; }
+  .nav button { font-size: 12px; }
+}
+
+/* ===========================================================================
+   ダークモード（OSの配色設定に追従）
+   コア変数を上書きし、ライトテーマでハードコードしている中間色・意味色だけを
+   ダーク用に差し替える。ライトテーマの定義には一切触れない。
+   =========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --fg: #e8eaed;
+    --muted: #9aa2b1;
+    --border: #2b303b;
+    --card: #191c23;
+    --primary: #818cf8;
+    --primary-dark: #a5b4fc;
+    --primary-light: #24263a;
+    --green: #4ade80;
+    --green-bg: #14271c;
+    --red: #f87171;
+    --red-bg: #2a1618;
+    --yellow: #eab308;
+    --yellow-bg: #2a2410;
+  }
+
+  /* 明るい中間色サーフェス（薄いグレー背景）をダーク用に差し替え */
+  .choice .choice-id,
+  .word-popup-close,
+  .history-mode,
+  .bucket-badge,
+  .speed-control button:hover,
+  .level-control button:hover { background: #262b35; }
+
+  .exp-choice-list li,
+  .exp-grammar-list li,
+  .exp-grammar-inline,
+  .fc-example,
+  .btn-secondary:hover:not(:disabled) { background: #1f232c; }
+
+  .exp-choice-list li { border-color: #2b303b; }
+
+  .progress-bar,
+  .factor-bar,
+  .stat-bar-track,
+  .word-popup-close:hover { background: #2b303b; }
+
+  .streak-badge,
+  .confusion-list li { background: #2a1f14; }
+
+  .blank-num { background: #1f232c; border-bottom-color: #3a4150; color: #9aa2b1; }
+
+  /* 意味色のテキスト（濃い緑/赤/黄）はダークの淡い背景では読めないため明るく */
+  .feedback-banner.ok,
+  .settings-message.ok,
+  .rate-remembered,
+  .fc-sum.remembered { color: #86efac; }
+
+  .feedback-banner.ng,
+  .settings-message.ng,
+  .rate-forgotten,
+  .fc-sum.forgotten,
+  .history-wrong .chip-wrong,
+  .blank-num.done-wrong { color: #fca5a5; }
+
+  .rate-unsure,
+  .fc-sum.unsure { color: #fde047; }
+
+  .chip-list li { color: #c7d2fe; }
+  .streak-badge { color: #fdba74; }
+  .confusion-list .count { color: #fdba74; }
+
+  /* ホバー時の明るいティントを抑える */
+  .rate-forgotten:hover { background: #3a1e20; }
+  .rate-unsure:hover { background: #38310f; }
+  .rate-remembered:hover { background: #143020; }
+  .add-card-btn:hover,
+  .speak-btn:hover { background: #2f3350; }
+  .btn-secondary { border-color: #3a4150; }
+}
