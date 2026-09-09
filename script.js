@@ -12881,6 +12881,15 @@ function mergeStores(base, incoming) {
     if (Object.keys(union).length > 0) merged.progress[type] = union;
   }
 
+  // 解答ログは時刻＋タイプ＋問題キーで重複を除き、古い順に並べて上限まで残す
+  const byEntry = new Map();
+  for (const e of [...(base.log || []), ...(incoming.log || [])]) {
+    byEntry.set(`${e.t}|${e.type}|${e.key}`, e);
+  }
+  merged.log = [...byEntry.values()]
+    .sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
+    .slice(-LOG_LIMIT);
+
   return merged;
 }
 
