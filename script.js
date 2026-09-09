@@ -9389,11 +9389,16 @@ $("btn-review-all-wrong").addEventListener("click", () => {
 /* ---------------------------------------------------------------------------
    フラッシュカード（今日の復習：forgotten → unsure → 期限到来の順）
 --------------------------------------------------------------------------- */
-const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 } };
+// retry: この周回で「覚えていない」「あやふや」だったカード。
+// 完了画面の「もう一度」で、覚えたと感じるまで繰り返し復習できる。
+const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 }, retry: [] };
 
 const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規", wrong: "間違えた語" };
 
-function buildDeck(limit = 10) {
+// 復習対象の語をすべてデッキにする（枚数の上限は設けない）。
+// ユーザーが追加した語を全部並べ、覚えるまで自分のペースで回すのが目的。
+// 並び順は「覚えていない → あやふや → 復習期限」、同じ枠内では間違いの多い順。
+function buildDeck() {
   const now = nowIso();
   const order = { forgotten: 0, unsure: 1, due: 2, new: 3 };
   return Object.values(store.vocab)
@@ -9405,8 +9410,7 @@ function buildDeck(limit = 10) {
       return bucket ? { v, bucket } : null;
     })
     .filter(Boolean)
-    .sort((a, b) => order[a.bucket] - order[b.bucket] || (b.v.wrongCount || 0) - (a.v.wrongCount || 0))
-    .slice(0, limit);
+    .sort((a, b) => order[a.bucket] - order[b.bucket] || (b.v.wrongCount || 0) - (a.v.wrongCount || 0));
 }
 
 function openDeck(deck) {
@@ -9414,6 +9418,7 @@ function openDeck(deck) {
   fc.index = 0;
   fc.flipped = false;
   fc.results = { forgotten: 0, unsure: 0, remembered: 0 };
+  fc.retry = [];
   showScreen("flashcards");
   $("fc-empty").classList.toggle("hidden", fc.deck.length > 0);
   $("fc-deck").classList.toggle("hidden", fc.deck.length === 0);
@@ -9421,7 +9426,7 @@ function openDeck(deck) {
 }
 
 function startFlashcards() {
-  openDeck(buildDeck(10));
+  openDeck(buildDeck());
 }
 
 // 指定した語のリストからデッキを作る（間違えた語の復習用）
@@ -9513,10 +9518,12 @@ $("fc-controls").addEventListener("click", (e) => {
   const btn = e.target.closest("[data-rate]");
   if (!btn) return;
   const rate = btn.dataset.rate;
-  const { v } = fc.deck[fc.index];
-  applyVocabEvent(v, rate);
+  const card = fc.deck[fc.index];
+  applyVocabEvent(card.v, rate);
   saveStore();
   fc.results[rate]++;
+  // まだ覚えていない語は「もう一度」の対象に残す
+  if (rate !== "remembered") fc.retry.push(card);
 
   if (fc.index + 1 < fc.deck.length) {
     fc.index++;
@@ -9526,8 +9533,20 @@ $("fc-controls").addEventListener("click", (e) => {
     $("sum-forgotten").textContent = fc.results.forgotten;
     $("sum-unsure").textContent = fc.results.unsure;
     $("sum-remembered").textContent = fc.results.remembered;
+    // 覚えたと感じるまで繰り返せるように、残った語だけの周回を促す
+    $("fc-retry").classList.toggle("hidden", fc.retry.length === 0);
+    $("fc-retry-count").textContent = fc.retry.length;
+    $("fc-done-note").textContent =
+      fc.retry.length === 0
+        ? "全部「覚えた」になりました！"
+        : "まだ覚えていない語だけを、もう一度復習できます。";
     showScreen("fc-done");
   }
+});
+
+// 「覚えていない・あやふや」の語だけで、もう一周する
+$("fc-retry").addEventListener("click", () => {
+  openDeck(fc.retry);
 });
 
 /* ---------------------------------------------------------------------------

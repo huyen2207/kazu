@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=32" />
+  <link rel="stylesheet" href="style.css?v=33" />
 </head>
 <body>
   <header class="site-header">
@@ -652,9 +652,11 @@
           <div class="fc-sum unsure"><p id="sum-unsure">0</p><span>あやふや</span></div>
           <div class="fc-sum remembered"><p id="sum-remembered">0</p><span>覚えた</span></div>
         </div>
+        <p id="fc-done-note" class="hint"></p>
       </div>
       <div class="cta-row">
-        <button class="btn btn-primary" data-nav="home">ホームへ</button>
+        <button id="fc-retry" class="btn btn-primary hidden">覚えていない<span id="fc-retry-count">0</span>語をもう一度</button>
+        <button class="btn btn-secondary" data-nav="home">ホームへ</button>
       </div>
     </section>
 
@@ -691,6 +693,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=32"></script>
+  <script src="script.js?v=33"></script>
 </body>
 </html>
