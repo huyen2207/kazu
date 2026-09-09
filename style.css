@@ -491,7 +491,12 @@ h1 { font-size: 22px; font-weight: 700; }
 .dp-bar.up { background: var(--green); }
 .dp-bar.down { background: var(--red);
   background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.45) 0 3px, transparent 3px 7px); }
-.dp-bar.flat { background: var(--muted); }
+/* 「変わらない・初回」は土色がかった黄色（ユーザー指定）。グレー系を
+   「学習なし」専用にして、薄いグレーの空バーとの混同を防ぐ。
+   インディゴだと期間切り替えボタンの選択色と紛らわしいため避ける。
+   ライトは #b8860b（--yellowの#ca8a04だとトラックと2.8:1で図形基準3:1に
+   届かないため少し濃く）、ダークは明るい --yellow を使う */
+.dp-bar.flat { background: #b8860b; }
 /* 学習しなかった日：トラックと見分けがつくよう、薄いグレーの棒を置く */
 .dp-bar.none { background: var(--muted); opacity: 0.75; height: 4px; }
 .dp-count { position: absolute; top: -14px; left: 0; right: 0; text-align: center; font-size: 9px; color: var(--muted); }
@@ -510,8 +515,14 @@ h1 { font-size: 22px; font-weight: 700; }
 .dp-key { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 .dp-key.up { background: var(--green); }
 .dp-key.down { background: var(--red); }
-.dp-key.flat { background: var(--muted); }
+.dp-key.flat { background: #b8860b; }
 .dp-key.none { background: var(--muted); opacity: 0.75; }
+/* ダークでは明るい黄（--yellow）に。棒と凡例の両方をここでまとめて上書きする
+   （凡例の定義より後に置かないと、後勝ちで打ち消される） */
+@media (prefers-color-scheme: dark) {
+  .dp-bar.flat,
+  .dp-key.flat { background: var(--yellow); }
+}
 
 .stat-bars { display: flex; flex-direction: column; gap: 7px; }
 .stat-bar-row { display: grid; grid-template-columns: 110px 1fr 76px; align-items: center; gap: 10px; }
