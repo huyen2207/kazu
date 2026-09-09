@@ -22,7 +22,10 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+  /* ベトナム語の声調記号（ắ ế ố など）を正しく描画するため、ベトナム語対応の
+     ラテンフォントを日本語フォントより前に置く。日本語グリフはラテンフォントに
+     含まれないため、日本語は従来どおり Hiragino 等にフォールバックする。 */
+  font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
