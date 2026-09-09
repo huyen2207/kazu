@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=23" />
+  <link rel="stylesheet" href="style.css?v=24" />
 </head>
 <body>
   <header class="site-header">
@@ -498,6 +498,12 @@
         <h3>タイプ別の成績</h3>
         <ul id="mx-type-list" class="wrong-list"></ul>
       </div>
+      <div id="mx-texts-wrap" class="hidden">
+        <h2 class="section-title">読んだ文章</h2>
+        <p class="hint">語をタップすると意味が出ます。知らない語は「＋カード」でFlash Cardに追加できます。</p>
+        <div id="mx-texts"></div>
+        <p id="mx-added-note" class="exp-added-note hidden">✓ Flash Cardに追加しました。次回のフラッシュカードに出ます。</p>
+      </div>
       <div id="mx-wrong-wrap" class="card hidden">
         <h3>間違えた語彙（復習候補に追加されました）</h3>
         <p class="hint">単語をタップすると意味を確認できます。「＋カード」でFlash Cardに追加できます。</p>
@@ -662,6 +668,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=23"></script>
+  <script src="script.js?v=24"></script>
 </body>
 </html>

@@ -10434,9 +10434,8 @@ $("pg-next").addEventListener("click", () => {
 });
 $("pg-again").addEventListener("click", startPassage);
 
-// 完了後：結果画面に文章全体をタップ可能な形で表示（空欄は正解で埋める）
-function renderPassageInteractive() {
-  const p = passage.p;
+// 文章全体をタップ可能な形で組み立てる（空欄は正解で埋める）
+function passageTextHtml(p) {
   const segments = p.text.split(/__\d+__/);
   let html = "";
   segments.forEach((segment, i) => {
@@ -10446,7 +10445,12 @@ function renderPassageInteractive() {
       html += ` <span class="filled-sentence">${interactiveHtml(blank.c[blank.a])}</span> `;
     }
   });
-  $("pg-text-final").innerHTML = html;
+  return html;
+}
+
+// 完了後：結果画面に文章全体をタップ可能な形で表示（空欄は正解で埋める）
+function renderPassageInteractive() {
+  $("pg-text-final").innerHTML = passageTextHtml(passage.p);
 }
 
 $("pg-text-final").addEventListener("click", (e) => {
@@ -12824,6 +12828,50 @@ function finishMixed() {
   showScreen("mixedresult");
 }
 
+// ミックスで読んだ文章（文章読解・読解空欄）を、単体の結果画面と同じ情報量で残す
+function renderMixedTexts() {
+  const units = mixed.units
+    .slice(0, mixed.step)
+    .filter((u) => u.type === "reading" || u.type === "passage");
+
+  $("mx-texts-wrap").classList.toggle("hidden", units.length === 0);
+  $("mx-added-note").classList.add("hidden");
+  if (units.length === 0) {
+    $("mx-texts").innerHTML = "";
+    return;
+  }
+
+  $("mx-texts").innerHTML = units
+    .map((unit) => {
+      const q = unit.q;
+      const label = unit.type === "reading" ? "文章読解" : "読解練習（空欄補充）";
+      const textHtml =
+        unit.type === "reading" ? readingTextHtml(q, true) : `<div class="card passage-card"><p>${passageTextHtml(q)}</p></div>`;
+      // 設問（reading）／空欄（passage）ごとの解説と重要語彙
+      const items = unit.type === "reading" ? q.questions : q.blanks;
+      const itemsHtml = items
+        .map((item, i) => {
+          const heading =
+            unit.type === "reading" ? `質問${i + 1}：${escapeHtml(item.q)}` : `空欄${i + 1}：${escapeHtml(item.c[item.a])}`;
+          return `<li>
+            <p class="mx-exp-head">${heading}</p>
+            <p>${explanationHtml(item.e)}</p>
+            ${item.key && item.key[0] ? `<p class="exp-vocab-row">${keyPhraseHtml(item.key)}</p>` : ""}
+          </li>`;
+        })
+        .join("");
+
+      return `<div class="card explanation mx-text-card">
+        <h3>${label}</h3>
+        ${textHtml}
+        <details class="jp-details"><summary>日本語訳を見る</summary><p>${escapeHtml(q.t || "")}</p></details>
+        <h3>設問の解説</h3>
+        <ul class="mx-exp-list">${itemsHtml}</ul>
+      </div>`;
+    })
+    .join("");
+}
+
 function renderMixedResult() {
   $("mx-correct").textContent = mixed.correct;
   $("mx-total").textContent = mixed.totalSlots;
@@ -12837,6 +12885,10 @@ function renderMixedResult() {
     })
     .join("");
 
+  // その回に出た読解ユニットの本文・日本語訳・設問の解説を残す。
+  // ミックスでは各タイプの結果画面を通らないため、ここに出さないと読み返せない。
+  renderMixedTexts();
+
   $("mx-wrong-wrap").classList.toggle("hidden", mixed.wrong.length === 0);
   $("mx-wrong-list").innerHTML = mixed.wrong
     .map(
@@ -12845,6 +12897,9 @@ function renderMixedResult() {
     )
     .join("");
 }
+
+// 読んだ文章の中：語タップで意味、＋カードでFlash Cardへ
+bindFeedbackInteractions("mx-texts", "mx-added-note");
 
 $("mx-again").addEventListener("click", () => startMixed(selectedMode || "random", selectedCount || 10));
 
