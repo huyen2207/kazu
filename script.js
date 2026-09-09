@@ -4119,6 +4119,96 @@ const SITUATION_BANK = [
     ce: ["「帽子は売っていません」— 忘れ物の話を誤解しています。", "確認もせず「別の店でしょ」と突き放すのは不適切です。", "「黒は似合わない」— 失礼で見当違いです。", "確認を申し出ていて正解です。"],
     key: ["để quên", "置き忘れる", "表現"], cat: "レストラン", dif: "normal",
   },
+  {
+    d: [["Dược sĩ", "Chào chị, chị cần mua gì ạ?"], ["Khách", "______"]],
+    c: ["Tôi muốn bán thuốc đau đầu.", "Cho tôi thuốc đau đầu.", "Tôi không bị đau đầu.", "Hiệu thuốc này đẹp quá."],
+    a: 1,
+    t: "薬剤師「いらっしゃいませ、何をお求めですか？」 客「（頭痛薬をください。）」",
+    e: "薬局で薬を買うときも「Cho tôi ~（～をください）」を使います。thuốc đau đầu＝頭痛薬。",
+    ce: ["「頭痛薬を売りたい」— 客は買う側なのでbán（売る）は逆です。", "「Cho tôi ~」で薬を求めていて正解です。", "「頭は痛くない」— 買い物の場面に合いません。", "「この薬局はきれい」— 質問の返事になっていません。"],
+    key: ["thuốc", "薬", "名詞"], cat: "病院", dif: "easy",
+  },
+  {
+    d: [["Hùng", "Chiều nay bọn mình đá bóng ở sân trường. Cậu đi không?"], ["Tuấn", "______"]],
+    c: ["Tiếc quá, chiều nay mình phải đi đón em.", "Mình không thích cậu.", "Sân trường rộng lắm.", "Cậu đá bóng giỏi không?"],
+    a: 0,
+    t: "フン「今日の午後、校庭でサッカーするんだ。来る？」 トゥアン「（残念、今日の午後は弟を迎えに行かなきゃ。）」",
+    e: "誘いを断るときは「Tiếc quá（残念）」＋理由を添えるのが丁寧です。理由なしで断ると冷たく聞こえます。",
+    ce: ["「残念」＋理由で丁寧に断っていて正解です。", "「君が好きじゃない」— 失礼で場面に合いません。", "「校庭は広い」— 誘いの返事になっていません。", "質問で返すだけでは誘いに答えていません。"],
+    key: ["Tiếc quá", "残念！", "表現"], cat: "約束", dif: "normal",
+  },
+  {
+    d: [["Bạn", "Ơ, mình quên mang bút rồi. Cậu có bút không?"], ["Lan", "______"]],
+    c: ["Bút của cậu đẹp thật.", "Mình cũng thích viết bút.", "Có, cậu cầm lấy cái này mà dùng.", "Cậu nên mua bút mới."],
+    a: 2,
+    t: "友達「あっ、ペンを忘れちゃった。ペン持ってる？」 ラン「（あるよ、これ使って。）」",
+    e: "「Cậu có ~ không?（～持ってる？）」は貸してほしいという意図です。「cầm lấy ~ mà dùng（これを取って使って）」と貸すのが自然な返答です。",
+    ce: ["「君のペンはきれい」— 忘れた人にペンはありません。", "「私もペンで書くのが好き」— 貸してほしい意図に応えていません。", "ペンを差し出していて正解です。", "「新しいのを買えば」— 今この場で困っている人への返事として不親切です。"],
+    key: ["mượn", "借りる", "動詞"], cat: "学校", dif: "normal",
+  },
+  {
+    d: [["Khách", "Chị ơi, siêu thị mấy giờ đóng cửa ạ?"], ["Nhân viên", "______"]],
+    c: ["Siêu thị mở cửa lúc 8 giờ sáng.", "Dạ, 10 giờ tối ạ.", "Hôm nay siêu thị đông khách lắm.", "Anh muốn mua gì ạ?"],
+    a: 1,
+    t: "客「すみません、スーパーは何時に閉まりますか？」 店員「（夜10時です。）」",
+    e: "「mấy giờ đóng cửa?（何時に閉まる？）」と聞かれたら閉店時刻を答えます。mở cửa（開店）の時刻を答えるのはずれています。",
+    ce: ["開店時刻を答えており、閉店時刻の質問とかみ合っていません。", "閉店時刻を答えていて正解です。", "「今日は混んでいる」— 時刻の質問に答えていません。", "質問に質問で返していて不自然です。"],
+    key: ["đóng cửa", "閉まる、閉店する", "動詞句"], cat: "買い物", dif: "easy",
+  },
+  {
+    d: [["Khách", "Tôi muốn đổi một trăm đô la sang tiền Việt."], ["Nhân viên ngân hàng", "______"]],
+    c: ["Ngân hàng không có tiền.", "Anh không nên đổi tiền.", "Tiền Việt rất đẹp ạ.", "Vâng, anh cho tôi xem hộ chiếu ạ."],
+    a: 3,
+    t: "客「100ドルをベトナムドンに両替したいのですが。」 銀行員「（かしこまりました、パスポートを見せていただけますか。）」",
+    e: "両替（đổi tiền）では身分証明書の提示を求められます。「cho tôi xem ~（～を見せてください）」は手続きの定番表現です。",
+    ce: ["「銀行にお金がない」— 銀行員の返事として不自然です。", "「両替しないほうがいい」— 手続きを進めておらず失礼です。", "「ドンはきれい」— 手続きの返事になっていません。", "パスポートの提示を求めていて正解です。"],
+    key: ["đổi tiền", "両替する", "動詞句"], cat: "銀行", dif: "normal",
+  },
+  {
+    d: [["Khách", "Tôi muốn gửi hộp quà này đi Đà Nẵng. Bao lâu thì đến ạ?"], ["Nhân viên bưu điện", "______"]],
+    c: ["Dạ, khoảng ba ngày ạ.", "Đà Nẵng xa lắm, anh đừng gửi.", "Hộp quà này của tôi.", "Anh tự mang đến Đà Nẵng nhanh hơn."],
+    a: 0,
+    t: "客「この贈り物の箱をダナンに送りたいのですが、どのくらいで届きますか？」 郵便局員「（3日ほどです。）」",
+    e: "「Bao lâu thì đến?（どのくらいで届く？）」には所要日数「khoảng ~（約～）」で答えます。",
+    ce: ["日数を答えていて正解です。", "「送らないで」— 客の依頼を理由なく拒んでいて不適切です。", "「この箱は私のもの」— 意味が通りません。", "「自分で持って行くほうが速い」— 郵便局員の返事として不自然です。"],
+    key: ["gửi", "送る", "動詞"], cat: "郵便局", dif: "easy",
+  },
+  {
+    d: [["Mai", "Trời sắp mưa rồi đấy. Cậu định đi bây giờ à?"], ["Linh", "______"]],
+    c: ["Trời mưa thì đẹp lắm.", "Ừ, nhưng mình sẽ mang theo ô.", "Mình không thích trời nắng.", "Cậu đừng xem dự báo thời tiết."],
+    a: 1,
+    t: "マイ「もうすぐ雨が降るよ。今から出かけるつもり？」 リン「（うん、でも傘を持って行くよ。）」",
+    e: "雨の心配をされたら「mang theo ô（傘を持って行く）」と対策を答えるのが自然です。",
+    ce: ["「雨はきれい」— 心配への返事になっていません。", "傘を持って行くと答えていて正解です。", "「晴れは嫌い」— 話がずれています。", "「天気予報を見ないで」— 心配してくれた相手に失礼です。"],
+    key: ["mang theo", "持って行く、携帯する", "動詞句"], cat: "天気", dif: "easy",
+  },
+  {
+    d: [["Người bán", "Xoài hôm nay ngọt lắm, em mua đi!"], ["Khách", "______"]],
+    c: ["Chị bán xoài ở đâu?", "Em không biết ăn xoài bao giờ.", "Bao nhiêu tiền một cân ạ?", "Xoài là quả màu gì ạ?"],
+    a: 2,
+    t: "売り手「今日のマンゴーはすごく甘いよ、買っていきなよ！」 客「（1キロいくらですか？）」",
+    e: "市場で買う気があるときは、まず「Bao nhiêu tiền một cân?（1キロいくら？）」と値段を聞くのが自然な流れです。",
+    ce: ["目の前で売っている人に売り場を聞くのは不自然です。", "「マンゴーを食べたことがない」だけでは会話が進みません。", "値段を尋ねていて正解です。", "マンゴーを見ながら色を聞くのは不自然です。"],
+    key: ["một cân", "1キロ", "表現"], cat: "買い物", dif: "easy",
+  },
+  {
+    d: [["Người nước ngoài", "Xin lỗi, anh nói nhanh quá. Anh nói chậm lại được không ạ?"], ["Nhân viên", "______"]],
+    c: ["Ừ nhỉ, xin lỗi. Để tôi nói lại từ đầu nhé.", "Tôi thích nói nhanh.", "Chị nên học tiếng Việt thêm đi.", "Tôi không nói lại đâu."],
+    a: 0,
+    t: "外国人「すみません、話すのが速すぎて。ゆっくり話していただけますか？」 職員「（そうですね、すみません。最初からもう一度言いますね。）」",
+    e: "「nói chậm lại（ゆっくり話す）」を頼まれたら、謝って言い直すのが親切な対応です。「nói lại từ đầu＝最初から言い直す」。",
+    ce: ["謝って言い直しを申し出ていて正解です。", "「速く話すのが好き」— 相手の困りごとを無視しています。", "「もっと勉強すれば」— 失礼な返答です。", "「言い直さない」— 拒否していて不親切です。"],
+    key: ["nói chậm lại", "ゆっくり話す", "表現"], cat: "日常生活", dif: "normal",
+  },
+  {
+    d: [["Nga", "Cuối tuần cậu thường làm gì?"], ["Bình", "______"]],
+    c: ["Cuối tuần là thứ bảy và chủ nhật.", "Mình thường đi bơi với em trai.", "Cậu thích cuối tuần không?", "Tuần sau mình bận lắm."],
+    a: 1,
+    t: "ガー「週末はいつも何してるの？」 ビン「（弟とプールに泳ぎに行くことが多いよ。）」",
+    e: "「thường làm gì?（いつも何してる？）」には習慣を「thường + 動詞」で答えます。趣味の話題の定番のやり取りです。",
+    ce: ["週末の定義を説明していて会話になっていません。", "習慣（よく泳ぎに行く）を答えていて正解です。", "質問に質問で返していて答えになっていません。", "「来週は忙しい」— 聞かれたのは普段の習慣です。"],
+    key: ["thường", "よく～する、普段", "副詞"], cat: "趣味", dif: "easy",
+  },
 ];
 
 // 会話練習のキーフレーズを辞書へ登録（Flash Card追加時に意味を引けるように）
@@ -4260,6 +4350,78 @@ const B1_SITUATION_BANK = [
     ce: ["「小声だから」— ルールに対する言い訳です。", "「新しい電話なんだ」— 注意と無関係です。", "「あなたも声が大きい」— 反撃は最悪の対応です。", "謝罪＋即改善で正解です。"],
     key: ["nghe máy", "電話に出る", "表現"], cat: "学校", dif: "easy",
   },
+  {
+    d: [["Khách", "Cái máy sấy tóc tôi mua tuần trước tự nhiên không chạy nữa. Tôi muốn đổi cái khác."], ["Nhân viên", "______"]],
+    c: ["Chị dùng sai cách rồi, không phải lỗi của máy đâu ạ.", "Dạ, chị cho tôi xem máy và hóa đơn, nếu do lỗi sản phẩm thì bên em đổi ngay ạ.", "Máy sấy tóc hỏng là chuyện bình thường ạ.", "Chị mua cái mới đi, cái này rẻ mà ạ."],
+    a: 1,
+    t: "客「先週買ったドライヤーが急に動かなくなったんです。交換してほしいのですが。」 店員「（かしこまりました。商品とレシートを見せてください。製品の不具合でしたらすぐ交換いたします。）」",
+    e: "不良品の交換依頼には、まず現物と証明を確認し、条件（lỗi sản phẩm＝製品の不具合）を示して対応を約束するのが正しい接客です。",
+    ce: ["確認もせず客のせいにしていて最悪の対応です。", "確認＋交換の条件提示で正解です。", "「壊れるのは普通」— 責任逃れで不適切です。", "「新しいのを買えば」— 交換依頼への返事になっていません。"],
+    key: ["đổi", "交換する", "動詞"], cat: "買い物", dif: "normal",
+  },
+  {
+    d: [["Bạn", "Tuần sau mình về quê ba ngày. Cậu cho mèo nhà mình ăn giúp được không?"], ["Hàng xóm", "______"]],
+    c: ["Mèo của cậu béo quá rồi, nhịn vài ngày cũng được.", "Cậu mang mèo về quê luôn đi.", "Được chứ. Cậu cứ để chìa khóa và ghi lại giờ cho ăn cho mình nhé.", "Mình chưa nuôi mèo bao giờ nên chắc là không."],
+    a: 2,
+    t: "友達「来週3日間帰省するんだ。うちの猫にごはんをあげてもらえない？」 隣人「（いいよ。鍵を預けて、餌の時間をメモしておいてね。）」",
+    e: "頼みを引き受けるときは、了承＋必要な段取り（chìa khóa＝鍵、giờ cho ăn＝餌の時間）まで確認すると親切で確実です。",
+    ce: ["「数日食べなくても平気」— 無責任で失礼です。", "「連れて帰れば」— 頼みを突き返しています。", "了承して段取りまで確認していて正解です。", "断るにしても理由が弱く、代案もなく不親切です。"],
+    key: ["giúp", "～してあげる、手伝う", "動詞"], cat: "日常生活", dif: "normal",
+  },
+  {
+    d: [["Đồng nghiệp", "Thứ sáu này mình có việc gia đình. Cậu đổi ca giúp mình được không?"], ["Bạn", "______"]],
+    c: ["Việc gia đình thì để cuối tuần hãy làm.", "Được, thứ sáu mình làm thay cậu, bù lại cậu nhận ca thứ hai của mình nhé.", "Cậu hỏi sếp ấy, đừng hỏi mình.", "Mình không bao giờ đổi ca cho ai cả."],
+    a: 1,
+    t: "同僚「今週の金曜、家の用事があって。シフトを代わってもらえない？」 あなた「（いいよ、金曜は私が代わりに入る。代わりに月曜の私のシフトをお願いね。）」",
+    e: "シフト交代（đổi ca）は引き受け＋交換条件（bù lại＝その代わり）まで具体的に決めるのが職場の自然なやり取りです。",
+    ce: ["相手の事情に口を出していて失礼です。", "引き受けて交換条件まで決めていて正解です。", "同僚同士でまず合意してから上司に報告するのが順序です。突き放すのは不親切です。", "理由のない全面拒否は関係を悪くします。"],
+    key: ["đổi ca", "シフトを交代する", "動詞句"], cat: "仕事", dif: "normal",
+  },
+  {
+    d: [["Bạn", "Chết rồi, mình vừa gửi nhầm file cũ cho khách hàng."], ["Đồng nghiệp", "______"]],
+    c: ["Bình tĩnh. Cậu gửi lại file đúng ngay và nhắn xin lỗi khách là được.", "Thôi xong, cậu chuẩn bị bị đuổi việc đi.", "Sao cậu bất cẩn thế nhỉ?", "Kệ đi, chắc khách không mở file đâu."],
+    a: 0,
+    t: "あなた「やばい、お客さんに古いファイルを間違って送っちゃった。」 同僚「（落ち着いて。すぐ正しいファイルを送り直して、お詫びの一言を添えれば大丈夫。）」",
+    e: "ミスの報告を受けたら、責めるより先に対処法（gửi lại＝送り直す、nhắn xin lỗi＝詫びを入れる）を示すのが良い同僚の対応です。",
+    ce: ["落ち着かせて具体的な対処を示していて正解です。", "「クビだね」— 脅すだけで何の助けにもなりません。", "責めるだけで解決策がありません。", "「放っておけば」— 問題を放置する最悪の助言です。"],
+    key: ["gửi nhầm", "誤送信する", "動詞句"], cat: "仕事", dif: "normal",
+  },
+  {
+    d: [["Khách", "Điện thoại này còn bảo hành không ạ? Màn hình tự nhiên bị sọc."], ["Nhân viên", "______"]],
+    c: ["Màn hình bị sọc thì vẫn dùng được mà ạ.", "Chắc anh làm rơi rồi, bên em không chịu trách nhiệm ạ.", "Anh lên mạng tự tìm cách sửa nhé ạ.", "Dạ, anh cho em kiểm tra số máy. Nếu còn hạn bảo hành, bên em sẽ sửa miễn phí ạ."],
+    a: 3,
+    t: "客「この携帯、まだ保証期間内ですか？画面に急に縞が出て。」 店員「（製造番号を確認させてください。保証期間内でしたら無償で修理いたします。）」",
+    e: "保証（bảo hành）の問い合わせには、確認→期間内なら無償修理（sửa miễn phí）という手順を案内するのが正しい対応です。",
+    ce: ["「まだ使える」— 修理の相談に答えていません。", "確認せず客の過失と決めつけていて失礼です。", "「自分で調べて」— 店の責任を放棄しています。", "確認と無償修理の案内で正解です。"],
+    key: ["bảo hành", "保証（する）", "名詞・動詞"], cat: "買い物", dif: "normal",
+  },
+  {
+    d: [["Người thuê nhà", "Chị ơi, điều hòa phòng em chảy nước hai hôm nay rồi. Chị cho người sửa giúp em với."], ["Chủ nhà", "______"]],
+    c: ["Ừ, để chị gọi thợ, mai họ qua kiểm tra nhé. Em ở nhà giúp chị lúc đó nha.", "Trời nóng thì em mở cửa sổ ra là được.", "Điều hòa cũ rồi, chảy nước là bình thường em ạ.", "Em tự sửa đi, chị bận lắm."],
+    a: 0,
+    t: "借り主「すみません、部屋のエアコンが2日前から水漏れしていて。修理の人を呼んでもらえますか。」 大家「（分かった、業者を呼ぶね。明日見に来てもらうから、その時間は家にいてね。）」",
+    e: "設備の不具合は大家が手配するのが筋です。「gọi thợ（業者を呼ぶ）」＋日程＋立ち会いのお願いまで揃った返事が正解です。",
+    ce: ["業者手配と日程調整まで答えていて正解です。", "「窓を開ければいい」— 修理依頼に答えていません。", "「古いから普通」— 対応を拒んでいて無責任です。", "「自分で直して」— 大家の義務の放棄です。"],
+    key: ["gọi thợ", "修理業者を呼ぶ", "表現"], cat: "家", dif: "normal",
+  },
+  {
+    d: [["Sinh viên", "Thưa cô, em bị ốm ba ngày nên chưa làm xong bài tập lớn. Cô cho em nộp muộn hai ngày được không ạ?"], ["Cô giáo", "______"]],
+    c: ["Ai cũng có lý do cả, cô không giải quyết đâu.", "Được, nhưng em nhớ gửi kèm giấy khám bệnh và nộp đúng hẹn mới nhé.", "Em ốm thì nghỉ học luôn đi.", "Bài tập lớn không quan trọng, em bỏ cũng được."],
+    a: 1,
+    t: "学生「先生、3日間病気だったのでレポートがまだ終わっていません。提出を2日延ばしていただけませんか。」 先生「（いいですよ。ただし診断書を添えて、新しい期限は守ってくださいね。）」",
+    e: "期限延長（nộp muộn）の願い出には、条件付きで認める（giấy khám bệnh＝診断書、đúng hẹn mới＝新しい期限どおり）のが教育的で公平な対応です。",
+    ce: ["事情を聞かず一律拒否は柔軟さを欠きます。", "条件付きで認めていて正解です。", "「休学すれば」— 極端で不適切です。", "課題を軽んじる発言で教師として不自然です。"],
+    key: ["nộp muộn", "提出が遅れる", "動詞句"], cat: "学校", dif: "normal",
+  },
+  {
+    d: [["Bạn", "Nghe nói cậu từng học ở Nhật. Mình sắp sang đó du học, cậu có lời khuyên gì không?"], ["Tiền bối", "______"]],
+    c: ["Du học vất vả lắm, cậu đừng đi thì hơn.", "Chuyện cũ rồi, mình không nhớ gì đâu.", "Cậu nên học chăm chỉ tiếng Nhật trước khi đi, và đừng ngại hỏi khi chưa hiểu.", "Sang đó rồi cậu sẽ tự biết thôi."],
+    a: 2,
+    t: "あなた「日本に留学してたんだってね。今度行くんだけど、何かアドバイスある？」 先輩「（行く前に日本語をしっかり勉強しておくこと、それと分からないときは遠慮せず聞くことだね。）」",
+    e: "助言を求められたら「nên ~（～するとよい）」「đừng ngại ~（～するのをためらわないで）」で具体的に答えるのが親切です。",
+    ce: ["「やめたほうがいい」— 決めた人への返事として後ろ向きすぎます。", "「覚えていない」— 突き放していて不親切です。", "具体的な助言を2つ挙げていて正解です。", "「行けば分かる」— 助言を求めた意味がありません。"],
+    key: ["lời khuyên", "アドバイス、助言", "名詞"], cat: "旅行", dif: "normal",
+  },
 ];
 for (const s of B1_SITUATION_BANK) addDictEntry(s.key[0], s.key[1], s.key[2]);
 
@@ -4336,6 +4498,78 @@ const B2_SITUATION_BANK = [
     e: "近隣トラブルの正しい対応は「謝罪＋具体的な改善策（時間・防音）＋今後の連絡歓迎」です。相手に対策を押し付ける（B）のは火に油を注ぎます。",
     ce: ["「うちの勝手」— 関係悪化の典型です。", "相手側に我慢を求めており誠意がありません。", "責任転嫁の反発で不適切です。", "謝罪＋具体策＋開かれた姿勢で正解です。"],
     key: ["nhắc", "注意する、念を押す", "動詞"], cat: "日常生活", dif: "normal",
+  },
+  {
+    d: [["Nhà tuyển dụng", "Chúng tôi rất muốn mời em về làm việc. Em thấy thế nào?"], ["Ứng viên", "______"]],
+    c: ["Em cảm ơn anh đã tin tưởng, nhưng em xin phép từ chối vì đã nhận lời một công ty khác ạ.", "Công ty anh trả lương thấp nên em không làm đâu ạ.", "Em không thích công ty này lắm ạ.", "Để bao giờ rảnh thì em trả lời ạ."],
+    a: 0,
+    t: "採用担当「ぜひうちに来ていただきたいのですが、いかがですか？」 応募者「（信頼していただきありがとうございます。ただ、すでに他社の内定を受けましたので、申し訳ありませんが辞退させていただきます。）」",
+    e: "内定辞退は感謝→辞退→理由の順で伝えるのが礼儀です。「xin phép từ chối（辞退させていただく）」はB2レベルの丁寧な断り方です。",
+    ce: ["感謝＋丁寧な辞退＋理由で正解です。", "率直すぎて相手の面子をつぶします。理由は選んで伝えます。", "「好きじゃない」— 失礼で、今後の縁も切ってしまいます。", "返事を曖昧に先延ばしにするのは相手に迷惑です。"],
+    key: ["từ chối", "断る、辞退する", "動詞"], cat: "仕事", dif: "normal",
+  },
+  {
+    d: [["Nhân viên A", "Anh Long toàn đẩy việc khó cho em. Em không chịu nổi nữa."], ["Trưởng nhóm", "______"]],
+    c: ["Em chịu khó thêm đi, ai cũng thế cả.", "Để anh nói chuyện riêng với từng người, rồi mình cùng phân chia lại công việc cho rõ ràng.", "Anh Long giỏi hơn nên có quyền làm thế.", "Hai đứa tự giải quyết với nhau đi."],
+    a: 1,
+    t: "社員A「ロンさんはいつも難しい仕事を私に押し付けるんです。もう我慢できません。」 チームリーダー「（それぞれと個別に話を聞いて、そのうえで仕事の分担をはっきり決め直そう。）」",
+    e: "対立の訴えには、両方から個別に事情を聞き（nói chuyện riêng）、仕組みで解決する（phân chia lại＝分担を見直す）のが管理職の正しい対応です。",
+    ce: ["「我慢しろ」— 問題を放置しています。", "個別ヒアリング＋分担見直しで正解です。", "片方に肩入れしていて不公平です。", "仲裁を放棄していてリーダーの役割を果たしていません。"],
+    key: ["phân chia", "分担する、割り振る", "動詞"], cat: "仕事", dif: "normal",
+  },
+  {
+    d: [["Quản lý quán", "Có khách để đánh giá một sao, viết là phục vụ chậm và nhân viên không thân thiện. Mình nên trả lời sao đây?"], ["Chủ quán", "______"]],
+    c: ["Chặn luôn tài khoản đó đi, chắc là quán đối thủ.", "Kệ đi, một đánh giá xấu không sao đâu.", "Trả lời là khách đó khó tính chứ quán mình không sai.", "Xin lỗi công khai, cảm ơn góp ý, và mời khách quay lại để quán phục vụ tốt hơn."],
+    a: 3,
+    t: "店長「星1のレビューが付きました。『提供が遅い、店員が不親切』と。どう返信しましょう？」 オーナー「（公開の場で謝罪し、指摘に感謝して、次はより良いサービスでお迎えしたいと再来店を促そう。）」",
+    e: "低評価レビューへの返信は、公開謝罪＋感謝＋改善姿勢が鉄則です。反論やもみ消しは他の見込み客の信頼まで失います。",
+    ce: ["証拠なく相手を決めつけ、対応を放棄しています。", "放置はレビューを読む他の客への悪印象を残します。", "客のせいにする返信は炎上のもとです。", "謝罪＋感謝＋再来店の誘いで正解です。"],
+    key: ["đánh giá", "評価、レビュー", "名詞"], cat: "ビジネス", dif: "normal",
+  },
+  {
+    d: [["Khách hàng", "Bên anh báo giá cao hơn đối thủ 10%. Giảm giá đi thì tôi ký luôn."], ["Nhân viên kinh doanh", "______"]],
+    c: ["Bên em khó giảm thêm, nhưng với mức giá này bên em bảo hành hai năm và hỗ trợ lắp đặt miễn phí ạ.", "Vậy anh mua bên đối thủ đi ạ.", "Dạ em giảm 20% luôn, miễn là anh ký ạ.", "Đối thủ chắc chắn bán hàng giả đấy ạ."],
+    a: 0,
+    t: "顧客「おたくの見積もりは競合より10%高い。値引きしてくれたらすぐ契約するよ。」 営業「（これ以上の値引きは難しいのですが、この価格には2年保証と無料設置サポートが含まれております。）」",
+    e: "値下げ要求には、安易に応じず付加価値（bảo hành＝保証、hỗ trợ lắp đặt＝設置サポート）で価格を正当化するのがB2レベルの交渉です。",
+    ce: ["価格差の根拠を付加価値で示していて正解です。", "客を突き放していて商談を自ら壊しています。", "安請け合いの大幅値引きは利益と信頼を損ないます。", "根拠なく競合を中傷するのは論外です。"],
+    key: ["báo giá", "見積もり（を出す）", "名詞・動詞"], cat: "ビジネス", dif: "hard",
+  },
+  {
+    d: [["Khách hàng", "Các anh hứa giao hàng hôm nay mà giờ lại báo chậm ba ngày. Tôi rất thất vọng."], ["Quản lý", "______"]],
+    c: ["Chậm ba ngày thôi mà, anh thông cảm đi ạ.", "Em xin lỗi anh. Bên em sẽ giao trước thứ sáu, và xin gửi anh phiếu giảm giá cho đơn sau ạ.", "Lỗi này do bên vận chuyển, không phải bên em ạ.", "Anh đặt sớm hơn thì đâu có chậm ạ."],
+    a: 1,
+    t: "顧客「今日配達すると約束したのに、3日遅れると言われました。非常に残念です。」 責任者「（申し訳ございません。金曜までに必ずお届けし、お詫びとして次回使える割引券をお送りいたします。）」",
+    e: "納期遅延への対応は、謝罪＋新しい確約（giao trước thứ sáu）＋補償（phiếu giảm giá＝割引券）の3点セットが基本です。",
+    ce: ["「3日だけ」と過小評価していて客の怒りを増やします。", "謝罪＋確約＋補償で正解です。", "責任転嫁は客にとって関係のない話です。", "客のせいにしていて論外です。"],
+    key: ["giao hàng", "配達する、納品する", "動詞句"], cat: "ビジネス", dif: "normal",
+  },
+  {
+    d: [["Nhân viên", "Thưa anh, công việc của em chủ yếu làm trên máy tính. Em xin phép làm ở nhà hai ngày một tuần được không ạ?"], ["Giám đốc", "______"]],
+    c: ["Làm ở nhà là lười biếng, anh không đồng ý.", "Muốn làm gì thì làm, anh không quan tâm.", "Anh đồng ý thử một tháng. Nếu kết quả vẫn đảm bảo thì mình duy trì lâu dài.", "Cả công ty sẽ cười em đấy."],
+    a: 2,
+    t: "社員「私の仕事はほぼパソコン作業です。週2日在宅勤務をさせていただけませんか。」 社長「（1か月試してみることを認めます。成果がきちんと保てるなら、そのまま続けましょう。）」",
+    e: "制度の要望には「thử（試す）」＋評価基準（kết quả đảm bảo＝成果の担保）を付けて条件付きで認めるのが合理的なマネジメントです。",
+    ce: ["決めつけで拒否していて根拠がありません。", "放任は承認でも管理でもありません。", "試験導入＋条件で正解です。", "からかいで返すのは論外です。"],
+    key: ["làm ở nhà", "在宅勤務する", "表現"], cat: "仕事", dif: "normal",
+  },
+  {
+    d: [["Người nghe", "Bạn nói sản phẩm này thân thiện với môi trường, nhưng vỏ hộp vẫn là nhựa. Bạn giải thích sao?"], ["Người thuyết trình", "______"]],
+    c: ["Câu hỏi này không liên quan đến bài thuyết trình ạ.", "Cảm ơn câu hỏi rất hay ạ. Vỏ hiện dùng nhựa tái chế, và bên em đặt mục tiêu chuyển hoàn toàn sang giấy trong năm tới.", "Nhựa hay giấy thì cũng như nhau thôi ạ.", "Anh hỏi khó thế thì em chịu ạ."],
+    a: 1,
+    t: "聴衆「環境にやさしい製品と言いますが、パッケージはまだプラスチックですよね。どう説明しますか？」 発表者「（良いご質問をありがとうございます。現在は再生プラスチックを使用しており、来年中に紙へ完全移行する目標です。）」",
+    e: "鋭い質問には、感謝→事実（nhựa tái chế＝再生プラスチック）→今後の計画の順で誠実に答えるのがプレゼンQ&Aの型です。",
+    ce: ["質問を門前払いしていて不誠実です。", "感謝＋事実＋計画で正解です。", "「同じようなもの」— 環境訴求と矛盾し信頼を失います。", "お手上げ宣言は発表者として失格です。"],
+    key: ["tái chế", "リサイクルする", "動詞"], cat: "環境", dif: "hard",
+  },
+  {
+    d: [["Trưởng phòng", "Em đi muộn ba lần trong tuần này rồi. Có chuyện gì vậy?"], ["Nhân viên", "______"]],
+    c: ["Em xin lỗi anh. Mẹ em ốm nên sáng em phải đưa mẹ đi viện. Em xin phép đổi giờ làm sang 9 giờ trong tuần này ạ.", "Nhiều người khác cũng đi muộn mà anh chỉ nhắc em.", "Đi muộn vài lần thì có sao đâu ạ.", "Tại đường tắc chứ em có muốn đâu ạ."],
+    a: 0,
+    t: "課長「今週3回も遅刻していますね。何かあったのですか？」 社員「（申し訳ありません。母が病気で、朝は病院へ送っています。今週だけ勤務開始を9時に変更させていただけませんか。）」",
+    e: "遅刻を指摘されたら、謝罪＋事情＋解決の提案（đổi giờ làm＝勤務時間の変更）まで自分から示すのが信頼される対応です。",
+    ce: ["謝罪＋理由＋具体的な提案で正解です。", "他人を引き合いに出すのは言い訳の典型です。", "問題を軽視していて反省がありません。", "外部のせいにするだけで解決策がありません。"],
+    key: ["xin phép", "許可を求める、～させていただく", "表現"], cat: "仕事", dif: "normal",
   },
 ];
 for (const s of B2_SITUATION_BANK) addDictEntry(s.key[0], s.key[1], s.key[2]);
@@ -4603,6 +4837,45 @@ const PASSAGE_BANK = [
     t: "昨夜、ホアが電話をかけてきて、日曜日に映画を観に行こうと誘ってくれました。私たちは午後2時に映画館の前で会う約束をしました。映画は時間どおりに始まるから遅れないでね、とホアは念を押しました。",
     cat: "約束",
   },
+  {
+    text: "Trường tôi ở gần một công viên lớn. Sau giờ học, tôi và các bạn thường ra đó chơi. Hôm nay có bài kiểm tra tiếng Anh nên tôi phải về nhà __1__ để ôn bài. Mẹ nói nếu tôi được điểm __2__, cuối tuần cả nhà sẽ đi ăn kem.",
+    blanks: [
+      { c: ["muộn", "sớm", "chậm", "xa"], a: 1, e: "テスト勉強（ôn bài）のためなので「早く（sớm）」帰ります。muộn（遅く）だと理由と合いません。", key: ["ôn bài", "復習する", "動詞句"] },
+      { c: ["thấp", "kém", "cao", "ít"], a: 2, e: "ご褒美（アイスを食べに行く）の条件なので「高い点（điểm cao）」です。thấp/kém（低い）では逆になります。", key: ["điểm cao", "高得点", "表現"] },
+    ],
+    t: "私の学校は大きな公園の近くにあります。放課後、私は友達とよくそこへ遊びに行きます。今日は英語のテストがあるので、復習のために早く家に帰らなければなりません。良い点を取ったら週末に家族みんなでアイスを食べに行こう、と母は言いました。",
+    cat: "学校",
+  },
+  {
+    text: "Anh trai tôi rất thích chơi bóng đá. Mỗi tuần anh ấy chơi ba __1__ với các bạn ở sân gần nhà. Anh ấy nói chơi thể thao giúp cơ thể __2__ và ngủ ngon hơn. Tôi không giỏi đá bóng nên chỉ thích đứng xem và __3__ cho anh.",
+    blanks: [
+      { c: ["giờ", "lần", "cái", "người"], a: 1, e: "回数を数えるときは「lần（回）」を使います。ba lần một tuần＝週3回。giờ は「時間」です。", key: ["lần", "回、度", "名詞"] },
+      { c: ["mệt", "yếu", "khỏe", "đói"], a: 2, e: "スポーツの効果なので「khỏe（健康・元気）」です。mệt（疲れる）・yếu（弱い）では効果の説明と逆です。", key: ["khỏe", "健康な、元気な", "形容詞"] },
+      { c: ["cổ vũ", "chê", "quên", "đợi"], a: 0, e: "見ている側がするのは「cổ vũ（応援する）」です。chê（けなす）は兄への態度として不自然です。", key: ["cổ vũ", "応援する", "動詞"] },
+    ],
+    t: "兄はサッカーが大好きです。毎週、家の近くのグラウンドで友達と3回プレーします。スポーツは体を健康にし、よく眠れるようになると兄は言います。私はサッカーが得意ではないので、立って見ながら兄を応援するのが好きです。",
+    cat: "趣味",
+  },
+  {
+    text: "Sáng nay đường rất đông vì có mưa to. Xe buýt của tôi đến __1__ mười lăm phút. Khi tôi đến công ty, cuộc họp đã bắt đầu __2__. Tôi xin lỗi mọi người và tự nhủ ngày mai sẽ ra bến xe __3__ hơn ba mươi phút.",
+    blanks: [
+      { c: ["sớm", "muộn", "nhanh", "đúng giờ"], a: 1, e: "大雨で道が混んでいた結果なので、バスは「muộn（遅れて）」15分後に来ました。", key: ["muộn", "遅れる", "形容詞"] },
+      { c: ["rồi", "chưa", "đâu", "nhé"], a: 0, e: "会社に着いた時点で会議はもう始まっていた＝「đã ~ rồi（もう～した）」の組み合わせです。chưa は「まだ～ない」で逆です。", key: ["đã ~ rồi", "もう～した", "文型"] },
+      { c: ["chậm", "xa", "sớm", "ít"], a: 2, e: "明日の対策なので「30分早く（sớm hơn ba mươi phút）」バス停に行きます。chậm（遅く）では対策になりません。", key: ["sớm hơn", "より早く", "表現"] },
+    ],
+    t: "今朝は大雨で道がとても混んでいました。私のバスは15分遅れて来ました。会社に着いたとき、会議はもう始まっていました。私はみんなに謝り、明日は30分早くバス停に行こうと心に決めました。",
+    cat: "交通",
+  },
+  {
+    text: "Tối qua tôi nấu phở cho cả nhà. Đây là __1__ đầu tiên tôi nấu món này. Tôi cho hơi nhiều muối nên nước phở bị __2__ một chút. Nhưng bố mẹ vẫn khen tôi và ăn hết bát. Lần sau tôi sẽ nấu __3__ hơn.",
+    blanks: [
+      { c: ["lần", "ngày", "món", "giờ"], a: 0, e: "「lần đầu tiên（初めて）」は決まった言い方です。初回の経験を表します。", key: ["lần đầu tiên", "初めて", "表現"] },
+      { c: ["ngọt", "mặn", "chua", "cay"], a: 1, e: "塩（muối）を入れすぎた結果なので「mặn（しょっぱい）」です。ngọt は「甘い」、chua は「すっぱい」、cay は「辛い」。", key: ["mặn", "塩辛い、しょっぱい", "形容詞"] },
+      { c: ["ít", "nhanh", "ngon", "nhiều"], a: 2, e: "次回の目標なので「もっとおいしく（ngon hơn）」作ります。", key: ["ngon", "おいしい", "形容詞"] },
+    ],
+    t: "昨夜、私は家族にフォーを作りました。この料理を作るのは初めてです。塩を入れすぎて、スープが少ししょっぱくなってしまいました。それでも両親は私を褒めて、丼を全部食べてくれました。次はもっとおいしく作ります。",
+    cat: "食事",
+  },
 ];
 
 // 読解の正解語・登場語を辞書へ登録
@@ -4669,6 +4942,36 @@ const B1_PASSAGE_BANK = [
     t: "都会を離れて田舎に移り住む若い家族が増えています。田舎は生活費がずっと安く、空気がきれいで騒音も少ないです。しかし、ここでの暮らしには不便な点もあります。大きな病院や良い学校は遠くにあることが多く、さらに仕事を見つけるのも簡単ではありません。だから田舎への移住を決める前に、良い面と悪い面の両方をよく検討すべきです。",
     cat: "日常生活", lv: "B1",
   },
+  {
+    text: "Từ năm ngoái, công ty tôi cho phép nhân viên làm việc ở nhà hai ngày mỗi tuần. Nhờ vậy, tôi __1__ được gần hai tiếng đi lại mỗi ngày. Tuy nhiên, làm việc ở nhà cũng có điểm khó: tôi dễ bị __2__ bởi tivi và mạng xã hội. Vì thế, tôi đặt ra quy định cho bản thân là chỉ nghỉ giải lao sau khi __3__ xong từng phần việc.",
+    blanks: [
+      { c: ["mất", "tiết kiệm", "tốn", "kéo dài"], a: 1, e: "在宅勤務の利点なので、通勤時間を「tiết kiệm（節約する）」です。mất/tốn（失う・かかる）では利点になりません。", key: ["tiết kiệm", "節約する", "動詞"] },
+      { c: ["hấp dẫn", "phân tâm", "thu hút", "quan tâm"], a: 1, e: "「bị phân tâm（気が散る）」が正しい組み合わせです。テレビやSNSに気を取られる、という在宅勤務の弱点です。", key: ["phân tâm", "気が散る", "動詞"] },
+      { c: ["bắt đầu", "chuẩn bị", "hoàn thành", "hủy"], a: 2, e: "休憩の条件は各タスクを「hoàn thành（完了する）」した後です。bắt đầu（始める）では休む理由になりません。", key: ["hoàn thành", "完了する", "動詞"] },
+    ],
+    t: "去年から、私の会社は週2日の在宅勤務を認めています。おかげで私は毎日2時間近い通勤時間を節約できています。しかし在宅勤務には難しい点もあります。テレビやSNSに気が散りやすいのです。そこで私は、一つひとつの仕事を完了させた後にだけ休憩する、という自分ルールを決めました。",
+    cat: "仕事", lv: "B1",
+  },
+  {
+    text: "Kỳ nghỉ vừa rồi, thay vì ở khách sạn, gia đình tôi chọn ở homestay tại một làng nhỏ. Chủ nhà __1__ chúng tôi như người thân: họ dạy chúng tôi nấu món ăn địa phương và kể nhiều câu chuyện thú vị về làng. Con trai tôi lúc đầu chê ở đây không có wifi, nhưng đến ngày cuối, cháu lại là người __2__ nhất, không muốn về. Chuyến đi giúp tôi nhận ra: đôi khi những trải nghiệm đơn giản lại __3__ hơn những tiện nghi đắt tiền.",
+    blanks: [
+      { c: ["đối xử với", "làm việc với", "so sánh với", "cạnh tranh với"], a: 0, e: "「đối xử với ~ như người thân（家族のように接する）」が正しい組み合わせです。ホストの温かさを表します。", key: ["đối xử", "接する、扱う", "動詞"] },
+      { c: ["thất vọng", "mệt mỏi", "buồn", "tiếc"], a: 3, e: "帰りたくない＝「tiếc（名残惜しい）」です。最初は文句を言っていた息子が一番名残惜しがった、という対比です。", key: ["tiếc", "惜しい、名残惜しい", "動詞"] },
+      { c: ["đắt", "quý giá", "tiện lợi", "hiện đại"], a: 1, e: "シンプルな体験のほうが高価な設備より「quý giá（価値がある）」という結論です。đắt（高い）は文字どおりの値段の話になってしまいます。", key: ["quý giá", "貴重な、価値のある", "形容詞"] },
+    ],
+    t: "この前の休暇、ホテルの代わりに、家族で小さな村のホームステイに泊まりました。ホストは私たちを家族のように迎え、地元料理の作り方を教え、村の面白い話をたくさん聞かせてくれました。息子は最初「Wi-Fiがない」と文句を言っていましたが、最終日には一番名残惜しがって帰りたがりませんでした。この旅で気づいたのは、時にはシンプルな体験のほうが高価な設備よりも価値がある、ということです。",
+    cat: "旅行", lv: "B1",
+  },
+  {
+    text: "Ngày nay, nhiều người thích mua sắm trực tuyến vì giá rẻ và giao hàng tận nhà. Tuy nhiên, mua hàng qua mạng cũng có __1__: ảnh sản phẩm đôi khi khác xa hàng thật. Tháng trước, tôi đặt một chiếc áo len màu xanh nhưng nhận được chiếc áo mỏng màu khác hẳn. Tôi đã phải mất ba ngày để __2__ với người bán và gửi trả hàng. Từ đó, trước khi đặt mua, tôi luôn đọc kỹ phần __3__ của những khách đã mua trước.",
+    blanks: [
+      { c: ["lợi ích", "rủi ro", "niềm vui", "kế hoạch"], a: 1, e: "「Tuy nhiên（しかし）」の後なので欠点＝「rủi ro（リスク）」です。lợi ích（利点）だと逆接と合いません。", key: ["rủi ro", "リスク", "名詞"] },
+      { c: ["liên lạc", "gặp gỡ", "hợp tác", "chia sẻ"], a: 0, e: "返品のやり取りは売り手と「liên lạc（連絡を取る）」です。gặp gỡ（会う）はネット通販の場面に合いません。", key: ["liên lạc", "連絡する", "動詞"] },
+      { c: ["quảng cáo", "giới thiệu", "đánh giá", "hướng dẫn"], a: 2, e: "購入者が書くのは「đánh giá（レビュー）」です。quảng cáo（広告）は店側が出すもので、失敗を防ぐ参考にはなりません。", key: ["đánh giá", "レビュー、評価", "名詞"] },
+    ],
+    t: "今日では、安くて自宅まで届くことから、ネットショッピングを好む人が多くいます。しかし通販にはリスクもあります。商品写真が実物と大きく違うことがあるのです。先月、私は青いセーターを注文しましたが、届いたのは全く違う色の薄手の服でした。売り手と連絡を取り、返品するのに3日もかかりました。それ以来、注文する前に、先に買った客のレビュー欄を必ずよく読むようにしています。",
+    cat: "買い物", lv: "B1",
+  },
 ];
 for (const p of B1_PASSAGE_BANK) for (const b of p.blanks) addDictEntry(b.key[0], b.key[1], b.key[2]);
 
@@ -4703,6 +5006,36 @@ const B2_PASSAGE_BANK = [
     ],
     t: "マスツーリズムは海辺の都市に大きな収入をもたらしますが、環境には重い負荷もかけています。プラスチックごみ、海水の汚染、生態系の破壊です。一部の自治体は1日あたりの観光客数を制限し、環境税を徴収し始めました。これらの対策は目先の収入を減らすかもしれませんが、長期的には、観光業が依存する「財産」そのもの——自然——を守ることにつながります。",
     cat: "環境", lv: "B2",
+  },
+  {
+    text: "Nhiều người cho rằng việc học chỉ dành cho tuổi trẻ, nhưng quan niệm này đang dần thay đổi. Trong thời đại công nghệ phát triển nhanh, kiến thức ở trường có thể trở nên __1__ chỉ sau vài năm. Vì vậy, người lao động cần liên tục __2__ kỹ năng mới để không bị tụt lại phía sau. May mắn là ngày nay, các khóa học trực tuyến giúp việc học trở nên dễ __3__ hơn bao giờ hết: bất cứ ai, ở bất cứ đâu, cũng có thể học với chi phí thấp.",
+    blanks: [
+      { c: ["quan trọng", "lỗi thời", "phổ biến", "chính xác"], a: 1, e: "技術の発展が速い時代、学校の知識は数年で「lỗi thời（時代遅れ）」になり得る、という文脈です。quan trọng（重要）では続く「だから学び続ける必要がある」につながりません。", key: ["lỗi thời", "時代遅れの", "形容詞"] },
+      { c: ["cập nhật", "quảng cáo", "đánh mất", "phê phán"], a: 0, e: "「cập nhật kỹ năng（スキルをアップデートする）」が定番の組み合わせです。遅れを取らないための行動です。", key: ["cập nhật", "更新する、アップデートする", "動詞"] },
+      { c: ["quên", "tiếp cận", "từ bỏ", "so sánh"], a: 1, e: "オンライン講座の効果は学びへの「tiếp cận（アクセス）」を容易にすることです。dễ tiếp cận＝アクセスしやすい。", key: ["tiếp cận", "アクセスする、近づく", "動詞"] },
+    ],
+    t: "学びは若者だけのものだと考える人は多いですが、この考え方は徐々に変わりつつあります。技術が急速に発展する時代、学校で得た知識は数年で時代遅れになりかねません。そのため、働く人は遅れを取らないよう、新しいスキルを継続的にアップデートする必要があります。幸い今日では、オンライン講座のおかげで学習はかつてなくアクセスしやすくなりました。誰でも、どこにいても、低コストで学べるのです。",
+    cat: "学校", lv: "B2",
+  },
+  {
+    text: "Theo các chuyên gia, giấc ngủ đóng vai trò __1__ đối với sức khỏe không kém gì ăn uống và tập thể dục. Khi chúng ta ngủ, não bộ sắp xếp lại thông tin và cơ thể tự phục hồi. Thiếu ngủ kéo dài không chỉ làm giảm khả năng tập trung mà còn __2__ nguy cơ mắc các bệnh về tim mạch. Dù vậy, không ít người vẫn __3__ giấc ngủ để làm việc hoặc giải trí, và chỉ nhận ra giá trị của nó khi sức khỏe đã có vấn đề.",
+    blanks: [
+      { c: ["quan trọng", "bình thường", "thú vị", "bất ngờ"], a: 0, e: "「đóng vai trò quan trọng（重要な役割を果たす）」は定番の組み合わせです。食事や運動に劣らない、と続きます。", key: ["đóng vai trò", "役割を果たす", "表現"] },
+      { c: ["giảm bớt", "làm tăng", "loại bỏ", "che giấu"], a: 1, e: "睡眠不足の害なので、心臓病のリスクを「làm tăng（高める）」です。giảm bớt（減らす）では害の説明と逆になります。", key: ["nguy cơ", "リスク、危険性", "名詞"] },
+      { c: ["bảo vệ", "coi trọng", "hy sinh", "cải thiện"], a: 2, e: "仕事や娯楽のために睡眠を「hy sinh（犠牲にする）」人が少なくない、という文脈です。coi trọng（重視する）だと後半の「健康を害してから気づく」と矛盾します。", key: ["hy sinh", "犠牲にする", "動詞"] },
+    ],
+    t: "専門家によると、睡眠は食事や運動に劣らず健康に重要な役割を果たしています。眠っている間、脳は情報を整理し、体は自ら回復します。慢性的な睡眠不足は集中力を低下させるだけでなく、心臓血管系の病気のリスクも高めます。それでも、仕事や娯楽のために睡眠を犠牲にする人は少なくなく、健康に問題が出て初めてその価値に気づくのです。",
+    cat: "健康", lv: "B2",
+  },
+  {
+    text: "Dân số già hóa đang trở thành thách thức lớn của nhiều quốc gia châu Á. Khi tỷ lệ người cao tuổi tăng nhanh còn số người trong độ tuổi lao động __1__, hệ thống lương hưu và y tế sẽ chịu áp lực ngày càng lớn. Để __2__ với tình hình này, một số nước đã nâng tuổi nghỉ hưu và khuyến khích người cao tuổi tiếp tục làm việc nếu còn sức khỏe. Bên cạnh đó, kinh nghiệm của người lớn tuổi cũng là nguồn tài sản __3__ mà các công ty trẻ nên tận dụng thay vì bỏ phí.",
+    blanks: [
+      { c: ["tăng lên", "giảm xuống", "ổn định", "thay đổi"], a: 1, e: "高齢者が増える一方で労働人口は「giảm xuống（減少する）」からこそ年金・医療が圧迫されます。tăng lên（増える）では問題が成立しません。", key: ["giảm xuống", "減少する", "動詞"] },
+      { c: ["ứng phó", "cạnh tranh", "phản đối", "trốn tránh"], a: 0, e: "「ứng phó với ~（～に対処する）」が正しい組み合わせです。定年引き上げなどの対策が続きます。", key: ["ứng phó", "対処する、対応する", "動詞"] },
+      { c: ["nguy hiểm", "quý giá", "bí mật", "tạm thời"], a: 1, e: "高齢者の経験は活用すべき「quý giá（貴重な）」財産、という肯定的な結びです。bỏ phí（無駄にする）の反対の扱いを勧めています。", key: ["tận dụng", "活用する", "動詞"] },
+    ],
+    t: "人口の高齢化は、アジアの多くの国にとって大きな課題になりつつあります。高齢者の割合が急増する一方で労働年齢人口が減少すると、年金と医療の制度はますます大きな圧力を受けます。この状況に対処するため、一部の国は定年を引き上げ、健康であれば高齢者が働き続けることを奨励しています。また、高齢者の経験は貴重な財産であり、若い企業は無駄にせず活用すべきです。",
+    cat: "社会", lv: "B2",
   },
 ];
 for (const p of B2_PASSAGE_BANK) for (const b of p.blanks) addDictEntry(b.key[0], b.key[1], b.key[2]);
@@ -5009,6 +5342,68 @@ const BUILDER_BANK = [
     g: ["lúc + 時刻", "～時に", "時刻の前にはlúcを置きます。時間帯にはvào。"],
     key: ["lúc + 時刻", "～時に", "文型"], cat: "文法",
   },
+  {
+    w: ["Đừng", "quên", "mang theo", "ô", "nhé."],
+    jp: "傘を持って行くのを忘れないでね。",
+    g: ["đừng + 動詞", "～しないで（禁止・注意）", "đừngの後ろに動詞を置いて「～しないで」。文末のnhéで柔らかくなります。"],
+    key: ["đừng", "～しないで", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Chị ấy", "hát", "rất", "hay."],
+    jp: "彼女は歌がとても上手です。",
+    g: ["動詞 + rất + 副詞", "とても～に…する", "rấtは形容詞・副詞の前に置きます。hát hay＝歌が上手い。"],
+    key: ["hay", "上手な、面白い", "形容詞"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "thích", "nghe nhạc", "vào", "buổi tối."],
+    alt: [["Vào", "buổi tối,", "tôi", "thích", "nghe nhạc."]],
+    jp: "私は夜に音楽を聴くのが好きです。",
+    g: ["thích + 動詞", "～するのが好き", "thíchの後ろには名詞だけでなく動詞句も置けます。"],
+    key: ["thích", "好き", "動詞"], cat: "文法",
+  },
+  {
+    w: ["Ngày mai", "tôi", "sẽ", "đi", "Hà Nội."],
+    alt: [["Tôi", "sẽ", "đi", "Hà Nội", "ngày mai."]],
+    jp: "明日、私はハノイへ行きます。",
+    g: ["sẽ + 動詞", "～する（未来）", "sẽは動詞の前に置いて未来を表します。đang（現在進行）・đã（過去）とセットで覚えましょう。"],
+    key: ["sẽ", "～するだろう（未来）", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Bạn", "đã", "ăn sáng", "chưa?"],
+    jp: "朝ごはんはもう食べましたか？",
+    g: ["đã ~ chưa?", "もう～しましたか？", "完了したかどうかを尋ねる疑問文。答えは「Rồi（もう）」か「Chưa（まだ）」です。"],
+    key: ["đã ~ chưa?", "もう～した？", "文型"], cat: "文法",
+  },
+  {
+    w: ["Cái áo", "này", "bao nhiêu", "tiền?"],
+    jp: "このシャツはいくらですか？",
+    g: ["~ bao nhiêu tiền?", "～はいくら？", "値段の尋ね方。「名詞＋này（この）」を先に置き、bao nhiêu tiềnを続けます。"],
+    key: ["bao nhiêu tiền", "いくら", "表現"], cat: "文法",
+  },
+  {
+    w: ["Chúng ta", "cùng", "đi", "xem phim", "nhé."],
+    jp: "一緒に映画を観に行きましょう。",
+    g: ["cùng + 動詞 + nhé", "一緒に～しましょう", "cùngは「一緒に」。文末のnhéで誘いの調子になります。"],
+    key: ["cùng", "一緒に", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Em trai", "tôi", "không", "biết", "bơi."],
+    jp: "私の弟は泳げません。",
+    g: ["biết + 動詞", "～できる（習得）", "biếtは「習って身についたできる」。không biết bơi＝泳ぎ方を知らない＝泳げない。"],
+    key: ["biết", "できる、知っている", "動詞"], cat: "文法",
+  },
+  {
+    w: ["Bố tôi", "vẫn", "đang", "làm việc", "ở công ty."],
+    jp: "父はまだ会社で働いています。",
+    g: ["vẫn đang + 動詞", "まだ～している", "vẫn（依然として）＋đang（進行中）で「今もまだ～している」を表します。"],
+    key: ["vẫn", "まだ、相変わらず", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Hãy", "uống thuốc", "sau", "bữa ăn."],
+    jp: "食後に薬を飲んでください。",
+    g: ["Hãy + 動詞", "～してください（指示）", "hãyは文頭に置いて指示・勧めを表します。đừng（～しないで）と対で覚えましょう。"],
+    key: ["hãy", "～してください", "副詞"], cat: "文法",
+  },
 ];
 
 // B1並べ替えバンク（10問・B1文法パターン）
@@ -5098,6 +5493,56 @@ const B1_BUILDER_BANK = [
     g: ["~ nên phải ~", "～なので…せざるを得ない", "原因＋やむを得ない行動の組み合わせです。"],
     key: ["mang theo", "携帯する、持って行く", "動詞句"], cat: "文法",
   },
+  {
+    w: ["Trong khi", "tôi", "nấu ăn,", "chồng tôi", "rửa bát."],
+    jp: "私が料理をしている間、夫は皿を洗います。",
+    g: ["Trong khi A, B", "Aする間にB", "2つの動作の同時進行を表します。khiより「～している最中」の感じが強い表現です。"],
+    key: ["trong khi", "～する間に", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "vừa", "về đến nhà", "thì", "trời mưa."],
+    jp: "家に着いたとたん、雨が降り出しました。",
+    g: ["vừa A thì B", "Aしたとたん、B", "動作Aの直後に出来事Bが起きたことを表します。thìの後が起きた出来事です。"],
+    key: ["vừa ~ thì ~", "～したとたん…", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "đã", "bỏ", "thuốc lá", "được", "ba năm", "rồi."],
+    jp: "タバコをやめて3年になります。",
+    g: ["動詞 + được + 期間 + rồi", "～して（期間）になる", "動作が続いている期間を表します。được ba năm rồi＝3年になる。"],
+    key: ["bỏ thuốc lá", "禁煙する", "動詞句"], cat: "文法",
+  },
+  {
+    w: ["Căn phòng này", "rộng", "gấp đôi", "phòng cũ."],
+    jp: "この部屋は前の部屋の2倍広いです。",
+    g: ["形容詞 + gấp đôi + 名詞", "～の2倍…だ", "倍数の比較。gấp đôi＝2倍、gấp ba＝3倍。形容詞の直後に置きます。"],
+    key: ["gấp đôi", "2倍", "表現"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "không còn", "làm việc", "ở đó", "nữa."],
+    jp: "私はもうそこで働いていません。",
+    g: ["không còn ~ nữa", "もう～ない", "以前はしていたが今はしていないことを表します。cònとnữaで動詞句を挟みます。"],
+    key: ["không còn ~ nữa", "もう～ない", "文型"], cat: "文法",
+  },
+  {
+    w: ["Họ", "xây xong", "cây cầu", "trong vòng", "hai năm."],
+    alt: [["Trong vòng", "hai năm,", "họ", "xây xong", "cây cầu."]],
+    jp: "彼らは2年以内にその橋を建て終えました。",
+    g: ["trong vòng + 期間", "～以内に", "期限・所要期間を表します。trong vòng hai năm＝2年以内で。"],
+    key: ["trong vòng", "～以内に", "表現"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "định", "đi du lịch", "nhưng", "lại", "bị ốm."],
+    jp: "旅行するつもりだったのに、病気になってしまいました。",
+    g: ["định ~ nhưng lại ~", "～するつもりだったのに…", "lạiは予想外・不本意な展開を表します。計画と現実のずれを言う定番の形です。"],
+    key: ["lại", "（予想外に）～してしまう", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Trước đây", "tôi", "từng", "sống", "ở Huế."],
+    alt: [["Tôi", "từng", "sống", "ở Huế", "trước đây."]],
+    jp: "以前、私はフエに住んでいたことがあります。",
+    g: ["từng + 動詞", "～したことがある", "過去の経験を表します。đã từngとも言います。否定はchưa từng（～したことがない）。"],
+    key: ["từng", "～したことがある", "副詞"], cat: "文法",
+  },
 ];
 
 // B2並べ替えバンク（10問・B2文法パターン）
@@ -5185,6 +5630,54 @@ const B2_BUILDER_BANK = [
     jp: "どんなに忙しくても、彼は毎晩家に電話します。",
     g: ["Dù ~ đến mấy, cũng ~", "どんなに～でも…", "程度が極端でも変わらないことを表します。đến mấy＝どれほど。"],
     key: ["dù ~ đến mấy", "どんなに～でも", "文型"], cat: "文法",
+  },
+  {
+    w: ["Vấn đề này", "cần", "được", "giải quyết", "ngay lập tức."],
+    jp: "この問題は直ちに解決される必要があります。",
+    g: ["cần được + 動詞", "～される必要がある", "cần＋受身のđượcで「～してもらう必要がある」。ビジネス文書の頻出形です。"],
+    key: ["ngay lập tức", "直ちに、即座に", "副詞"], cat: "文法",
+  },
+  {
+    w: ["Với tư cách là", "trưởng nhóm,", "tôi", "xin", "chịu trách nhiệm."],
+    jp: "チームリーダーとして、私が責任を取ります。",
+    g: ["Với tư cách là + 役職", "～として", "立場・資格を明示する表現。フォーマルな場面で使います。"],
+    key: ["chịu trách nhiệm", "責任を負う", "動詞句"], cat: "文法",
+  },
+  {
+    w: ["Chính", "thái độ", "mới là", "điều", "quan trọng nhất."],
+    jp: "大切なのはまさに態度なのです。",
+    g: ["Chính A mới là B", "AこそがBだ", "chínhで強調し、mới làで「それこそが」と限定します。強調構文の代表です。"],
+    key: ["thái độ", "態度", "名詞"], cat: "文法",
+  },
+  {
+    w: ["Anh ấy", "vẫn làm việc", "bất chấp", "lời khuyên", "của bác sĩ."],
+    jp: "彼は医者の忠告を無視して働き続けています。",
+    g: ["bất chấp + 名詞", "～を顧みず、～にもかかわらず", "反対・障害を無視して行動することを表します。mặc dùより強い言い方です。"],
+    key: ["bất chấp", "～を顧みず", "前置詞"], cat: "文法",
+  },
+  {
+    w: ["Hễ", "trời mưa to", "là", "con đường này", "ngập."],
+    jp: "大雨が降るたびに、この道は冠水します。",
+    g: ["Hễ A là B", "Aするといつも必ずB", "条件Aが起きると必ずBになる、という規則性を表します。"],
+    key: ["ngập", "冠水する、浸水する", "動詞"], cat: "文法",
+  },
+  {
+    w: ["Đồ", "đắt tiền", "chưa chắc", "đã", "tốt."],
+    jp: "高価な物が良いとは限りません。",
+    g: ["chưa chắc đã ~", "～とは限らない", "断定を避けて疑いを示す表現。「必ずしも～ではない」という反論に便利です。"],
+    key: ["chưa chắc", "～とは限らない", "表現"], cat: "文法",
+  },
+  {
+    w: ["Ngoài", "tiếng Anh", "ra,", "cô ấy", "còn nói được", "tiếng Pháp."],
+    jp: "英語のほかに、彼女はフランス語も話せます。",
+    g: ["Ngoài A ra, còn B", "Aのほかに、Bも", "追加を表す文型。ngoàiとraでAを挟み、cònで「さらに」を加えます。"],
+    key: ["ngoài ~ ra", "～のほかに", "文型"], cat: "文法",
+  },
+  {
+    w: ["Tôi", "sẽ hoàn thành", "báo cáo", "bằng mọi giá."],
+    jp: "どんな犠牲を払っても報告書を完成させます。",
+    g: ["bằng mọi giá", "何としても、どんな犠牲を払っても", "強い決意を表す副詞句。文末に置くのが普通です。"],
+    key: ["bằng mọi giá", "何としても", "表現"], cat: "文法",
   },
 ];
 
@@ -5439,6 +5932,46 @@ const READING_BANK = [
     t: "今朝、ナムはバスに財布を置き忘れました。財布にはお金と学生証が入っていました。ナムはとても心配しました。午後、バス運転手の女性が財布を見つけて、ナムに電話をくれました。ナムはバスターミナルへ行って財布を受け取り、何度もお礼を言いました。幸い、何もなくなっていませんでした。",
     cat: "交通",
   },
+  {
+    kind: "notice",
+    text: "Bể bơi Sao Mai mở cửa từ 6:00 đến 21:00 hằng ngày.\nThứ hai hằng tuần, bể bơi nghỉ để làm vệ sinh.\nTrẻ em dưới 10 tuổi phải đi cùng người lớn.",
+    questions: [
+      { q: "Thứ hai có thể đi bơi ở bể bơi Sao Mai không?", c: ["Có, cả ngày.", "Không, bể bơi nghỉ.", "Có, nhưng chỉ buổi sáng.", "Có, nếu đi cùng người lớn."], a: 1, e: "「Thứ hai hằng tuần, bể bơi nghỉ để làm vệ sinh（毎週月曜は清掃のため休み）」と書かれています。", key: ["làm vệ sinh", "清掃する", "動詞句"] },
+      { q: "Em bé 8 tuổi muốn bơi thì cần điều kiện gì?", c: ["Phải biết bơi trước.", "Phải đến trước 6 giờ.", "Phải đi cùng người lớn.", "Không được vào bể bơi."], a: 2, e: "「Trẻ em dưới 10 tuổi phải đi cùng người lớn（10歳未満の子どもは大人の同伴が必要）」とあります。8歳は10歳未満なので大人と一緒なら入れます。", key: ["đi cùng", "一緒に行く、同伴する", "動詞句"] },
+    ],
+    t: "【お知らせ】サオマイプールは毎日6時から21時まで営業しています。毎週月曜日は清掃のため休業します。10歳未満のお子様は大人の同伴が必要です。",
+    cat: "趣味",
+  },
+  {
+    kind: "notice",
+    text: "Từ ngày 5/3, xe buýt số 12 không dừng ở bến trước chợ Xanh vì đường đang sửa.\nKhách xuống bến tiếp theo, cách đó 300 mét.\nDự kiến sửa đường xong vào cuối tháng 3.",
+    questions: [
+      { q: "Vì sao xe buýt số 12 không dừng ở bến trước chợ Xanh?", c: ["Vì bến quá đông người.", "Vì đường đang sửa.", "Vì chợ Xanh đóng cửa.", "Vì xe buýt đổi số."], a: 1, e: "「vì đường đang sửa（道路工事中のため）」と理由がはっきり書かれています。", key: ["sửa đường", "道路を工事する", "動詞句"] },
+      { q: "Khách muốn đến chợ Xanh nên làm gì?", c: ["Đợi đến cuối tháng 3.", "Đi xe buýt số khác.", "Không thể đến chợ Xanh.", "Xuống bến tiếp theo rồi đi bộ 300 mét."], a: 3, e: "「Khách xuống bến tiếp theo, cách đó 300 mét（次の停留所で降りてください。300メートル先です）」とあります。", key: ["bến", "停留所、乗り場", "名詞"] },
+    ],
+    t: "【お知らせ】3月5日から、12番バスは道路工事のためサイン市場前の停留所には止まりません。300メートル先の次の停留所をご利用ください。工事は3月末に終わる予定です。",
+    cat: "交通",
+  },
+  {
+    kind: "story",
+    text: "Chủ nhật tuần trước, tôi tham gia lớp học nấu ăn ở trung tâm văn hóa. Cô giáo dạy chúng tôi làm nem rán. Lúc đầu, nem của tôi bị rách vì tôi cuốn chặt quá. Cô giáo hướng dẫn tôi cuốn nhẹ tay hơn, và cái thứ ba thì đẹp như của cô. Về nhà, tôi làm lại cho bố mẹ ăn thử. Bố tôi nói đây là món nem ngon nhất ông từng ăn, dù tôi biết bố chỉ động viên tôi thôi.",
+    questions: [
+      { q: "Vì sao nem đầu tiên của tác giả bị rách?", c: ["Vì cuốn chặt quá.", "Vì cuốn nhẹ quá.", "Vì cô giáo không dạy.", "Vì thiếu nguyên liệu."], a: 0, e: "「nem của tôi bị rách vì tôi cuốn chặt quá（きつく巻きすぎて破れた）」と書かれています。", key: ["cuốn", "巻く", "動詞"] },
+      { q: "Câu nói của bố có nghĩa gì?", c: ["Bố thật sự chưa từng ăn nem.", "Bố muốn động viên con.", "Bố không thích món nem.", "Bố muốn học nấu ăn."], a: 1, e: "最後に「tôi biết bố chỉ động viên tôi thôi（父は私を励ましてくれているだけだと分かっている）」とあります。động viên＝励ます。", key: ["động viên", "励ます", "動詞"] },
+    ],
+    t: "先週の日曜日、私は文化センターの料理教室に参加しました。先生は揚げ春巻きの作り方を教えてくれました。最初、私の春巻きはきつく巻きすぎて破れてしまいました。先生がもっと優しく巻くよう教えてくれて、3本目は先生のと同じくらいきれいにできました。家に帰って、両親に作ってあげました。父は「今まで食べた中で一番おいしい春巻きだ」と言いましたが、励ましてくれているだけだと分かっています。",
+    cat: "食事",
+  },
+  {
+    kind: "story",
+    text: "Nhà tôi nuôi một con chó tên là Bông. Sáng thứ bảy, cửa nhà mở và Bông chạy ra ngoài. Cả nhà tìm Bông khắp nơi nhưng không thấy. Em gái tôi khóc rất nhiều. Buổi tối, một bác hàng xóm gọi điện nói thấy Bông đang ngồi trước cửa hàng thịt ở cuối phố. Bố tôi chạy đến ngay và đưa Bông về. Từ hôm đó, mỗi lần mở cửa, cả nhà đều nhìn Bông trước.",
+    questions: [
+      { q: "Ai đã tìm thấy Bông?", c: ["Em gái của tác giả.", "Bố của tác giả.", "Một bác hàng xóm.", "Chủ cửa hàng thịt."], a: 2, e: "「một bác hàng xóm gọi điện nói thấy Bông（近所のおじさんが電話でボンを見たと知らせてくれた）」とあります。見つけたのは隣人で、連れて帰ったのが父です。", key: ["hàng xóm", "隣人、近所の人", "名詞"] },
+      { q: "Bông ở đâu khi được tìm thấy?", c: ["Trước cửa hàng thịt.", "Trong công viên.", "Ở nhà hàng xóm.", "Ở cuối vườn."], a: 0, e: "「đang ngồi trước cửa hàng thịt ở cuối phố（通りの端の肉屋の前に座っていた）」と書かれています。", key: ["cửa hàng", "店", "名詞"] },
+    ],
+    t: "我が家はボンという名前の犬を飼っています。土曜日の朝、家のドアが開いていて、ボンは外へ走り出てしまいました。家族みんなであちこち探しましたが見つかりません。妹は大泣きしました。夜になって、近所のおじさんが電話をくれて、通りの端の肉屋の前にボンが座っているのを見たと教えてくれました。父はすぐに駆けつけてボンを連れて帰りました。その日から、ドアを開けるたびに家族はまずボンを確認するようになりました。",
+    cat: "日常生活",
+  },
 ];
 
 // 読解のキーフレーズ・登場語を辞書へ登録
@@ -5505,6 +6038,36 @@ const B1_READING_BANK = [
     t: "去年の夏休み、トゥアンは山岳地方の省でボランティア活動に参加しました。彼のグループは学校の修理を手伝い、子どもたちに英語を教えました。現地の生活環境は厳しく、お湯はなく電波もとても弱かったです。最初トゥアンは順応するのが大変でしたが、住民の親しみやすさがすべての疲れを忘れさせてくれました。この旅で彼は自分がどれほど恵まれているかに気づき、来年もまた戻りたいと思うようになりました。",
     cat: "旅行",
   },
+  {
+    kind: "notice",
+    text: "THÔNG BÁO CỦA THƯ VIỆN THÀNH PHỐ\nTừ ngày 1/4, thư viện áp dụng quy định mới:\n- Mỗi bạn đọc được mượn tối đa 5 cuốn sách trong 14 ngày.\n- Nếu trả muộn, phí phạt là 2.000 đồng mỗi cuốn mỗi ngày.\n- Bạn đọc có thể gia hạn một lần qua trang web nếu sách chưa có người khác đặt trước.",
+    questions: [
+      { q: "Một bạn đọc mượn 3 cuốn sách và trả muộn 2 ngày. Bạn ấy phải trả bao nhiêu tiền phạt?", c: ["4.000 đồng", "6.000 đồng", "12.000 đồng", "2.000 đồng"], a: 2, e: "罰金は「2.000 đồng mỗi cuốn mỗi ngày（1冊・1日あたり2,000ドン）」。3冊×2日×2,000＝12,000ドンです。", key: ["phí phạt", "罰金、延滞料", "名詞"] },
+      { q: "Khi nào bạn đọc KHÔNG thể gia hạn sách?", c: ["Khi đã gia hạn một lần rồi hoặc sách có người đặt trước.", "Khi mượn quá 3 cuốn.", "Khi mượn sách quá 7 ngày.", "Khi không đến thư viện trực tiếp."], a: 0, e: "「gia hạn một lần（1回だけ延長可）」＋「nếu sách chưa có người khác đặt trước（他の人の予約がなければ）」という2つの条件から、既に1回延長した場合や予約が入っている場合は延長できません。", key: ["gia hạn", "延長する", "動詞"] },
+    ],
+    t: "【市立図書館からのお知らせ】4月1日から新しい規則を適用します。利用者は最大5冊を14日間借りられます。返却が遅れた場合、罰金は1冊・1日あたり2,000ドンです。他の利用者の予約がなければ、ウェブサイトから1回だけ延長できます。",
+    cat: "学校",
+  },
+  {
+    kind: "story",
+    text: "Trước đây, tôi đi làm bằng ô tô và thường mất một tiếng vì tắc đường. Ngồi lâu trong xe khiến tôi mệt mỏi và hay cáu gắt. Ba tháng trước, một đồng nghiệp rủ tôi thử đạp xe đi làm. Ban đầu tôi ngại vì sợ nắng và mồ hôi, nhưng công ty có phòng tắm nên tôi quyết định thử. Kết quả thật bất ngờ: quãng đường chỉ mất bốn mươi phút, tôi giảm được ba cân, và buổi sáng đến văn phòng với tinh thần thoải mái hơn hẳn. Bây giờ, trừ những hôm mưa to, tôi đều đạp xe đi làm.",
+    questions: [
+      { q: "Điều gì khiến tác giả quyết định thử đạp xe?", c: ["Vì ô tô bị hỏng.", "Vì công ty có phòng tắm.", "Vì muốn giảm cân.", "Vì đường hết tắc."], a: 1, e: "「công ty có phòng tắm nên tôi quyết định thử（会社にシャワー室があるから試すことにした）」とあります。汗の心配が解消されたのが決め手です。", key: ["quyết định", "決める、決心する", "動詞"] },
+      { q: "Sau ba tháng đạp xe, điều nào KHÔNG được nhắc đến?", c: ["Đi nhanh hơn trước.", "Giảm được ba cân.", "Tinh thần thoải mái hơn.", "Tiết kiệm được nhiều tiền xăng."], a: 3, e: "40分に短縮・3キロ減量・気分爽快の3つは書かれていますが、ガソリン代の節約には触れていません。「書かれていないもの」を選ぶ問題は本文との照合が大切です。", key: ["tinh thần", "精神、気分", "名詞"] },
+    ],
+    t: "以前、私は車で通勤していて、渋滞のためいつも1時間かかっていました。長時間車に座っていると疲れて、イライラしがちでした。3か月前、同僚が自転車通勤を試してみないかと誘ってくれました。最初は日差しと汗が心配でしたが、会社にシャワー室があるので試すことにしました。結果は驚くべきものでした。道のりは40分しかかからず、体重は3キロ減り、朝は前よりずっと爽やかな気分でオフィスに着きます。今では大雨の日以外は毎日自転車で通勤しています。",
+    cat: "健康",
+  },
+  {
+    kind: "story",
+    text: "Mẹ tôi năm nay năm mươi lăm tuổi và mới bắt đầu học dùng điện thoại thông minh. Lúc đầu, mẹ hay gọi nhầm và một lần còn xóa mất ảnh của cả nhà. Em trai tôi thiếu kiên nhẫn, cứ cầm máy làm hộ mẹ cho nhanh. Nhưng tôi nghĩ khác: mỗi tối, tôi chỉ cho mẹ một thao tác nhỏ và để mẹ tự làm lại nhiều lần. Một tháng sau, mẹ đã biết gọi video cho bà ngoại và đặt hàng trên mạng. Hôm qua, mẹ còn gửi cho tôi một tấm ảnh mẹ tự chụp kèm dòng chữ: \"Cảm ơn con đã không làm hộ mẹ.\"",
+    questions: [
+      { q: "Cách dạy của tác giả khác em trai ở điểm nào?", c: ["Dạy nhiều thao tác cùng một lúc.", "Làm hộ mẹ cho nhanh.", "Chỉ từng thao tác nhỏ và để mẹ tự làm.", "Mua điện thoại mới dễ dùng hơn cho mẹ."], a: 2, e: "弟は「làm hộ（代わりにやってあげる）」、筆者は「chỉ một thao tác nhỏ và để mẹ tự làm lại（小さな操作を1つ教えて母に何度も自分でやらせる）」。この対比が本文の中心です。", key: ["làm hộ", "代わりにやってあげる", "動詞句"] },
+      { q: "Dòng chữ của mẹ ở cuối bài có ý nghĩa gì?", c: ["Mẹ muốn con làm hộ nhiều hơn.", "Mẹ biết ơn vì được tự học và tự làm.", "Mẹ trách con không giúp đỡ.", "Mẹ muốn mua điện thoại mới."], a: 1, e: "「Cảm ơn con đã không làm hộ mẹ（代わりにやらないでくれてありがとう）」は、自分でできるようになったことへの感謝です。手を出さない支援の価値を示す結びです。", key: ["biết ơn", "感謝する", "動詞"] },
+    ],
+    t: "母は今年55歳で、スマートフォンの使い方を習い始めたばかりです。最初は間違い電話をかけたり、一度は家族全員の写真を消してしまったりしました。弟は我慢できず、さっさと自分が代わりに操作してしまいます。でも私は違う考えでした。毎晩、小さな操作を1つだけ教えて、母に何度も自分でやらせたのです。1か月後、母は祖母にビデオ通話をかけ、ネットで買い物ができるようになりました。昨日、母は自分で撮った写真に「代わりにやらないでくれてありがとう」という言葉を添えて送ってくれました。",
+    cat: "家族",
+  },
 ];
 for (const r of B1_READING_BANK) for (const q of r.questions) addDictEntry(q.key[0], q.key[1], q.key[2]);
 
@@ -5542,6 +6105,36 @@ const B2_READING_BANK = [
     ],
     t: "1日に100回以上スマホをチェックしていると気づいたトゥーさんは、1か月間SNSを「断つ」実験をすることにしました。最初の1週間が最も大変でした。習慣で何度もスマホを手に取っては、また置くのでした。しかし2週目からはよく眠れるようになり、本を2冊読み終えました。最も意外だったのは、人間関係が全く悪化しなかったことです。本当の友人は変わらず電話をくれて、会いに来てくれました。実験の後、彼女はSNSを完全に消しはしませんでしたが、「1日30分まで、夜9時以降は使わない」というルールを設けました。",
     cat: "日常生活",
+  },
+  {
+    kind: "notice",
+    text: "THÔNG BÁO CỦA ỦY BAN NHÂN DÂN THÀNH PHỐ\nTừ ngày 1/7, các siêu thị và cửa hàng tiện lợi trong thành phố ngừng phát túi ni lông dùng một lần miễn phí.\nKhách hàng có thể mua túi giấy với giá 1.000 đồng hoặc mang theo túi riêng.\nCác chợ truyền thống được áp dụng chậm hơn, từ ngày 1/10.\nMục tiêu của thành phố là giảm 50% rác thải nhựa vào cuối năm sau.",
+    questions: [
+      { q: "Ngày 15/8, người mua hàng ở chợ truyền thống có bị tính tiền túi ni lông không?", c: ["Có, vì quy định bắt đầu từ 1/7.", "Chưa, vì chợ truyền thống áp dụng từ 1/10.", "Có, nhưng chỉ 1.000 đồng.", "Không bao giờ bị tính tiền."], a: 1, e: "スーパー・コンビニは7月1日からですが、「Các chợ truyền thống được áp dụng chậm hơn, từ ngày 1/10（伝統市場は遅れて10月1日から）」。8月15日の市場はまだ対象外です。2つの日付の使い分けを問う問題です。", key: ["áp dụng", "適用する", "動詞"] },
+      { q: "Mục tiêu cuối cùng của quy định này là gì?", c: ["Bán được nhiều túi giấy hơn.", "Tăng thu nhập cho siêu thị.", "Giảm một nửa rác thải nhựa.", "Đóng cửa các chợ truyền thống."], a: 2, e: "「Mục tiêu ... giảm 50% rác thải nhựa（プラスチックごみを50%削減する目標）」が最終目的です。紙袋の販売は手段にすぎません。", key: ["rác thải nhựa", "プラスチックごみ", "名詞句"] },
+    ],
+    t: "【市人民委員会からのお知らせ】7月1日から、市内のスーパーとコンビニは使い捨てビニール袋の無料配布を停止します。紙袋を1,000ドンで購入するか、マイバッグをご持参ください。伝統市場は遅れて10月1日から適用されます。市の目標は来年末までにプラスチックごみを50%削減することです。",
+    cat: "環境",
+  },
+  {
+    kind: "story",
+    text: "Ở tuổi ba mươi lăm, anh Đức làm kế toán với mức lương ổn định. Nhưng suốt nhiều năm, anh luôn cảm thấy công việc này không thuộc về mình. Sở thích thật sự của anh là làm bánh. Sau hai năm suy nghĩ, anh quyết định nghỉ việc, dùng tiền tiết kiệm mở một tiệm bánh nhỏ. Gia đình phản đối dữ dội, bạn bè bảo anh liều lĩnh. Năm đầu tiên, tiệm gần như không có lãi, có tháng anh phải vay tiền trả tiền thuê nhà. Nhưng anh kiên trì cải tiến công thức và học cách bán hàng trên mạng. Đến năm thứ ba, tiệm của anh đã có sáu nhân viên và thu nhập cao hơn thời làm kế toán. Anh nói: \"Tôi không khuyên ai bỏ việc như tôi. Tôi chỉ muốn nói rằng, nếu đã quyết định, hãy chuẩn bị kỹ và đừng bỏ cuộc quá sớm.\"",
+    questions: [
+      { q: "Trong năm đầu tiên mở tiệm, anh Đức gặp khó khăn gì?", c: ["Không tìm được nhân viên.", "Gia đình bắt anh đóng tiệm.", "Tiệm gần như không có lãi, có tháng phải vay tiền.", "Không biết làm bánh."], a: 2, e: "「Năm đầu tiên, tiệm gần như không có lãi, có tháng anh phải vay tiền trả tiền thuê nhà（初年度はほぼ利益がなく、家賃を払うため借金した月もあった）」とあります。", key: ["có lãi", "利益が出る", "表現"] },
+      { q: "Thông điệp chính của anh Đức ở cuối bài là gì?", c: ["Mọi người nên bỏ việc để theo đuổi sở thích.", "Nghề kế toán không có tương lai.", "Mở tiệm bánh dễ thành công.", "Nếu đã quyết định thì chuẩn bị kỹ và kiên trì."], a: 3, e: "「Tôi không khuyên ai bỏ việc như tôi（自分のように辞めろとは勧めない）」と前置きした上で、「chuẩn bị kỹ và đừng bỏ cuộc quá sớm（しっかり準備し、早く諦めるな）」と述べています。安易な転身の勧めではない点に注意。", key: ["bỏ cuộc", "諦める", "動詞句"] },
+    ],
+    t: "35歳のドゥックさんは安定した給料の経理として働いていました。しかし長年、この仕事は自分に合っていないと感じ続けていました。本当の趣味はパン・菓子作りです。2年間考えた末、彼は退職し、貯金で小さなベーカリーを開きました。家族は猛反対し、友人は無謀だと言いました。初年度は店にほとんど利益がなく、家賃のために借金した月もありました。それでも彼は粘り強くレシピを改良し、ネット販売を学びました。3年目には店に6人の従業員がいて、収入は経理時代を上回りました。彼は言います。「私のように仕事を辞めろとは誰にも勧めません。ただ、決めたのならしっかり準備して、早く諦めすぎないでほしいのです。」",
+    cat: "仕事",
+  },
+  {
+    kind: "story",
+    text: "Nhiều học sinh tin rằng đọc lại bài nhiều lần là cách học tốt nhất. Tuy nhiên, các nghiên cứu về trí nhớ chỉ ra một phương pháp hiệu quả hơn: tự kiểm tra. Thay vì đọc lại chương sách lần thứ ba, hãy gấp sách và tự hỏi mình những câu hỏi về nội dung vừa học. Việc cố gắng nhớ lại — dù có lúc nhớ sai — giúp kiến thức được giữ lâu hơn nhiều so với việc đọc thụ động. Một phương pháp khác cũng rất hiệu quả là học cách nhau: thay vì học một chủ đề tám tiếng trong một ngày, hãy chia thành tám ngày, mỗi ngày một tiếng. Hai phương pháp này không làm việc học dễ chịu hơn — ngược lại, chúng khiến bạn cảm thấy khó khăn hơn. Nhưng chính cảm giác \"khó\" đó là dấu hiệu cho thấy não bộ đang thật sự làm việc.",
+    questions: [
+      { q: "Theo bài viết, vì sao tự kiểm tra tốt hơn đọc lại nhiều lần?", c: ["Vì tự kiểm tra nhanh hơn.", "Vì cố gắng nhớ lại giúp giữ kiến thức lâu hơn.", "Vì đọc lại làm hỏng mắt.", "Vì tự kiểm tra dễ chịu hơn."], a: 1, e: "「Việc cố gắng nhớ lại ... giúp kiến thức được giữ lâu hơn nhiều so với việc đọc thụ động（思い出そうとする行為は受動的な読み直しよりずっと記憶を長持ちさせる）」とあります。", key: ["trí nhớ", "記憶、記憶力", "名詞"] },
+      { q: "Bài viết nói gì về cảm giác \"khó\" khi dùng hai phương pháp này?", c: ["Đó là dấu hiệu nên đổi phương pháp.", "Đó là dấu hiệu não bộ đang thật sự làm việc.", "Đó là dấu hiệu phương pháp sai.", "Cảm giác đó sẽ biến mất sau một ngày."], a: 1, e: "結びに「chính cảm giác 'khó' đó là dấu hiệu cho thấy não bộ đang thật sự làm việc（その『難しい』という感覚こそ、脳が本当に働いている証拠）」とあります。楽な学習法ほど身につかない、という逆説がポイントです。", key: ["dấu hiệu", "兆候、サイン", "名詞"] },
+    ],
+    t: "多くの学生は、何度も読み返すことが最良の勉強法だと信じています。しかし記憶の研究は、より効果的な方法を示しています。自己テストです。教科書の章を3回目に読み返す代わりに、本を閉じて、学んだ内容について自分に質問してみましょう。思い出そうと努力すること自体が——たとえ間違って覚えていても——受動的な読み直しよりはるかに知識を長持ちさせます。もう一つ効果的なのは間隔学習です。1つのテーマを1日8時間学ぶ代わりに、8日間に分けて毎日1時間学びましょう。この2つの方法は勉強を楽にはしてくれません。むしろ難しく感じさせます。しかしその「難しい」という感覚こそ、脳が本当に働いている証拠なのです。",
+    cat: "学校",
   },
 ];
 for (const r of B2_READING_BANK) for (const q of r.questions) addDictEntry(q.key[0], q.key[1], q.key[2]);
