@@ -492,7 +492,8 @@ h1 { font-size: 22px; font-weight: 700; }
 .dp-bar.down { background: #ef4444;
   background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.45) 0 3px, transparent 3px 7px); }
 .dp-bar.flat { background: var(--muted); }
-.dp-bar.none { background: var(--border); height: 4px; }
+/* 学習しなかった日：トラックと見分けがつくよう、薄いグレーの棒を置く */
+.dp-bar.none { background: var(--muted); opacity: 0.6; height: 4px; }
 .dp-count { position: absolute; top: -14px; left: 0; right: 0; text-align: center; font-size: 9px; color: var(--muted); }
 .dp-chart.dense .dp-count { display: none; }
 .dp-delta { font-size: 10px; font-weight: 600; height: 14px; line-height: 14px; white-space: nowrap; }
@@ -505,7 +506,7 @@ h1 { font-size: 22px; font-weight: 700; }
 .dp-key.up { background: #22c55e; }
 .dp-key.down { background: #ef4444; }
 .dp-key.flat { background: var(--muted); }
-.dp-key.none { background: var(--border); }
+.dp-key.none { background: var(--muted); opacity: 0.6; }
 
 .stat-bars { display: flex; flex-direction: column; gap: 7px; }
 .stat-bar-row { display: grid; grid-template-columns: 110px 1fr 76px; align-items: center; gap: 10px; }
