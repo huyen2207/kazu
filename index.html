@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=29" />
+  <link rel="stylesheet" href="style.css?v=30" />
 </head>
 <body>
   <header class="site-header">
@@ -163,6 +163,27 @@
         <button id="btn-review-all-wrong" class="btn btn-primary">
           間違えた語をすべて復習（<span id="all-wrong-count">0</span>語）
         </button>
+      </div>
+
+      <!-- 日ごとの伸び（前に学習した日と比べて上がったか下がったか） -->
+      <div id="daily-progress-card" class="card">
+        <div class="dp-head">
+          <h2 class="analysis-title">日ごとの伸び</h2>
+          <div class="level-control dp-range" id="dp-range">
+            <button type="button" data-days="7" class="active">7日</button>
+            <button type="button" data-days="14">14日</button>
+            <button type="button" data-days="30">30日</button>
+          </div>
+        </div>
+        <p id="dp-summary" class="sub"></p>
+        <div id="dp-chart" class="dp-chart"></div>
+        <p id="dp-empty" class="hint hidden">まだ記録がありません。クイズを解くと、その日の正答率がここに並びます。</p>
+        <p class="dp-legend">
+          <span><span class="dp-key up"></span>前より上がった</span>
+          <span><span class="dp-key down"></span>下がった</span>
+          <span><span class="dp-key flat"></span>変わらない・初回</span>
+          <span><span class="dp-key none"></span>学習なし</span>
+        </p>
       </div>
 
       <div id="history-empty" class="card center hidden">
@@ -668,6 +689,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=29"></script>
+  <script src="script.js?v=30"></script>
 </body>
 </html>
