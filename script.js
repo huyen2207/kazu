@@ -8870,7 +8870,8 @@ function renderExplanation(q, isCorrect) {
   const colloc = q.collocations || [];
   $("exp-colloc-wrap").classList.toggle("hidden", !colloc.length);
   $("exp-colloc").innerHTML = colloc
-    .map((c) => `<li><span class="tap-word" data-word="${escapeHtml(c.expression)}">${escapeHtml(c.expression)}</span>＝${escapeHtml(c.meaningJP)}${addCardBtnHtml(c.expression, c.meaningJP, "表現")}</li>`)
+    // 式と意味は1つのspanにまとめる（狭い画面で式が折り返しても「＝意味」が離れないようにする）
+    .map((c) => `<li><span class="colloc-body"><span class="tap-word" data-word="${escapeHtml(c.expression)}">${escapeHtml(c.expression)}</span>＝${escapeHtml(c.meaningJP)}</span>${addCardBtnHtml(c.expression, c.meaningJP, "表現")}</li>`)
     .join("");
 
   $("exp-added-note").classList.add("hidden");
