@@ -12966,8 +12966,10 @@ document.querySelectorAll("[data-nav]").forEach((el) => {
 
 /* ---------------------------------------------------------------------------
    初期表示
-   リンクを開いたらすぐ問題を解けるように、ランダム10問のミックス練習を自動開始する。
-   モードや問題数を変えたい場合はヘッダーの「ホーム」から選び直せる。
+   URLを開いたらホーム（レベル→モード→問題数を選ぶ画面）を表示する。
+   勝手に出題を始めない — 何をどれだけ解くかは学習者が決める。
+   よく使う組み合わせ（Random・10問）だけ最初から選んでおき、
+   そのままでよければ1タップで始められるようにする。
 --------------------------------------------------------------------------- */
 selectedMode = "random";
 selectedCount = 10;
@@ -12977,4 +12979,4 @@ updateStartButton();
 renderSpeedControls();
 renderLevelControl();
 renderHome();
-startMixed(selectedMode, selectedCount);
+showScreen("home");
