@@ -10382,7 +10382,12 @@ function answerPassageBlank(selectedIndex) {
   $("pg-explanation").innerHTML = explanationHtml(blank.e);
   $("pg-key-wrap").classList.toggle("hidden", !blank.key || !blank.key[0]);
   $("pg-key").innerHTML = keyPhraseHtml(blank.key);
-  $("pg-jp").textContent = p.t || "";
+  // 文章全体の日本語訳は最後の空欄に回答するまで出さない。
+  // 途中で訳が読めると、残りの空欄の答えが分かってしまう（試験練習の公正さ）。
+  const isLastBlank = passage.blankIndex + 1 >= p.blanks.length;
+  $("pg-jp-details").classList.toggle("hidden", !isLastBlank);
+  $("pg-jp-details").open = false;
+  $("pg-jp").textContent = isLastBlank ? p.t || "" : "";
   $("pg-added-note").classList.add("hidden");
   $("pg-next").textContent =
     passage.blankIndex + 1 < p.blanks.length ? "次の空欄へ" : "結果を見る";
@@ -11571,11 +11576,18 @@ function answerReading(selectedIndex) {
   // 重要語彙（データのキーフレーズ）と、読み違いを確かめるための日本語訳
   $("rdg-key-wrap").classList.toggle("hidden", !question.key || !question.key[0]);
   $("rdg-key").innerHTML = keyPhraseHtml(question.key);
-  $("rdg-jp").textContent = r.t || "";
   $("rdg-added-note").classList.add("hidden");
-  // 回答後は本文の語もタップして意味を確認できるようにする
-  $("rdg-text-wrap").innerHTML = readingTextHtml(r, true);
-  $("rdg-tap-hint").classList.remove("hidden");
+  // 本文のタップ化と文章全体の日本語訳は、最後の設問に回答するまで出さない。
+  // 途中で語の意味や訳が見えると、未回答の設問の答えが分かってしまう
+  // （試験練習の公正さ）。最終設問の回答後と結果画面では従来どおり使える。
+  const isLastQuestion = reading.qIndex + 1 >= r.questions.length;
+  $("rdg-jp-details").classList.toggle("hidden", !isLastQuestion);
+  $("rdg-jp-details").open = false;
+  $("rdg-jp").textContent = isLastQuestion ? r.t || "" : "";
+  if (isLastQuestion) {
+    $("rdg-text-wrap").innerHTML = readingTextHtml(r, true);
+    $("rdg-tap-hint").classList.remove("hidden");
+  }
   $("rdg-next").textContent =
     reading.qIndex + 1 < r.questions.length ? "次の問題へ" : "結果を見る";
   $("rdg-feedback").classList.remove("hidden");
