@@ -9055,6 +9055,9 @@ function renderDailyProgress() {
   // 日付ラベルは狭い画面で潰れるため、30日表示では5日おきに出す
   const labelEvery = days <= 7 ? 1 : days <= 14 ? 2 : 5;
   const showDelta = days <= 14;
+  // 30日表示は棒が細く（375pxで約6px）、問題数の数字が切れて読めないので隠す
+  // （数字はホバー／長押しで出る説明に残る）
+  $("dp-chart").classList.toggle("dense", days > 14);
 
   $("dp-chart").innerHTML = rows
     .map((row, i) => {
