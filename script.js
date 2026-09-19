@@ -9581,7 +9581,8 @@ $("btn-review-all-wrong").addEventListener("click", () => {
 --------------------------------------------------------------------------- */
 // retry: この周回で「覚えていない」「あやふや」だったカード。
 // 完了画面の「もう一度」で、覚えたと感じるまで繰り返し復習できる。
-const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 }, retry: [] };
+// pending：「30語／すべて」の選択待ちのあいだ、候補のデッキを持っておく
+const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 }, retry: [], pending: null };
 
 const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規", wrong: "間違えた語" };
 
@@ -9603,8 +9604,16 @@ function buildDeck() {
     .sort((a, b) => order[a.bucket] - order[b.bucket] || (b.v.wrongCount || 0) - (a.v.wrongCount || 0));
 }
 
+// 一度に学習する上限（「30語だけ」を選んだとき）
+const FC_SESSION_LIMIT = 30;
+
+// 出す順番は毎回ランダムにする（並び順を覚えて答えてしまうのを防ぐ）。
+// どの語をデッキに入れるかは呼び出し側が決め、ここでは順番だけを混ぜる。
 function openDeck(deck) {
-  fc.deck = deck;
+  $("fc-chooser").classList.add("hidden");
+  $("screen-flashcards").classList.remove("choosing");
+  fc.pending = null;
+  fc.deck = shuffle(deck);
   fc.index = 0;
   fc.flipped = false;
   fc.results = { forgotten: 0, unsure: 0, remembered: 0 };
@@ -9615,9 +9624,32 @@ function openDeck(deck) {
   if (fc.deck.length > 0) renderCard();
 }
 
+// 復習対象が多いときは「30語だけ／すべて」を選ばせる。30語以下ならそのまま始める。
 function startFlashcards() {
-  openDeck(buildDeck());
+  const deck = buildDeck();
+  if (deck.length <= FC_SESSION_LIMIT) {
+    openDeck(deck);
+    return;
+  }
+  fc.pending = deck;
+  showScreen("flashcards");
+  // 選択中は「カード 1 / 0」などの進捗表示を隠す
+  $("screen-flashcards").classList.add("choosing");
+  $("fc-empty").classList.add("hidden");
+  $("fc-deck").classList.add("hidden");
+  $("fc-chooser").classList.remove("hidden");
+  $("fc-chooser-total").textContent = deck.length;
+  $("fc-choose-all-count").textContent = deck.length;
 }
+
+// 「30語だけ」：buildDeck の優先順（覚えていない→あやふや→期限、間違いの多い順）で
+// どの30語にするかを決め、出す順番は openDeck でランダムにする
+$("fc-choose-30").addEventListener("click", () => {
+  openDeck((fc.pending || buildDeck()).slice(0, FC_SESSION_LIMIT));
+});
+$("fc-choose-all").addEventListener("click", () => {
+  openDeck(fc.pending || buildDeck());
+});
 
 // 指定した語のリストからデッキを作る（間違えた語の復習用）
 function startFlashcardsFromWords(words) {
