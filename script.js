@@ -8517,10 +8517,15 @@ if ("speechSynthesis" in window) {
 }
 
 // 再生速度の設定（全ての音声で共通・localStorageに保存）
+// 注意：ブラウザ内蔵のベトナム語音声（macOSのLinh等）は遅い側のrateを強く
+// 圧縮するため、0.65/0.85/1.05では3段階がほぼ同じ速さに聞こえてしまう。
+// 実測（同一文の再生時間）に基づき、聞き分けられる差が出る値にしている：
+//   0.2 → 普通の約1.36倍の長さ／1.5 → 約0.64倍（旧値では1.10倍／0.88倍）
+// rateは音声側の対応範囲に自動でクランプされるため、極端な値でも安全。
 const SPEED_OPTIONS = [
-  { key: "slow", label: "遅い", rate: 0.65 },
-  { key: "normal", label: "普通", rate: 0.85 },
-  { key: "fast", label: "速い", rate: 1.05 },
+  { key: "slow", label: "遅い", rate: 0.2 },
+  { key: "normal", label: "普通", rate: 0.9 },
+  { key: "fast", label: "速い", rate: 1.5 },
 ];
 
 function currentSpeedKey() {
