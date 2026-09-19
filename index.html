@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=36" />
+  <link rel="stylesheet" href="style.css?v=37" />
 </head>
 <body>
   <header class="site-header">
@@ -611,6 +611,17 @@
       </div>
       <div class="speed-control speed-right" data-speed-control></div>
 
+      <!-- 復習する語が多いときに「30語だけ／すべて」を選ぶ -->
+      <div id="fc-chooser" class="card center hidden">
+        <h2 class="fc-chooser-title">今日の復習：<span id="fc-chooser-total">0</span>語</h2>
+        <p class="sub">どちらも出る順番はランダムです</p>
+        <div class="fc-chooser-actions">
+          <button id="fc-choose-30" class="btn btn-primary btn-block" type="button">30語だけ学習する</button>
+          <button id="fc-choose-all" class="btn btn-secondary btn-block" type="button">すべて学習する（<span id="fc-choose-all-count">0</span>語）</button>
+        </div>
+        <p class="hint fc-chooser-note">「30語」は、覚えていない語・あやふやな語・間違いの多い語から優先して選びます</p>
+      </div>
+
       <div id="fc-empty" class="card center hidden">
         <p>今日復習するカードはありません。まずはクイズで語彙を増やしましょう。</p>
         <button class="btn btn-primary" data-nav="home">ホームへ</button>
@@ -699,6 +710,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=36"></script>
+  <script src="script.js?v=37"></script>
 </body>
 </html>
