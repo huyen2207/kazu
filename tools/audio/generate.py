@@ -22,6 +22,11 @@ import sys
 
 import edge_tts
 
+try:
+    from gtts import gTTS  # override で engine: "gtts" を指定したときだけ使う
+except ImportError:
+    gTTS = None
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 TEXTS = ROOT / "tools/audio/texts.json"
 OUT_DIR = ROOT / "audio/vi"
@@ -38,35 +43,45 @@ RETRIES = 4
 
 
 def load_overrides():
-    """{ "表示どおりの語（小文字）": { "say": "音声化する文字列", "voice": "...", "rate": "-20%" } }"""
+    """{ "表示どおりの語": { "say": "音声化する文字列", "voice": "...", "rate": "-20%" } }
+    engine: "gtts" を指定すると Google の音声（slow: true でゆっくり）で作る。"""
     if not OVERRIDES.exists():
         return {}
     data = json.loads(OVERRIDES.read_text(encoding="utf-8"))
     return {k.lower(): v for k, v in data.items() if not k.startswith("_")}
 
 
+async def synth_one(item, override, out):
+    """1件を音声化して out に保存する（一時的な失敗は待って再試行）。"""
+    say = override.get("say", item["text"])
+    for attempt in range(1, RETRIES + 1):
+        try:
+            tmp = out.with_suffix(".tmp")
+            if override.get("engine") == "gtts":
+                if gTTS is None:
+                    raise RuntimeError("gTTS が入っていない（pip install gTTS）")
+                await asyncio.to_thread(lambda: gTTS(say, lang="vi", slow=bool(override.get("slow"))).save(str(tmp)))
+            else:
+                voice = override.get("voice", VOICE)
+                rate = override.get("rate", RATE[item["kind"]])
+                await edge_tts.Communicate(say, voice, rate=rate).save(str(tmp))
+            if tmp.stat().st_size < 1000:
+                raise RuntimeError("音声が短すぎる")
+            tmp.replace(out)
+            return True
+        except Exception as e:
+            if attempt == RETRIES:
+                print(f"\n失敗: {item['text']!r}: {e}", file=sys.stderr)
+                return False
+            await asyncio.sleep(2 * attempt)
+
+
 async def synth(item, sem, force, override):
     out = OUT_DIR / f"{item['key']}.mp3"
     if out.exists() and out.stat().st_size > 0 and not force:
         return "skip"
-    say = override.get("say", item["text"])
-    voice = override.get("voice", VOICE)
-    rate = override.get("rate", RATE[item["kind"]])
     async with sem:
-        for attempt in range(1, RETRIES + 1):
-            try:
-                tmp = out.with_suffix(".tmp")
-                comm = edge_tts.Communicate(say, voice, rate=rate)
-                await comm.save(str(tmp))
-                if tmp.stat().st_size < 1000:
-                    raise RuntimeError("音声が短すぎる")
-                tmp.replace(out)
-                return "new"
-            except Exception as e:  # ネットワークの一時的な失敗は待って再試行
-                if attempt == RETRIES:
-                    print(f"\n失敗: {item['text']!r}: {e}", file=sys.stderr)
-                    return "fail"
-                await asyncio.sleep(2 * attempt)
+        return "new" if await synth_one(item, override, out) else "fail"
 
 
 async def main():

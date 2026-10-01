@@ -50,7 +50,20 @@ node tools/audio/extract-texts.mjs                          # 読み上げ対象
 大きいモデルでも誤認識が多いので、文のチェックが中心。結果は発音チェックページの
 「音声認識で食い違い」で一覧でき、実際に聞いて確かめられる。
 
-### 3. 誤りを直す（overrides.json）
+### 3. 候補を作って選んでもらう（candidates.py）
+
+ネイティブが「誤り」と報告した語は、別の声・速さ・Googleの音声で候補を作り、
+発音チェックページで聞き比べて選んでもらう（ページの「Có phương án để chọn」に出る）。
+
+```bash
+.venv/bin/pip install gTTS
+.venv/bin/python tools/audio/candidates.py "ưu tiên" "tự tin"
+```
+
+選ばれた候補は「Sao chép kết quả」に overrides.json 用のJSONとして入ってくるので、そのまま下の手順で反映する。
+音声認識（Whisper）では正しく聞こえても、声調・母音（ư/ơ など）の不自然さはネイティブにしか分からない。
+
+### 4. 誤りを直す（overrides.json）
 
 ```json
 {
@@ -59,5 +72,6 @@ node tools/audio/extract-texts.mjs                          # 読み上げ対象
 }
 ```
 
-キーは表示どおりの語。`say`（実際に音声化する文字列）・`voice`・`rate` を必要な分だけ書き、
+キーは表示どおりの語。`say`（実際に音声化する文字列）・`voice`・`rate`、
+Googleの音声なら `"engine": "gtts"`（`"slow": true` でゆっくり）を必要な分だけ書き、
 `generate.py` を実行すると、変更した語だけが作り直される（記録は `audio/overrides.lock.json`）。
