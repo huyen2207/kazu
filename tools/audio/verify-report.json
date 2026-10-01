@@ -1,0 +1,1017 @@
+[
+ {
+  "key": "1f5mcrimyaj",
+  "kind": "sentence",
+  "text": "Đôi giày này vừa vặn với chân em quá, không rộng cũng không chật.",
+  "heard": "Đôi giày này vừa vạn với chân êm quá, không rộng cũng không chật.",
+  "error": 1.143
+ },
+ {
+  "key": "y494o6rn3k",
+  "kind": "sentence",
+  "text": "Dạo này em hay thức khuya nên da xấu đi và hay bị mụn.",
+  "heard": "Dạo này em hay thức huy nên da xấu đi và hay bị muộn.",
+  "error": 1.143
+ },
+ {
+  "key": "29kqju6syum",
+  "kind": "sentence",
+  "text": "Sau khi lau xong, sàn nhà trông rất sạch.",
+  "heard": "Sau khi lau xong, xà nhà trông rất sạch.",
+  "error": 1.111
+ },
+ {
+  "key": "212cxobs878",
+  "kind": "sentence",
+  "text": "Xin lỗi cậu, tớ kẹt việc đột xuất, cho tớ đổi cuộc hẹn chiều nay sang sáng mai nhé.",
+  "heard": "Xin lỗi cậu, tớ kẹp việc đột xuất, cho tới đổi cuộc hẹn chiều nay sang sáng mai nhé.",
+  "error": 1.105
+ },
+ {
+  "key": "1cxaiv2bzey",
+  "kind": "sentence",
+  "text": "Nhiều khách phàn nàn rằng nhân viên phục vụ quá chậm, nên nhà hàng phải xin lỗi và giảm giá.",
+  "heard": "Nhiều khách và nàng rằng nhân viên phục vụ quá chậm, nên nhà hàng phải xin lỗi và giảm giá.",
+  "error": 1.1
+ },
+ {
+  "key": "1qr47sauepb",
+  "kind": "sentence",
+  "text": "Tóc em dài quá rồi, cuối tuần đi cắt tóc nhé.",
+  "heard": "Tóc em dài quá rồi, cuối tuần đi cắt tóc nha.",
+  "error": 1.091
+ },
+ {
+  "key": "1w2leswfe37",
+  "kind": "sentence",
+  "text": "Cả nhà ra ga để tiễn anh trai tôi đi làm xa.",
+  "heard": "Cả nhà ra ra để tiễn anh trai tôi đi làm xa.",
+  "error": 1.083
+ },
+ {
+  "key": "8wn06vkcf0",
+  "kind": "sentence",
+  "text": "Mùa hè nào bố cũng dạy em bơi ở hồ gần nhà.",
+  "heard": "Mùa hè nào bố cũng dậy em bơi ở hồ gần nhà.",
+  "error": 1.083
+ },
+ {
+  "key": "nlx3k6rbul",
+  "kind": "sentence",
+  "text": "Em bé đang ngủ trong phòng, mọi người nói nhỏ thôi nhé.",
+  "heard": "Em bé đang ngủ trong phòng, mọi người nói nhỏ thôi nha.",
+  "error": 1.083
+ },
+ {
+  "key": "12iy0xunq63",
+  "kind": "sentence",
+  "text": "Đơn hàng này rất gấp, khách cần nhận trước 5 giờ chiều nay.",
+  "heard": "Đơn hàng này rất cấp, khách cần nhận trước 5 giờ chiều nay.",
+  "error": 1.077
+ },
+ {
+  "key": "1gzs034raqw",
+  "kind": "sentence",
+  "text": "Hộp sữa này đã hết hạn từ tuần trước, con đừng uống nữa.",
+  "heard": "Hột sữa này đã hết hạn từ tuần trước, con đừng uống nữa.",
+  "error": 1.077
+ },
+ {
+  "key": "1k2hkt9ukkz",
+  "kind": "sentence",
+  "text": "Hàng xóm mới của tôi rất thân thiện, gặp ai cũng chào hỏi.",
+  "heard": "Hàng xóm mới của tôi rất thân thiện, cặp ai cũng chào hỏi.",
+  "error": 1.077
+ },
+ {
+  "key": "1up0mitqshx",
+  "kind": "sentence",
+  "text": "Vừa mua điện thoại mới, cậu ấy đã khoe với cả lớp ngay.",
+  "heard": "Vừa mua điện thoại mới, cậu ấy đã khoe với cả lớp này.",
+  "error": 1.077
+ },
+ {
+  "key": "2djq5v0rvpw",
+  "kind": "sentence",
+  "text": "Đến trạm sau thì mình xuống xe nhé, bến đó gần chợ hơn.",
+  "heard": "Đến trạm sau thì mình xuống xe nhé, đến đó gần chợ hơn.",
+  "error": 1.077
+ },
+ {
+  "key": "bufra63cfr",
+  "kind": "sentence",
+  "text": "Sắp muộn giờ học rồi, em phải chạy nhanh ra bến xe buýt.",
+  "heard": "Sắp muộn giờ học rồi, em phải chạy nhanh ra bến xe bít.",
+  "error": 1.077
+ },
+ {
+  "key": "chgk6ke2lo",
+  "kind": "sentence",
+  "text": "Phát âm tiếng Việt khó với người Nhật vì có nhiều thanh điệu.",
+  "heard": "Các âm tiếng Việt khó với người Nhật vì có nhiều thanh điệu.",
+  "error": 1.077
+ },
+ {
+  "key": "t5xtdx0bju",
+  "kind": "sentence",
+  "text": "Em ném bóng đi, để chú chó chạy ra bắt về cho em.",
+  "heard": "Em nếm bóng đi, để chú chó chạy ra bắt về cho em.",
+  "error": 1.077
+ },
+ {
+  "key": "1lvr0musgxg",
+  "kind": "sentence",
+  "text": "Bác sĩ dặn tôi phải uống thuốc ba lần một ngày sau khi ăn.",
+  "heard": "Bác sĩ dạng tôi phải uống thuốc 3 lần một ngày sau khi ăn.",
+  "error": 1.071
+ },
+ {
+  "key": "1bt446zcqp9",
+  "kind": "sentence",
+  "text": "Ra ngoài nhớ khóa cửa cẩn thận, dạo này khu mình hay mất trộm.",
+  "heard": "Ra ngoài nhớ khóa cửa cẩn thận, dạo này khu mình hay mất trộn.",
+  "error": 1.071
+ },
+ {
+  "key": "1k42luozfoa",
+  "kind": "sentence",
+  "text": "Canh này hơi mặn, chị cho thêm ít nước vào cho vừa miệng nhé.",
+  "heard": "Canh này hơi mặn, chỉ cho thêm ít nước vào cho vừa miệng nhé.",
+  "error": 1.071
+ },
+ {
+  "key": "1rmitvutocv",
+  "kind": "sentence",
+  "text": "Cầu thủ số 10 đá bóng vào góc cao, thủ môn không kịp bắt.",
+  "heard": "Cầu thủ số 10 đã bóng vào góc cao, thủ môn không kịp bắt.",
+  "error": 1.071
+ },
+ {
+  "key": "21zpa3x2t7q",
+  "kind": "sentence",
+  "text": "Phong cảnh ở đây đẹp quá, mình dừng lại chụp ảnh vài tấm nhé.",
+  "heard": "Phong cảnh ở đây đẹp quá, mình dừng lại chụp ảnh vài tấm nha.",
+  "error": 1.071
+ },
+ {
+  "key": "226hgdz5z7g",
+  "kind": "sentence",
+  "text": "Em lấy giúp chị cái cốc, rồi rót nước cam ra mời khách nhé.",
+  "heard": "Em lấy giúp chị cái cốc, rồi rót nước cam ra mời khách nha.",
+  "error": 1.071
+ },
+ {
+  "key": "pmrkdlm2dj",
+  "kind": "sentence",
+  "text": "Muốn phát âm chuẩn, bạn cần luyện tập nói mỗi ngày, dù chỉ mười phút.",
+  "heard": "Muốn phát âm trưởng, bạn cần luyện tập nói mỗi ngày, dù chỉ 10 phút.",
+  "error": 1.067
+ },
+ {
+  "key": "1fzlbqi2nh5",
+  "kind": "sentence",
+  "text": "Giờ này đường hay kẹt lắm, mình đi sớm 30 phút cho chắc nhé.",
+  "heard": "Giờ này đường hay kẹt lắm, mình đi sớm 30 phút cho chắc nha.",
+  "error": 1.067
+ },
+ {
+  "key": "1tptr5lxden",
+  "kind": "sentence",
+  "text": "Điểm thi lần này thấp quá, tháng sau em phải thi lại môn tiếng Anh.",
+  "heard": "Điểm thi lần này thấp quá, tháng sau em phải thi lại muôn tiếng Anh.",
+  "error": 1.067
+ },
+ {
+  "key": "1wsuzghl2fr",
+  "kind": "sentence",
+  "text": "Khi đi xe máy, bạn phải đội mũ bảo hiểm để đảm bảo an toàn.",
+  "heard": "Khi đi xe máy, bạn phải đổi mũ bảo hiểm để đảm bảo an toàn.",
+  "error": 1.067
+ },
+ {
+  "key": "jnbfx3w92v",
+  "kind": "sentence",
+  "text": "Tối nay cả nhà tôi sẽ cùng nhau xem một bộ phim mới ở rạp.",
+  "heard": "Tối nay cả nhà tôi sẽ cùng nhau xem một bộ phim mới ở Rạc.",
+  "error": 1.067
+ },
+ {
+  "key": "1sz8net66eb",
+  "kind": "sentence",
+  "text": "Thủ tục xin visa nước đó khá phức tạp, cần đến hơn mười loại giấy tờ.",
+  "heard": "Thủ tục sinh visa nước đó khá phức tạp, cần đến hơn 10 loại giấy tờ.",
+  "error": 1.062
+ },
+ {
+  "key": "19px3o4v7oe",
+  "kind": "sentence",
+  "text": "Bóng đèn phòng tắm cháy rồi, chiều nay em gọi thợ đến thay cái mới nhé.",
+  "heard": "Bóng đèn phòng tắm cháy rồi, chiều nay em gọi thợ đến thay cái mới nha.",
+  "error": 1.062
+ },
+ {
+  "key": "1cu84yg81r7",
+  "kind": "sentence",
+  "text": "Vòi nước trong bếp bị rò rỉ suốt đêm, sáng nay sàn nhà ướt hết cả.",
+  "heard": "Vòi nước trong bếp bị rò rỉ suốt đêm, sáng nay xà nhà ướt hết cả.",
+  "error": 1.062
+ },
+ {
+  "key": "1g00cd7a0iw",
+  "kind": "sentence",
+  "text": "Hãng hàng không phải bồi thường cho hành khách vì chuyến bay bị hủy đột ngột.",
+  "heard": "Hãng hàng không phải bồi thường cho hành khách vì chuyến bay bị hủy đột một.",
+  "error": 1.062
+ },
+ {
+  "key": "1icmqyg4fuf",
+  "kind": "sentence",
+  "text": "Khóa đào tạo này nhằm nâng cao kỹ năng giao tiếp cho đội ngũ bán hàng.",
+  "heard": "Hóa đào tạo này nhằm nâng cao kỹ năng giao tiếp cho đội ngũ bán hàng.",
+  "error": 1.062
+ },
+ {
+  "key": "1wwvcwa66hi",
+  "kind": "sentence",
+  "text": "Nhà gần đường lớn nên hơi ồn ào, tối phải đóng cửa sổ mới ngủ được.",
+  "heard": "Nhà gần đường lớn nên hơi ồn ào, tôi phải đóng cửa sổ mới ngủ được.",
+  "error": 1.062
+ },
+ {
+  "key": "1wyza7e9t0k",
+  "kind": "sentence",
+  "text": "Trước chuyến công tác, anh ấy dành cả buổi tối để chuẩn bị tài liệu họp.",
+  "heard": "Trước chuyến công tác, anh ấy dành cả buổi tối để chuẩn bị tài liệu học.",
+  "error": 1.062
+ },
+ {
+  "key": "2565js3gczm",
+  "kind": "sentence",
+  "text": "Chủ nhà dặn em là mỗi tháng nhớ đọc số điện rồi nhắn cho cô ấy.",
+  "heard": "Chủ nhà dạng em là mỗi tháng nhớ đọc số điện rồi nhắn cho cô ấy.",
+  "error": 1.062
+ },
+ {
+  "key": "vs3zi2yiw8",
+  "kind": "sentence",
+  "text": "Vòi nước nhà tắm bị rỉ, nhỏ giọt suốt đêm nên sáng ra sàn ướt hết.",
+  "heard": "Vòi nước nhà tắm bị rỉ, nhỏ dọc suốt đêm nên sáng ra sàn ướt hết.",
+  "error": 1.062
+ },
+ {
+  "key": "drn5uafrhc",
+  "kind": "sentence",
+  "text": "Em học thuộc từ mới mỗi ngày mười từ, ba tháng là nhớ được kha khá rồi.",
+  "heard": "Em học thuộc từ mới mỗi ngày 14, 3 tháng là nhớ được kha khá rồi.",
+  "error": 1.059
+ },
+ {
+  "key": "infd8093sc",
+  "kind": "sentence",
+  "text": "Cảm ơn chị, em ăn ba bát rồi, no lắm rồi ạ, không ăn thêm được nữa.",
+  "heard": "Cảm ơn chị, em ăn 3 bát rồi, no lắm rồi à, không ăn thêm được nữa.",
+  "error": 1.059
+ },
+ {
+  "key": "13c5t45zc9t",
+  "kind": "sentence",
+  "text": "Quạt mới mua về còn nguyên trong hộp, anh xem hướng dẫn rồi lắp giúp em nhé.",
+  "heard": "Hoặc mới mua về còn nguyên trong hộp, anh xem hướng dẫn rồi lắp giúp em nhé.",
+  "error": 1.059
+ },
+ {
+  "key": "1g0vq82xizq",
+  "kind": "sentence",
+  "text": "Từ hôm qua tôi bị sốt và ho liên tục, nói chuyện nhiều là ngứa họng ngay.",
+  "heard": "Từ hôm qua tôi bị sốt và ho liên tục, nói chuyện nhiều là ngứa hỏng ngay.",
+  "error": 1.059
+ },
+ {
+  "key": "2867jr0jicy",
+  "kind": "sentence",
+  "text": "Gió to lắm, con buộc chặt dây lều vào cọc không thì lều bay mất bây giờ.",
+  "heard": "Gió to lắm, con một chặt dây lều vào cọc không thì lều bay mất bây giờ.",
+  "error": 1.059
+ },
+ {
+  "key": "hlaqqt10nu",
+  "kind": "sentence",
+  "text": "Uống hết thuốc rồi mà vẫn còn ho, tuần sau anh nhớ quay lại tái khám nhé.",
+  "heard": "Uống hết thuốc rồi mà vẫn còn ho, tuần sau anh nhớ quay lại tái khám nha.",
+  "error": 1.059
+ },
+ {
+  "key": "jrf6roz9my",
+  "kind": "sentence",
+  "text": "Áo sơ mi nhăn quá, để mẹ là lại cho phẳng rồi hãy mặc đi phỏng vấn.",
+  "heard": "Áo sơ mi nhanh quá, để mẹ là lại cho phẳng rồi hãy mặc đi phỏng vấn.",
+  "error": 1.059
+ },
+ {
+  "key": "seks5btgue",
+  "kind": "sentence",
+  "text": "Sách vở để lộn xộn khắp bàn, con xếp lại cho ngăn nắp rồi hãy đi chơi.",
+  "heard": "Sách vở để lộn sụn khắp bàn, con xếp lại cho ngăn nắp rồi hãy đi chơi.",
+  "error": 1.059
+ },
+ {
+  "key": "121jxbwphnf",
+  "kind": "sentence",
+  "text": "Sau ba mươi năm cống hiến cho ngành giáo dục, thầy Hùng được trao bằng khen của Bộ.",
+  "heard": "Sau 30 năm cống hiến cho ngành giáo dục, thầy Hùng được trao bằng then của bộ.",
+  "error": 1.056
+ },
+ {
+  "key": "1tbvvco1zqt",
+  "kind": "sentence",
+  "text": "Bài này cô cho hạn nộp đến thứ năm, bạn nào chưa xong thì tranh thủ làm nốt.",
+  "heard": "Bài này cô cho hạng nộp đến thứ 5, bạn nào chưa xong thì tranh thủ làm nốt.",
+  "error": 1.056
+ },
+ {
+  "key": "1vidk4fol8v",
+  "kind": "sentence",
+  "text": "Bài tập này phải nộp trước 5 giờ chiều nay, muộn một phút cô cũng không nhận đâu.",
+  "heard": "Bài tập này phải nộp trước 5 giờ chiều nay, mùa 1 phút cô cũng không nhận đâu.",
+  "error": 1.056
+ },
+ {
+  "key": "1gnqkf4qktx",
+  "kind": "sentence",
+  "text": "Xin lỗi đã làm phiền anh giờ nghỉ trưa, nhưng việc này cần anh quyết định ngay ạ.",
+  "heard": "Xin lỗi đã làm phiền anh giờ nghỉ trưa, nhưng việc này cần anh quyết định ngay à.",
+  "error": 1.056
+ },
+ {
+  "key": "1izhr5x83vq",
+  "kind": "sentence",
+  "text": "Phòng bên cạnh mở nhạc to quá, em học không tập trung được, chắc phải sang nhắc họ.",
+  "heard": "Phòng bên cạnh mở nhà to quá, em học không tập trung được, chắc phải sang nhắc họ.",
+  "error": 1.056
+ },
+ {
+  "key": "1zafr97s533",
+  "kind": "sentence",
+  "text": "Giá cả hợp lý giúp các cửa hàng nhỏ có thể cạnh tranh với những siêu thị lớn.",
+  "heard": "Giá trả hợp lý giúp các cửa hàng nhỏ có thể cạnh tranh với những siêu thị lớn.",
+  "error": 1.056
+ },
+ {
+  "key": "8gtct3iu6w",
+  "kind": "sentence",
+  "text": "Cá mua từ tuần trước để quên ngoài tủ, bây giờ ôi rồi, đừng ăn kẻo đau bụng.",
+  "heard": "Cá mua từ tuần trước để quê ngoài tủ, bây giờ ôi rồi, đừng ăn kẻo đau bụng.",
+  "error": 1.056
+ },
+ {
+  "key": "nk7nsvrvz6",
+  "kind": "sentence",
+  "text": "Lịch họp tuần sau có thay đổi, em thông báo lại với mọi người qua nhóm chat nhé.",
+  "heard": "Lịch học tuần sau có thay đổi, em thông báo lại với mọi người qua nhóm chat nhé.",
+  "error": 1.056
+ },
+ {
+  "key": "1fvzt2asi2f",
+  "kind": "sentence",
+  "text": "Chung cư yêu cầu cư dân phân loại rác thành ba loại: hữu cơ, tái chế và rác khác.",
+  "heard": "Trung cư yêu cầu cư dân phân loại rác thành ba loại, thử cơ, tái chế và rác khác.",
+  "error": 1.053
+ },
+ {
+  "key": "i1807tp1gs",
+  "kind": "sentence",
+  "text": "Vé mua sát ngày khởi hành thì đắt gấp đôi, nên em đặt trước hai tháng cho yên tâm.",
+  "heard": "Vé mua sát ngày khởi hành thì đắt cấp đôi, nên em đặt trước 2 tháng cho yên tâm.",
+  "error": 1.053
+ },
+ {
+  "key": "18o0frdgft4",
+  "kind": "sentence",
+  "text": "Món này gần xong rồi nhưng hình như còn thiếu chút muối, em nêm thêm một ít nữa nhé.",
+  "heard": "Món này gần xong rồi nhưng hình như còn thiếu chút muối, em nêm thêm một ít nữa nha.",
+  "error": 1.053
+ },
+ {
+  "key": "1b6qfphd304",
+  "kind": "sentence",
+  "text": "Có cháy thì đừng chen nhau chạy, hãy bình tĩnh nghe theo hướng dẫn của nhân viên tòa nhà.",
+  "heard": "Có cháy thì đừng che nhau chạy, hãy bình tĩnh nghe theo hướng dẫn của nhân viên tòa nhà.",
+  "error": 1.053
+ },
+ {
+  "key": "1i338vim3mx",
+  "kind": "sentence",
+  "text": "Tối nay có trận bóng hay, mình hẹn nhau ra quán cũ, ai đến trước thì giữ chỗ nhé.",
+  "heard": "Tối nay có trận bóng hay, mình hẹn nhau ra quán cũ, ai đến trước thì giữ chỗ nha.",
+  "error": 1.053
+ },
+ {
+  "key": "1lmpedywcj7",
+  "kind": "sentence",
+  "text": "Muốn tồn tại trong thời đại số, các tờ báo giấy buộc phải đổi mới cách làm nội dung.",
+  "heard": "Muốn tồn tại trong thời đại số, các tờ báo giới buộc phải đổi mới cách làm nội dung.",
+  "error": 1.053
+ },
+ {
+  "key": "27ut7pl6jx",
+  "kind": "sentence",
+  "text": "Gần đến kỳ thi, em gái tôi học đến khuya nên lúc nào cũng mệt mỏi và căng thẳng.",
+  "heard": "Gần đến kỳ thi, em gái tôi học đến khuy nên lúc nào cũng mệt mỏi và căng thẳng.",
+  "error": 1.053
+ },
+ {
+  "key": "2ez72t6kujr",
+  "kind": "sentence",
+  "text": "Nhiều nông trại đang chuyển đổi từ trồng lúa sang trồng rau hữu cơ vì lợi nhuận cao hơn.",
+  "heard": "Nhiều nông trại đang chuyển đổi từ trồng lúa sang trồng rau hữu cơ vì lợi nhượng cao hơn.",
+  "error": 1.053
+ },
+ {
+  "key": "3fxtxh6bw2",
+  "kind": "sentence",
+  "text": "Thấy em được mua xe đạp mới, anh trai hơi ghen tị, đòi bố mẹ mua cho mình nữa.",
+  "heard": "Thấy em được mua xe đạp mới, anh trai hơi gian tị, đòi bố mẹ mua cho mình nữa.",
+  "error": 1.053
+ },
+ {
+  "key": "akrwhjmgki",
+  "kind": "sentence",
+  "text": "Nhờ luyện tập thuyết trình nhiều lần, cô ấy trở nên tự tin hơn khi nói trước đám đông.",
+  "heard": "Nhờ luyện tập thiết trình nhiều lần, cô ấy trở nên tự tin hơn khi nói trước đám đông.",
+  "error": 1.053
+ },
+ {
+  "key": "auf3qlrhuh",
+  "kind": "sentence",
+  "text": "Bác sĩ khuyên tôi nên ngủ trước 11 giờ và bớt uống cà phê để đỡ đau dạ dày.",
+  "heard": "Bác sĩ khuyên tôi nên ngủ trước 11 giờ và bớt uống cà phê để đỡ đau dại dày.",
+  "error": 1.05
+ },
+ {
+  "key": "21esrkgf9zn",
+  "kind": "sentence",
+  "text": "Hôm qua dầm mưa về, hôm nay em thấy người mệt, hắt hơi liên tục, chắc là bị cảm rồi.",
+  "heard": "Hôm qua dầm mưa về, hôm nay em thấy người mệt, hát hơi liên tục, chắc là bị cảm rồi.",
+  "error": 1.05
+ },
+ {
+  "key": "fzltz5o5fg",
+  "kind": "sentence",
+  "text": "Rác nhà mình để ở đây, sáng mai xe đến thu rác nên tối nay mang ra trước cổng nhé.",
+  "heard": "Các nhà mình để ở đây, sáng mai xe đến thu rác nên tối nay mang ra trước cổng nhé.",
+  "error": 1.05
+ },
+ {
+  "key": "uiqfsaej1o",
+  "kind": "sentence",
+  "text": "Lương tháng này em không tiêu hết mà cố tiết kiệm một ít để cuối năm về quê ăn Tết.",
+  "heard": "Lương tháng này em không tiêu hết mà cố tiết kị một ít để cuối năm về quê ăn Tết.",
+  "error": 1.05
+ },
+ {
+  "key": "1rr98exuiiv",
+  "kind": "sentence",
+  "text": "Sang Nhật rồi em nhớ thường xuyên liên lạc với gia đình qua điện thoại cho bố mẹ yên tâm nhé.",
+  "heard": "Sao nhật rồi em nhớ thường xuyên liên lạc với gia đình qua điện thoại cho bố mẹ yên tâm nhé.",
+  "error": 1.048
+ },
+ {
+  "key": "tbvcejdsoa",
+  "kind": "sentence",
+  "text": "Trong mười năm qua, thành phố này đã phát triển nhanh chóng từ một làng chài nhỏ thành trung tâm du lịch.",
+  "heard": "Trong 10 năm qua, thành phố này đã phát triển nhanh chóng từ một làng trà nhỏ thành trung tâm du lịch.",
+  "error": 1.045
+ },
+ {
+  "key": "xz49zo92x",
+  "kind": "sentence",
+  "text": "Nhờ chuẩn bị tài chính tốt, công ty đã vượt qua khủng hoảng kinh tế mà không phải cắt giảm nhân sự.",
+  "heard": "Nhờ chuẩn bị tài chính tốt, công ty đã vượt qua khủng hoảng kinh tế mà không phải các giảm nhân sự.",
+  "error": 1.045
+ },
+ {
+  "key": "tos881dh9k",
+  "kind": "sentence",
+  "text": "Tôi bị dị ứng hải sản, bác sĩ dặn phải kiêng tôm cua ít nhất một tháng.",
+  "heard": "Tôi bị dị ứng hải sản, bác sĩ dạng phải kiên tôn cua ít nhất một tháng.",
+  "error": 0.176
+ },
+ {
+  "key": "v01y4gv1ja",
+  "kind": "sentence",
+  "text": "Kim xăng gần về vạch đỏ rồi, mình ghé cây xăng đổ xăng đã rồi đi tiếp.",
+  "heard": "Kim săn gần về vạch đỏ rồi. Mình ghé cây săn đổ săn đã rồi đi tiếp.",
+  "error": 0.176
+ },
+ {
+  "key": "189h9g6ro3h",
+  "kind": "sentence",
+  "text": "Vì giám đốc phải đi công tác gấp, cuộc họp sáng mai sẽ bị hoãn sang tuần sau.",
+  "heard": "Vì giám đốc phải đi công tác cấp, cuộc học sáng mai sẽ bị hoảng sang tuần sau.",
+  "error": 0.167
+ },
+ {
+  "key": "1e4s6mtqt24",
+  "kind": "sentence",
+  "text": "Nếu khai thác rừng quá mức, chúng ta sẽ phải trả giá bằng lũ lụt và sạt lở.",
+  "heard": "Nếu khai thác rừng quá mức, chúng ta sẽ phải trải giá bằng lũ lụt và sạc lỡ.",
+  "error": 0.167
+ },
+ {
+  "key": "bpth1hneet",
+  "kind": "sentence",
+  "text": "Quán em không nhận tiền mặt, anh chị vui lòng thanh toán bằng thẻ hoặc quét mã QR ạ.",
+  "heard": "Quán em không nhận tiền mặt, anh chị vui lòng thanh toán bằng thẻ hoặc quét mã quy rờ à.",
+  "error": 0.158
+ },
+ {
+  "key": "13xansayu70",
+  "kind": "sentence",
+  "text": "Trời sắp mưa rồi, con ra sân cất quần áo vào không thì ướt hết.",
+  "heard": "Trời sắp mưa rồi, con ra sân tức quần áo vào không thì ước hết.",
+  "error": 0.133
+ },
+ {
+  "key": "8okka87n9m",
+  "kind": "sentence",
+  "text": "Chú Tư rất hài hước, mỗi lần chú kể chuyện là cả nhà cười nghiêng ngả.",
+  "heard": "Chú Tư rất hài hước, mỗi lần chú kể chuyện là cả nhà cười nghi ngã.",
+  "error": 0.125
+ },
+ {
+  "key": "epioeeyt3z",
+  "kind": "sentence",
+  "text": "Hồi nhỏ em ấy rất nhút nhát, gặp khách đến nhà là trốn sau lưng mẹ.",
+  "heard": "Hồi nhỏ em ấy rất nhúc nhát, cặp khách đến nhà là trốn sau lưng mẹ.",
+  "error": 0.125
+ },
+ {
+  "key": "nusd9uppuo",
+  "kind": "sentence",
+  "text": "Bàn ghế cũ này nặng lắm, hai đứa mình cùng nâng một đầu rồi khiêng ra nhé.",
+  "heard": "Bàn ghế của này nặng lắm, hai đứa mình cùng nâng một đầu rồi khiên ra nhé.",
+  "error": 0.118
+ },
+ {
+  "key": "1bloh2uzp73",
+  "kind": "sentence",
+  "text": "Thay vì than phiền, hãy tìm cách giải quyết.",
+  "heard": "Thay vì thang phiền, hãy tìm cách giải quyết.",
+  "error": 0.111
+ },
+ {
+  "key": "8jdr6dia0e",
+  "kind": "sentence",
+  "text": "Hễ trời mưa to là con đường này ngập.",
+  "heard": "Thể trời mưa to là con đường này ngập",
+  "error": 0.111
+ },
+ {
+  "key": "2gje0txcv5l",
+  "kind": "sentence",
+  "text": "Hôm nay em phát biểu trước cả trường, giọng run run vì hồi hộp, nhưng cuối cùng cũng xong.",
+  "heard": "Hôm nay em phát biểu trước cả trường, giọng rung rung vì hồi hộp, nhưng cuối cùng cũng xong.",
+  "error": 0.105
+ },
+ {
+  "key": "m6moddk1wn",
+  "kind": "sentence",
+  "text": "Thẻ ATM của tôi bị nuốt ở máy, tôi phải làm thủ tục gì để lấy lại thẻ ạ?",
+  "heard": "Thẻ ATM của tôi bị nút ở máy, tôi phải làm thủ tục gì để lấy lại thẻ à?",
+  "error": 0.105
+ },
+ {
+  "key": "1rbxvlstmdk",
+  "kind": "sentence",
+  "text": "Sàn nhà ướt lắm, đi chậm thôi kẻo bị ngã.",
+  "heard": "Sa nhà ướt lắm, đi chậm thôi kẻo bị ngã.",
+  "error": 0.1
+ },
+ {
+  "key": "n92szodtq5",
+  "kind": "sentence",
+  "text": "Alo, tôi đang họp nên không nói chuyện được. Tôi sẽ gọi lại cho anh sau một tiếng nữa nhé.",
+  "heard": "Alo, tôi đang học nên không nói chuyện được. Tôi sẽ gọi lại cho anh sau một tiếng nữa nha.",
+  "error": 0.1
+ },
+ {
+  "key": "26k1xqq5arr",
+  "kind": "sentence",
+  "text": "Đang trong giờ họp không nghe máy được, anh cứ nhắn tin vào số này, tôi đọc rồi trả lời ngay.",
+  "heard": "Đang trong giờ học không nghe mấy được, anh cứ nhắn tin vào số này, tôi đọc rồi trả lời ngay.",
+  "error": 0.095
+ },
+ {
+  "key": "pu7u546z3s",
+  "kind": "sentence",
+  "text": "Sáng nay trên đường Nguyễn Huệ xảy ra một vụ tai nạn nhỏ, nên xe cộ bị tắc gần một tiếng.",
+  "heard": "Sáng nay trên đường Nguyễn Huệ xảy ra một vụ tai nạn nhỏ, nên xe cổ bị tắt gần một tiếng.",
+  "error": 0.095
+ },
+ {
+  "key": "1etunu2ll0k",
+  "kind": "sentence",
+  "text": "Chị vui lòng ký tên vào cuối hợp đồng này ạ.",
+  "heard": "Chị vui lòng ký tên vào cuối hợp đồng này à.",
+  "error": 0.091
+ },
+ {
+  "key": "8wdwjtlld6",
+  "kind": "sentence",
+  "text": "Vụ tắc đường hôm nay là do tai nạn gây ra.",
+  "heard": "Vụ tắt đường hôm nay là do tai nạn gây ra.",
+  "error": 0.091
+ },
+ {
+  "key": "bfolkvgt7l",
+  "kind": "sentence",
+  "text": "Mời anh ngồi xuống ghế, bác sĩ sẽ đến ngay ạ.",
+  "heard": "Mời anh ngồi xuống ghế, bác sĩ sẽ đến ngay à.",
+  "error": 0.091
+ },
+ {
+  "key": "cimfiu7lmf",
+  "kind": "sentence",
+  "text": "Anh ấy làm như thể chưa có chuyện gì xảy ra.",
+  "heard": "Anh ấy làm như thế chưa có chuyện gì xảy ra.",
+  "error": 0.091
+ },
+ {
+  "key": "t71yhw52u5",
+  "kind": "sentence",
+  "text": "Chúng ta gọi hai bát phở và một đĩa nem rán nhé.",
+  "heard": "Chúng ta gọi 2 bát phở và 1 đĩa nem rán nha.",
+  "error": 0.083
+ },
+ {
+  "key": "gd2l7irwit",
+  "kind": "sentence",
+  "text": "Trước Tết, cả nhà ngồi gói bánh chưng bằng lá dong xanh.",
+  "heard": "Trước Tết, cả nhà ngồi gói bánh chưng bằng lá dông xanh.",
+  "error": 0.083
+ },
+ {
+  "key": "1kie0oz6ipp",
+  "kind": "sentence",
+  "text": "Qua đường phải cầm tay mẹ thật chặt nhé, xe cộ đông lắm.",
+  "heard": "Qua đường phải cầm tay mẹ thật chặt nhé, xe cổ đông lắm.",
+  "error": 0.077
+ },
+ {
+  "key": "gp4in2lg1e",
+  "kind": "sentence",
+  "text": "Chỗ muỗi đốt ngứa quá, con đừng gãi nhiều kẻo thành vết thương.",
+  "heard": "Chỗ mũi đốt ngứa quá, con đừng gãi nhiều kẻo thành vết thương.",
+  "error": 0.077
+ },
+ {
+  "key": "13orhxsr6e0",
+  "kind": "sentence",
+  "text": "Sữa này hết hạn ngày mai rồi, con uống hôm nay đi kẻo phí.",
+  "heard": "Sữa này hết hạn ngày mai rồi, con uống hôm nay đi kẹo phí.",
+  "error": 0.071
+ },
+ {
+  "key": "17th6r955rv",
+  "kind": "sentence",
+  "text": "Ở chợ truyền thống, người mua thường mặc cả để được giá tốt hơn.",
+  "heard": "Ở chợ truyền thống, người mua thường mặt cả để được giá tốt hơn.",
+  "error": 0.071
+ },
+ {
+  "key": "1d4ol10z5ts",
+  "kind": "sentence",
+  "text": "Hai anh em cãi nhau vì cái điều khiển tivi, mẹ phải ra can.",
+  "heard": "Hai anh em cãi nhau vì cái điều khiển TV, mẹ phải ra can.",
+  "error": 0.071
+ },
+ {
+  "key": "2d475rsniuz",
+  "kind": "sentence",
+  "text": "Cuộc họp chiều nay hoãn sang 4 giờ nhé, vì giám đốc về muộn.",
+  "heard": "Cuộc họp chiều nay khoảng sang 4 giờ nhé, vì giám đốc về muộn.",
+  "error": 0.071
+ },
+ {
+  "key": "1x0nn6pnawh",
+  "kind": "sentence",
+  "text": "Hôm nay trời se lạnh, ra ngoài nhớ mặc thêm áo khoác kẻo cảm lạnh.",
+  "heard": "Hôm nay trời xe lạnh, ra ngoài nhớ mặc thêm áo khoác kẹo cảm lạnh.",
+  "error": 0.067
+ },
+ {
+  "key": "2y5qnuiu02",
+  "kind": "sentence",
+  "text": "Bác sĩ dặn uống hết đợt thuốc này, đừng thấy đỡ là bỏ giữa chừng.",
+  "heard": "Bác sĩ dạng uống hết đợt thuốc này, đừng thấy đỡ là bỏ giữa chừng.",
+  "error": 0.067
+ },
+ {
+  "key": "9trx22z52q",
+  "kind": "sentence",
+  "text": "Nhân viên mới chưa quen việc, chị cả nhóm phải hướng dẫn từng bước một.",
+  "heard": "Nhân viên mới chưa quen việc, chỉ cả nhóm phải hướng dẫn từng bước một.",
+  "error": 0.067
+ },
+ {
+  "key": "ao1r0uj5uj",
+  "kind": "sentence",
+  "text": "Anh cho em xin thêm một chén nước mắm nữa ạ, bàn em hết rồi.",
+  "heard": "Anh cho em xin thêm một chén nước mắm nữa à, bàn em hết rồi.",
+  "error": 0.067
+ },
+ {
+  "key": "1a6wl61kakw",
+  "kind": "sentence",
+  "text": "Hai lớp sẽ trao đổi ý kiến về kế hoạch dã ngoại vào chiều thứ sáu.",
+  "heard": "Hai lớp sẽ trao đổi ý kiến về kế hoạch giả ngoại vào chiều thứ 6.",
+  "error": 0.062
+ },
+ {
+  "key": "eeo71ryy05",
+  "kind": "sentence",
+  "text": "Chuyến tàu này đỗ ở ga Thanh Hóa mười phút rồi mới chạy tiếp vào Nam.",
+  "heard": "Chuyến tàu này đổ ở ga Thanh Hóa 10 phút rồi mới chạy tiếp vào Nam.",
+  "error": 0.062
+ },
+ {
+  "key": "vvd2yr7aqa",
+  "kind": "sentence",
+  "text": "Điện thoại còn 5% pin thôi, cho mình mượn cục sạc một lát nhé.",
+  "heard": "Điện thoại còn 5% pin thôi, cho mình mượn cục sạc một lát nha.",
+  "error": 0.062
+ },
+ {
+  "key": "19ytfxjzt0o",
+  "kind": "sentence",
+  "text": "Nghe tin bạn thi đỗ, cả lớp gọi điện chúc mừng và rủ đi ăn mừng.",
+  "heard": "Nghe tin bạn thi đổ, cả lớp gọi điện chúc mừng và rủ đi ăn mừng.",
+  "error": 0.062
+ },
+ {
+  "key": "1pmhzk4adf4",
+  "kind": "sentence",
+  "text": "Bãi biển đông người lắm, con nhớ trông đồ cẩn thận, đừng để túi xa người.",
+  "heard": "Bãi biển đông người lắm, con nhớ trong đồ cẩn thận, đừng để túi xa người.",
+  "error": 0.062
+ },
+ {
+  "key": "1v8kqnjf18z",
+  "kind": "sentence",
+  "text": "Tôi gọi cho chị Lan mấy lần mà máy cứ bận, chắc chị ấy đang họp.",
+  "heard": "Tôi gọi cho chị Lan mấy lần mà máy cứ bận, chắc chị ấy đang học.",
+  "error": 0.062
+ },
+ {
+  "key": "2cuaksnhcz3",
+  "kind": "sentence",
+  "text": "Cơm nhão quá, chắc lúc nãy em cho nhiều nước, lần sau bớt đi một chút.",
+  "heard": "Cơm nhảo quá, chắc lúc nãy em cho nhiều nước, lần sau bớt đi một chút.",
+  "error": 0.062
+ },
+ {
+  "key": "2d973gst66v",
+  "kind": "sentence",
+  "text": "Thư viện là nơi yên tĩnh, mọi người nên tắt chuông điện thoại và nói nhỏ.",
+  "heard": "Thư viện là nơi yên tĩnh, mọi người nên tắt chung điện thoại và nói nhỏ.",
+  "error": 0.062
+ },
+ {
+  "key": "5s89qvzjzm",
+  "kind": "sentence",
+  "text": "Bồn rửa bát thoát nước rất chậm, chắc là ống bị tắc vì rác thức ăn.",
+  "heard": "Bồn rửa bát thoát nước rất chậm, chắc là ống bị tắt vì rác thức ăn.",
+  "error": 0.062
+ },
+ {
+  "key": "mz4ytkbspb",
+  "kind": "sentence",
+  "text": "Việc này em làm một mình không nổi, mong mọi người giúp đỡ thêm cho em.",
+  "heard": "Việc này em là một mình không nổi, mong mọi người giúp đỡ thêm cho em.",
+  "error": 0.062
+ },
+ {
+  "key": "1175uluidu7",
+  "kind": "sentence",
+  "text": "Cuối tuần này vợ chồng tôi đi vắng, nhờ bà ngoại sang trông hai đứa nhỏ giúp.",
+  "heard": "Cuối tuần này vợ chồng tôi đi vắng, nhờ bà ngoại sang trong hai đứa nhỏ giúp.",
+  "error": 0.059
+ },
+ {
+  "key": "14bq219002i",
+  "kind": "sentence",
+  "text": "Dạy trẻ nhỏ đòi hỏi sự kiên nhẫn, vì các em hỏi đi hỏi lại rất nhiều.",
+  "heard": "Vậy trẻ nhỏ đòi hỏi sự kiên nhẫn, vì các em hỏi đi hỏi lại rất nhiều.",
+  "error": 0.059
+ },
+ {
+  "key": "14xjgeg9b2a",
+  "kind": "sentence",
+  "text": "Mưa to quá, hay là mình dời chuyến đi Đà Lạt sang tuần sau cho an toàn?",
+  "heard": "Mưa to quá, hay là mình giờ chuyến đi Đà Lạt sang tuần sau cho an toàn?",
+  "error": 0.059
+ },
+ {
+  "key": "1hxv1tcfmtn",
+  "kind": "sentence",
+  "text": "Nghe tin bạn thân thi đỗ đại học, tôi gọi điện ngay để chúc mừng bạn ấy.",
+  "heard": "Nghe tin bạn thân thi đổ đại học, tôi gọi điện ngay để chúc mừng bạn ấy.",
+  "error": 0.059
+ },
+ {
+  "key": "1o8xlsk976g",
+  "kind": "sentence",
+  "text": "Thị lực của ông tôi suy giảm theo tuổi tác, giờ đọc báo phải dùng kính lúp.",
+  "heard": "Thị lực của ông tôi suy giảm theo tuổi tác, giờ đọc báo phải dùng kính lúc.",
+  "error": 0.059
+ },
+ {
+  "key": "5gfaj7oswg",
+  "kind": "sentence",
+  "text": "Căn bếp có cửa sổ to nên lúc nào cũng sáng, không cần bật đèn ban ngày.",
+  "heard": "Căn bếp có cửa sổ to nên lúc nào cũng sáng, không cần bật đèn ba ngày.",
+  "error": 0.059
+ },
+ {
+  "key": "7i6dqt9cbh",
+  "kind": "sentence",
+  "text": "Nghe nói cuối tuần có đợt không khí lạnh, mọi người nhớ mặc ấm khi ra ngoài.",
+  "heard": "Nghe nói cuối tuần có đợt không khí lạnh, mọi người nhớ mặt ấm khi ra ngoài.",
+  "error": 0.059
+ },
+ {
+  "key": "e4nl9e8mwa",
+  "kind": "sentence",
+  "text": "Chiếc áo len mẹ đan rất ấm áp, mặc vào là quên hết cái lạnh mùa đông.",
+  "heard": "Chiếc áo len mẹ đang rất ấm áp, mặc vào là quên hết cái lạnh mùa đông.",
+  "error": 0.059
+ },
+ {
+  "key": "ehb21y62ll",
+  "kind": "sentence",
+  "text": "Máy em đầy bộ nhớ rồi, chắc phải xóa bớt mấy video cũ không dùng đến nữa.",
+  "heard": "Mấy em đầy bộ nhớ rồi, chắc phải xóa bớt mấy video cũ không dùng đến nữa.",
+  "error": 0.059
+ },
+ {
+  "key": "f54w68sxa",
+  "kind": "sentence",
+  "text": "Con gái mình tự tay nấu cả bàn tiệc đãi khách, mình tự hào về con lắm.",
+  "heard": "Con gái mình tự tay nấu cả bàn tiệc đải khách, mình tự hào về con lắm.",
+  "error": 0.059
+ },
+ {
+  "key": "fsj8t4gx20",
+  "kind": "sentence",
+  "text": "Trời hôm nay oi quá, không có gió, mồ hôi cứ chảy suốt dù chỉ ngồi yên.",
+  "heard": "Trời hôm nay oi quá, không có gió, mồ hôi cứ chạy suốt dù chỉ ngồi yên.",
+  "error": 0.059
+ },
+ {
+  "key": "1q60w7xc9ie",
+  "kind": "sentence",
+  "text": "Mẫu áo này hết hàng rồi chị ạ, tuần sau có hàng mới em gọi báo chị nhé.",
+  "heard": "Mẫu áo này hết hàng rồi chị à, tuần sau có hàng mới em gọi báo chị nhé.",
+  "error": 0.056
+ },
+ {
+  "key": "21ytod46yxc",
+  "kind": "sentence",
+  "text": "Áo này em mặc thử thấy vừa người, không rộng cũng không chật, em lấy cái này ạ.",
+  "heard": "Áo này em mặc thử thấy vừa người, không rộng cũng không chật, em lấy cái này à.",
+  "error": 0.056
+ },
+ {
+  "key": "2bmaa3w84nx",
+  "kind": "sentence",
+  "text": "Đứng bán hàng cả ngày nên tối về chân em nhức lắm, phải ngâm nước ấm mới đỡ.",
+  "heard": "Đứng bán hàng cả ngày nên tối về chân em nhất lắm, phải ngâm nước ấm mới đỡ.",
+  "error": 0.056
+ },
+ {
+  "key": "2fie0k9u242",
+  "kind": "sentence",
+  "text": "Trước khi đi du lịch nước ngoài, tôi đến trung tâm y tế để tiêm phòng bệnh cúm.",
+  "heard": "Trước khi đi du lịch nước ngoài, tôi đến trung tâm y tế để tiêm phòng bệnh cúng.",
+  "error": 0.056
+ },
+ {
+  "key": "33vrcpw6pj",
+  "kind": "sentence",
+  "text": "Uống một cốc nước ngay sau khi thức dậy đã trở thành thói quen hằng ngày của tôi.",
+  "heard": "Uống một cốc nước ngay sau khi thức dậy đã trở thành thói quen hàng ngày của tôi.",
+  "error": 0.056
+ },
+ {
+  "key": "22ea2a5j8us",
+  "kind": "sentence",
+  "text": "Anh ơi, Wi-Fi nhà mình chậm quá, anh thử khởi động lại cục phát xem có nhanh hơn không.",
+  "heard": "Anh ơi, wifi nhà mình chậm quá, anh thử khởi động lại cuộc phát xem có nhanh hơn không?",
+  "error": 0.053
+ },
+ {
+  "key": "22ckdpmr3h1",
+  "kind": "sentence",
+  "text": "Phần mềm mới giúp tối ưu lộ trình giao hàng, tiết kiệm 20% xăng mỗi tháng.",
+  "heard": "Phần mềm mới giúp tối ưu lộ trình giao hàng, tiết kiệm 20% săn mỗi tháng.",
+  "error": 0.053
+ },
+ {
+  "key": "22re97mpzrp",
+  "kind": "sentence",
+  "text": "Hội đồng đã bác bỏ đề xuất xây bãi đỗ xe vì thiếu đánh giá tác động môi trường.",
+  "heard": "Hội đồng đã bác bỏ đề xuất xây bãi đổ xe vì thiếu đánh giá tác động môi trường.",
+  "error": 0.053
+ },
+ {
+  "key": "2cd3c3z4zru",
+  "kind": "sentence",
+  "text": "Biết tin không đỗ vào công ty mơ ước, anh ấy thất vọng đến mức không ăn nổi cơm.",
+  "heard": "Biết tin không đổ vào công ty mơ ước, anh ấy thất vọng đến mức không ăn nổi cơm.",
+  "error": 0.053
+ },
+ {
+  "key": "a59va0l7xu",
+  "kind": "sentence",
+  "text": "Trán con nóng quá, chắc là bị sốt rồi. Để mẹ lấy nhiệt kế đo xem bao nhiêu độ.",
+  "heard": "Tráng con nóng quá, chắc là bị sốt rồi. Để mẹ lấy nhiệt kế đo xem bao nhiêu độ.",
+  "error": 0.053
+ },
+ {
+  "key": "ctzn2iuq3m",
+  "kind": "sentence",
+  "text": "Túi này đẹp nhưng đắt quá, chị thử mặc cả xem, may ra người bán bớt cho vài chục.",
+  "heard": "Túi này đẹp nhưng đắt quá, chị thử mặt cả xem, may ra người bán bớt cho vài chục.",
+  "error": 0.053
+ },
+ {
+  "key": "17s4yrqe6m",
+  "kind": "sentence",
+  "text": "Bằng số liệu cụ thể, cô ấy đã thuyết phục được ban giám đốc đồng ý với kế hoạch mới.",
+  "heard": "Bằng số liệu cụ thể, cô ấy đã thuyết phục được bang giám đốc đồng ý với kế hoạch mới.",
+  "error": 0.05
+ },
+ {
+  "key": "1ddwcs6ei8x",
+  "kind": "sentence",
+  "text": "Trước cửa hàng có biển 'Cấm đỗ ô tô', anh chịu khó chạy thêm một đoạn tìm bãi khác nhé.",
+  "heard": "Trước cửa hàng có biển cấm đổ ô tô, anh chịu khó chạy thêm một đoạn tìm bãi khác nhé.",
+  "error": 0.05
+ },
+ {
+  "key": "ej7i09hoxp",
+  "kind": "sentence",
+  "text": "Nhờ cắt giảm chi phí vận chuyển, lợi nhuận của công ty tăng 15% so với năm ngoái.",
+  "heard": "Nhờ các giảm chi phí vận chuyển, lợi nhuận của công ty tăng 15% so với năm ngoái.",
+  "error": 0.048
+ },
+ {
+  "key": "1qurlgncobw",
+  "kind": "sentence",
+  "text": "Bị người khác lấy mất chỗ đỗ xe vừa xếp hàng chờ, anh ấy tức giận đến mức đỏ cả mặt.",
+  "heard": "Bị người khác lấy mất chỗ đổ xe vừa xếp hàng chờ, anh ấy tức giận đến mức đỏ cả mặt.",
+  "error": 0.048
+ },
+ {
+  "key": "45fn82r7j2",
+  "kind": "sentence",
+  "text": "Khi lạm phát tăng cao, giá thực phẩm và xăng dầu đều đắt lên, đời sống người dân khó khăn hơn.",
+  "heard": "Khi lạm phát tăng cao, giá thực phẩm và săn dầu đều đắt lên, đời sống người dân khó khăn hơn.",
+  "error": 0.048
+ },
+ {
+  "key": "141ggqf8mlk",
+  "kind": "sentence",
+  "text": "Ngày mai nhà em có việc gia đình, nên hôm nay em xin phép cô cho em nghỉ học một buổi ạ.",
+  "heard": "Ngày mai nhà em có việc gia đình, nên hôm nay em xin phép cô cho em nghỉ học một buổi à.",
+  "error": 0.045
+ },
+ {
+  "key": "1nrx40fvi0z",
+  "kind": "sentence",
+  "text": "Lớp yoga buổi sáng sắp hết chỗ rồi, chị muốn học thì nên đăng ký sớm trên trang web của trung tâm.",
+  "heard": "Lớp Yoga buổi sáng sắp hết chỗ rồi, chỉ muốn học thì nên đăng ký sớm trên trang web của Trung tâm.",
+  "error": 0.045
+ },
+ {
+  "key": "1m06z2p90hy",
+  "kind": "sentence",
+  "text": "Chỗ làm mới đồng nghiệp tốt, giờ giấc hợp lý nên em làm việc rất thoải mái, không bị áp lực như trước.",
+  "heard": "Chỗ làm mới đồng nghiệp tốt, giờ rất hợp lý nên em làm việc rất thoải mái, không bị áp lực như trước.",
+  "error": 0.043
+ },
+ {
+  "key": "hrhios3gfn",
+  "kind": "sentence",
+  "text": "Tôi thích làm việc với chị ấy vì chị rất thẳng thắn, có gì chưa tốt là nói ngay chứ không để bụng.",
+  "heard": "Tôi thích làm việc với chị ấy vì chị rất thẳng thắng, có gì chưa tốt là nói ngay chứ không để bụng.",
+  "error": 0.043
+ },
+ {
+  "key": "y0u8gyc59t",
+  "kind": "sentence",
+  "text": "Ngoài lương, công ty này còn có chế độ phúc lợi tốt: bảo hiểm, du lịch hằng năm và hỗ trợ ăn trưa.",
+  "heard": "Ngoài lương, công ty này còn có chế độ phúc lợi tốt, bảo hiểm, du lịch hàng năm và hỗ trợ ăn trưa.",
+  "error": 0.043
+ }
+]

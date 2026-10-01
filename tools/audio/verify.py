@@ -25,9 +25,42 @@ from faster_whisper import WhisperModel
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 
 
+DIGITS = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"]
+
+
+def number_words(n):
+    """数字をベトナム語の読みにする（音声認識は数を数字で書くため、比較前にそろえる）。"""
+    if n < 10:
+        return DIGITS[n]
+    if n < 20:
+        return "mười" + ("" if n % 10 == 0 else " " + ("lăm" if n % 10 == 5 else DIGITS[n % 10]))
+    if n < 100:
+        unit = {1: "mốt", 4: "tư", 5: "lăm"}.get(n % 10, DIGITS[n % 10])
+        return DIGITS[n // 10] + " mươi" + ("" if n % 10 == 0 else " " + unit)
+    if n < 1000:
+        rest = n % 100
+        tail = "" if rest == 0 else (" lẻ " + DIGITS[rest] if rest < 10 else " " + number_words(rest))
+        return DIGITS[n // 100] + " trăm" + tail
+    if n < 1_000_000:
+        return number_words(n // 1000) + " nghìn" + ("" if n % 1000 == 0 else " " + number_words(n % 1000))
+    return number_words(n // 1_000_000) + " triệu" + ("" if n % 1_000_000 == 0 else " " + number_words(n % 1_000_000))
+
+
 def syllables(text):
+    """比較用の音節列。表記ゆれ（数字・%・kg）と、北部発音で同じ音になる綴り
+    （s/x、ch/tr、d/gi/r、i/y）は同じものとして扱い、本当の読み違いだけを残す。"""
     text = unicodedata.normalize("NFC", text.lower())
-    return re.findall(r"[0-9a-zà-ỹđ]+", text)
+    text = text.replace("%", " phần trăm").replace("kg", " ki lô gam").replace("wi-fi", "wifi")
+    text = re.sub(r"(\d+)h\b", r"\1 giờ", text)
+    text = re.sub(r"(\d)\.(\d{3})", r"\1\2", text)
+    text = re.sub(r"\d+", lambda m: " " + number_words(int(m.group())) + " ", text)
+    out = []
+    for s in re.findall(r"[a-zà-ỹđ]+", text):
+        s = re.sub(r"^x", "s", s)
+        s = re.sub(r"^tr", "ch", s)
+        s = re.sub(r"^(gi|r)", "d", s)
+        out.append(s.replace("y", "i"))
+    return out
 
 
 def distance(a, b):

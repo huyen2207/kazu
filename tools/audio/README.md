@@ -30,12 +30,8 @@ node tools/audio/extract-texts.mjs                          # 読み上げ対象
 
 ### 1. 耳で確かめる（発音チェックページ）
 
-```bash
-node tools/audio/extract-texts.mjs
-python3 -m http.server 8090   # リポジトリ直下で
-```
-
-http://localhost:8090/tools/audio/review.html を開く。↑↓で次々に再生し、誤りには X で印をつける。
+公開サイトの https://huyen2207.github.io/kazu/tools/audio/review.html で開ける
+（ローカルならリポジトリ直下で `python3 -m http.server 8090` → http://localhost:8090/tools/audio/review.html）。↑↓で次々に再生し、誤りには X で印をつける。
 「印をつけた語をコピー」で一覧を取り出し、下の overrides.json に書いて作り直す。
 
 ### 2. 音声認識で候補を洗い出す
@@ -46,7 +42,11 @@ http://localhost:8090/tools/audio/review.html を開く。↑↓で次々に再�
 ```
 
 音声認識で聞き直し、元の文と食い違う音声を `tools/audio/verify-report.json` に書き出す。
-`--model large-v3-turbo` を推奨（small は認識側の誤りが多い）。単語1つだけの音声は
+既定のモデルは large-v3-turbo（small は認識側の誤りが多い）。数字の書き方や、北部発音で同じ音になる
+綴り（s/x・ch/tr・d/gi/r）の違いは比較前にそろえるので、レポートには実際の聞き違いだけが残る。
+2026-10 の初回チェックでは文752件中145件に食い違いがあったが、同じ文を別の声（NamMinh）で
+作って比べると食い違いの件数はほぼ同じで、大半は認識側の誤りだった。
+レポートの error が 1 以上の70件は「NamMinh では正しく認識された」文で、優先して聞く候補。単語1つだけの音声は
 大きいモデルでも誤認識が多いので、文のチェックが中心。結果は発音チェックページの
 「音声認識で食い違い」で一覧でき、実際に聞いて確かめられる。
 
