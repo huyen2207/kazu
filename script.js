@@ -9752,6 +9752,8 @@ function openDeck(deck) {
   showScreen("flashcards");
   $("fc-empty").classList.toggle("hidden", fc.deck.length > 0);
   $("fc-deck").classList.toggle("hidden", fc.deck.length === 0);
+  // カードが無いときは、前のデッキの「カード 3 / 3」が残って見えるので進捗表示を隠す
+  $("screen-flashcards").classList.toggle("no-cards", fc.deck.length === 0);
   // 復習する語が無いときは、代わりに「覚えた語」から学び直せることを見せる
   if (fc.deck.length === 0) renderLearnedCard();
   if (fc.deck.length > 0) renderCard();

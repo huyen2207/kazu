@@ -491,7 +491,9 @@ h1 { font-size: 22px; font-weight: 700; }
 .fc-chooser-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .fc-chooser-note { color: var(--muted); margin-top: 12px; }
 #screen-flashcards.choosing .progress-row,
-#screen-flashcards.choosing .speed-control { display: none; }
+#screen-flashcards.choosing .speed-control,
+#screen-flashcards.no-cards .progress-row,
+#screen-flashcards.no-cards .speed-control { display: none; }
 
 /* ホームの統計カードの内訳パネル */
 .stat-card { cursor: pointer; font-family: inherit; text-align: center; color: var(--fg); width: 100%; }
