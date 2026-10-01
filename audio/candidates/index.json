@@ -1,0 +1,266 @@
+{
+ "1tosm39k5rj": {
+  "text": "theo thói quen",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ },
+ "vmpcnlrdas": {
+  "text": "làm vệ sinh",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ },
+ "16flo5km494": {
+  "text": "tự tin",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ },
+ "27crqdc9jg6": {
+  "text": "rời đi",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ },
+ "15igozdtttf": {
+  "text": "ưu tiên",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ },
+ "19s4wn1qo7c": {
+  "text": "ướt",
+  "variants": [
+   {
+    "id": "hm_slow",
+    "label": "HoaiMy (nữ) chậm",
+    "override": {
+     "voice": "vi-VN-HoaiMyNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "nm",
+    "label": "NamMinh (nam)",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-10%"
+    }
+   },
+   {
+    "id": "nm_slow",
+    "label": "NamMinh (nam) chậm",
+    "override": {
+     "voice": "vi-VN-NamMinhNeural",
+     "rate": "-30%"
+    }
+   },
+   {
+    "id": "gg",
+    "label": "Google (nữ)",
+    "override": {
+     "engine": "gtts"
+    }
+   },
+   {
+    "id": "gg_slow",
+    "label": "Google (nữ) chậm",
+    "override": {
+     "engine": "gtts",
+     "slow": true
+    }
+   }
+  ]
+ }
+}

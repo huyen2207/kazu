@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kiểm tra phát âm</title>
+  <!--
+    発音チェックページ（開発用・ネイティブ確認者向けにベトナム語表示）。
+    生成した音声を聞き、誤りに印をつけ、候補音声（tools/audio/candidates.py）から正しいものを選ぶ。
+    印と選択は localStorage に保存し、「Sao chép kết quả」で一覧（overrides.json 用のJSON付き）を取り出す。
+  -->
+  <style>
+    :root { --bg: #f7f7f5; --card: #fff; --text: #1f2328; --muted: #6b7280; --line: #e5e7eb; --primary: #2563eb; --primary-bg: #eff6ff; --bad: #dc2626; --bad-bg: #fef2f2; --ok: #16a34a; --ok-bg: #f0fdf4; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111418; --card: #1b1f24; --text: #e6e6e6; --muted: #9aa3ad; --line: #2c323a; --primary: #60a5fa; --primary-bg: #172033; --bad: #f87171; --bad-bg: #2a1616; --ok: #4ade80; --ok-bg: #12241a; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Be Vietnam Pro", "Noto Sans", system-ui, sans-serif; }
+    header { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; z-index: 1; }
+    h1 { font-size: 17px; margin: 0 8px 0 0; }
+    select, input, button { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+    input[type="search"] { flex: 1; min-width: 140px; }
+    button { cursor: pointer; }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .stats { color: var(--muted); font-size: 14px; width: 100%; }
+    main { max-width: 860px; margin: 0 auto; padding: 8px 16px 40px; }
+    .help { color: var(--muted); font-size: 14px; margin: 12px 0; }
+    .row { padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--card); }
+    .row.bad { background: var(--bad-bg); }
+    .row.fixed { background: var(--ok-bg); }
+    .row.current { outline: 2px solid var(--primary); outline-offset: -2px; }
+    .main { display: flex; align-items: center; gap: 10px; }
+    .text { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 17px; }
+    .heard { display: block; color: var(--muted); font-size: 13px; }
+    .play { width: 44px; height: 40px; flex: none; }
+    .mark { flex: none; min-width: 96px; border-color: var(--bad); color: var(--bad); font-weight: 600; }
+    .row.bad .mark { background: var(--bad); color: #fff; }
+    .cands { margin: 10px 0 2px 54px; display: grid; gap: 6px; }
+    .cands-title { font-size: 14px; color: var(--muted); }
+    .cand { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+    .cand.chosen { border-color: var(--ok); background: var(--ok-bg); }
+    .cand .label { flex: 1; font-size: 15px; }
+    .cand .pick { min-width: 72px; }
+    .cand.chosen .pick { background: var(--ok); border-color: var(--ok); color: #fff; }
+    .badge { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--primary-bg); color: var(--primary); margin-left: 6px; white-space: nowrap; }
+    @media (max-width: 560px) { .cands { margin-left: 0; } .mark { min-width: 76px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kiểm tra phát âm</h1>
+    <select id="kind">
+      <option value="all">Tất cả</option>
+      <option value="word">Từ</option>
+      <option value="sentence">Câu</option>
+      <option value="cands">Có phương án để chọn</option>
+      <option value="flagged">Máy nghe thấy khác</option>
+      <option value="bad">Đã đánh dấu sai</option>
+    </select>
+    <input id="q" type="search" placeholder="Tìm từ…" />
+    <select id="rate" aria-label="Tốc độ">
+      <option value="0.7">0.7×</option>
+      <option value="1" selected>1×</option>
+    </select>
+    <button id="copy" class="btn-primary" type="button">Sao chép kết quả</button>
+    <div class="stats" id="stats"></div>
+  </header>
+  <main>
+    <p class="help">
+      Bấm ▶ để nghe. Nếu phát âm sai, bấm <b>✗ Sai</b>. Với những từ có phương án khác,
+      nghe từng phương án và bấm <b>Chọn</b> cho cách đọc đúng nhất.
+      Xong thì bấm <b>Sao chép kết quả</b> và gửi lại.<br />
+      Phím tắt: ↑↓ chuyển và nghe, Space nghe lại, X đánh dấu sai.
+    </p>
+    <div id="list"></div>
+  </main>
+  <script>
+    const BAD_KEY = "kazu-audio-review-bad";
+    const PICK_KEY = "kazu-audio-review-pick";
+    const load = (k, fallback) => { try { return JSON.parse(localStorage.getItem(k)) || fallback; } catch { return fallback; } };
+    const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+    const bad = new Set(load(BAD_KEY, []));
+    const picks = load(PICK_KEY, {}); // key -> 候補id（"current" は今の音声のまま）
+    let items = [];
+    let cands = {};
+    let shown = [];
+    let current = -1;
+    const audio = new Audio();
+    audio.preservesPitch = true;
+
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const getJson = (url, fallback) => fetch(url, { cache: "no-store" }).then((r) => (r.ok ? r.json() : fallback)).catch(() => fallback);
+
+    async function init() {
+      const [texts, report, candIndex] = await Promise.all([
+        getJson("texts.json", []),
+        getJson("verify-report.json", []),
+        getJson("../../audio/candidates/index.json", {}),
+      ]);
+      const heard = new Map(report.map((r) => [r.key, r]));
+      cands = candIndex;
+      items = texts.map((t) => ({ ...t, report: heard.get(t.key) || null }));
+      // 候補のある語を先頭に
+      items.sort((a, b) => (cands[b.key] ? 1 : 0) - (cands[a.key] ? 1 : 0));
+      if (Object.keys(cands).length) document.getElementById("kind").value = "cands";
+      render();
+    }
+
+    function rowState(i) {
+      if (picks[i.key] && picks[i.key] !== "current") return "fixed";
+      return bad.has(i.key) ? "bad" : "";
+    }
+
+    function candHtml(i, n) {
+      const c = cands[i.key];
+      if (!c) return "";
+      const list = [{ id: "current", label: "Hiện tại (HoaiMy, nữ)" }, ...c.variants];
+      return `<div class="cands"><div class="cands-title">Phương án khác — nghe và chọn cách đọc đúng nhất:</div>${list
+        .map((v) => `<div class="cand ${picks[i.key] === v.id ? "chosen" : ""}">
+            <button class="play" type="button" data-cand="${n}" data-vid="${v.id}" aria-label="Nghe">▶</button>
+            <span class="label">${esc(v.label)}</span>
+            <button class="pick" type="button" data-pick="${n}" data-vid="${v.id}">${picks[i.key] === v.id ? "✓ Đã chọn" : "Chọn"}</button>
+          </div>`)
+        .join("")}</div>`;
+    }
+
+    function render() {
+      const kind = document.getElementById("kind").value;
+      const q = document.getElementById("q").value.trim().toLowerCase();
+      shown = items.filter((i) => {
+        if ((kind === "word" || kind === "sentence") && i.kind !== kind) return false;
+        if (kind === "cands" && !cands[i.key]) return false;
+        if (kind === "flagged" && !i.report) return false;
+        if (kind === "bad" && !bad.has(i.key)) return false;
+        return !q || i.text.toLowerCase().includes(q);
+      });
+      if (kind === "flagged") shown.sort((a, b) => b.report.error - a.report.error);
+      document.getElementById("list").innerHTML = shown
+        .map((i, n) => `<div class="row ${rowState(i)}" data-n="${n}">
+            <div class="main">
+              <button class="play" type="button" data-play="${n}" aria-label="Nghe">▶</button>
+              <span class="text">${esc(i.text)}${cands[i.key] ? '<span class="badge">có phương án</span>' : ""}${i.report ? `<span class="heard">Máy nghe thấy: ${esc(i.report.heard || "(không có file)")}</span>` : ""}</span>
+              <button class="mark" type="button" data-mark="${n}">${bad.has(i.key) ? "✗ Đã đánh dấu" : "✗ Sai"}</button>
+            </div>
+            ${candHtml(i, n)}
+          </div>`)
+        .join("");
+      updateStats();
+      current = -1;
+    }
+
+    function updateStats() {
+      const chosen = Object.values(picks).filter((v) => v !== "current").length;
+      document.getElementById("stats").textContent =
+        `Đang hiện ${shown.length} / ${items.length} · Đánh dấu sai: ${bad.size} · Đã chọn phương án: ${chosen}`;
+    }
+
+    function playUrl(url, n) {
+      document.querySelectorAll(".row.current").forEach((r) => r.classList.remove("current"));
+      const row = document.querySelector(`.row[data-n="${n}"]`);
+      if (row) { row.classList.add("current"); row.scrollIntoView({ block: "nearest" }); }
+      current = n;
+      audio.src = url;
+      audio.playbackRate = Number(document.getElementById("rate").value);
+      audio.play().catch(() => {});
+    }
+    const play = (n) => shown[n] && playUrl(`../../audio/vi/${shown[n].key}.mp3`, n);
+    const playCand = (n, vid) => {
+      const i = shown[n];
+      if (!i) return;
+      playUrl(vid === "current" ? `../../audio/vi/${i.key}.mp3` : `../../audio/candidates/${i.key}/${vid}.mp3`, n);
+    };
+
+    function toggleBad(n) {
+      const i = shown[n];
+      if (!i) return;
+      if (bad.has(i.key)) bad.delete(i.key); else bad.add(i.key);
+      save(BAD_KEY, [...bad]);
+      rerenderRow(n);
+    }
+    function pick(n, vid) {
+      const i = shown[n];
+      if (!i) return;
+      if (picks[i.key] === vid) delete picks[i.key]; else picks[i.key] = vid;
+      if (vid !== "current" && picks[i.key]) bad.add(i.key);
+      save(PICK_KEY, picks);
+      save(BAD_KEY, [...bad]);
+      rerenderRow(n);
+    }
+    function rerenderRow(n) {
+      const kind = document.getElementById("kind").value;
+      if (kind === "bad") return render();
+      const keep = current;
+      const i = shown[n];
+      const row = document.querySelector(`.row[data-n="${n}"]`);
+      row.className = `row ${rowState(i)}${keep === n ? " current" : ""}`;
+      row.querySelector(".mark").textContent = bad.has(i.key) ? "✗ Đã đánh dấu" : "✗ Sai";
+      const old = row.querySelector(".cands");
+      if (old) old.outerHTML = candHtml(i, n);
+      updateStats();
+    }
+
+    document.getElementById("list").addEventListener("click", (e) => {
+      const t = e.target.closest("button");
+      if (!t) return;
+      if (t.dataset.play) play(Number(t.dataset.play));
+      else if (t.dataset.mark) toggleBad(Number(t.dataset.mark));
+      else if (t.dataset.cand) playCand(Number(t.dataset.cand), t.dataset.vid);
+      else if (t.dataset.pick) pick(Number(t.dataset.pick), t.dataset.vid);
+    });
+    document.getElementById("kind").addEventListener("change", render);
+    document.getElementById("q").addEventListener("input", render);
+    document.getElementById("copy").addEventListener("click", async () => {
+      const wrong = items.filter((i) => bad.has(i.key) && !(picks[i.key] && picks[i.key] !== "current")).map((i) => i.text);
+      const overrides = {};
+      for (const i of items) {
+        const vid = picks[i.key];
+        const v = vid && vid !== "current" && cands[i.key] && cands[i.key].variants.find((x) => x.id === vid);
+        if (v) overrides[i.text] = v.override;
+      }
+      const lines = [
+        `Phát âm sai (${wrong.length}):`,
+        ...wrong.map((w) => `- ${w}`),
+        "",
+        `Phương án đã chọn (${Object.keys(overrides).length}):`,
+        JSON.stringify(overrides, null, 1),
+      ].join("\n");
+      try { await navigator.clipboard.writeText(lines); alert("Đã sao chép. Hãy dán và gửi lại."); }
+      catch { prompt("Hãy sao chép nội dung này:", lines); }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.target.matches("input, select")) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); play(Math.min(current + 1, shown.length - 1)); }
+      if (e.key === "ArrowUp") { e.preventDefault(); play(Math.max(current - 1, 0)); }
+      if (e.key === " ") { e.preventDefault(); play(Math.max(current, 0)); }
+      if (e.key.toLowerCase() === "x" && current >= 0) toggleBad(current);
+    });
+    init();
+  </script>
+</body>
+</html>
