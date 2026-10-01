@@ -9799,6 +9799,7 @@ function renderLearnedCard() {
 }
 
 $("fc-review-learned").addEventListener("click", startLearnedReview);
+$("fc-done-learned").addEventListener("click", startLearnedReview);
 
 // 「30語だけ」：buildDeck の優先順（覚えていない→あやふや→期限、間違いの多い順）で
 // どの30語にするかを決め、出す順番は openDeck でランダムにする
@@ -9927,6 +9928,11 @@ $("fc-controls").addEventListener("click", (e) => {
       fc.retry.length === 0
         ? "全部「覚えた」になりました！"
         : "まだ覚えていない語だけを、もう一度復習できます。";
+    // 覚えた語からの学び直しは、ここからも入れるようにする
+    // （復習が30語以下のときは選択画面を通らないため、終了後が唯一の入口になる）
+    const learned = learnedWords().length;
+    $("fc-done-learned").classList.toggle("hidden", learned === 0);
+    $("fc-done-learned-count").textContent = learned;
     showScreen("fc-done");
   }
 });
