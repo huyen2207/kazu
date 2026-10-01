@@ -8582,16 +8582,80 @@ function lookupWord(word) {
 }
 
 /* ---------------------------------------------------------------------------
-   発音再生（Web Speech API）
-   ブラウザ内蔵のベトナム語音声（vi-VN）を使用する。外部APIは不要。
+   発音再生
+   1. 事前生成したニューラル音声（audio/vi/*.mp3、Microsoft HoaiMy・北部発音）を優先する。
+      ブラウザ内蔵のベトナム語音声（macOSのLinh等）は声調の誤りが多く、学習用には不正確なため。
+      生成手順は tools/audio/README.md を参照。
+   2. 音声ファイルが無い語・文（ユーザーが独自に追加した語など）だけ、
+      ブラウザ内蔵音声（Web Speech API・vi-VN）で読み上げる。
 --------------------------------------------------------------------------- */
+
+// 読み上げ用にテキストを整える（生成スクリプト tools/audio/extract-texts.mjs もこの関数を使う）
+// - NFCに統一（結合文字のままだと声調記号を読み落とす音声がある）
+// - 空欄・文型の記号（~ ／ + など）や日本語を除き、読める形にする
+function speechText(text) {
+  return String(text || "")
+    .normalize("NFC")
+    .replace(/_{2,}|__\d+__/g, " ")
+    .replace(/[~〜～…]+/g, " ")
+    .replace(/[　-ヿ㐀-鿿＀-～]+/g, " ")
+    .replace(/[+＋*#"“”「」『』()（）［］\[\]]/g, " ")
+    .replace(/\s*\/\s*/g, ", ")
+    .replace(/\s+([.,!?;:])/g, "$1")
+    .replace(/\s+/g, " ")
+    .replace(/^[\s.,;:!?]+|[\s,;:]+$/g, "")
+    .trim();
+}
+
+// 音声ファイル名（speechTextの小文字に対するcyrb53ハッシュ・36進数）
+function audioKey(text) {
+  const str = speechText(text).toLowerCase();
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+
+// 生成済み音声の一覧（audio/index.json）。起動時に一度だけ読み込む。
+// 読み込み前・失敗時は null のまま（その間はファイルを試し、無ければブラウザ音声）。
+let audioIndex = null;
+const AUDIO_BASE = "audio/vi/";
+if (typeof fetch === "function" && typeof location !== "undefined" && /^https?:$/.test(location.protocol)) {
+  fetch("audio/index.json", { cache: "no-cache" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((data) => {
+      if (data && Array.isArray(data.keys)) audioIndex = { version: data.version || "", keys: new Set(data.keys) };
+    })
+    .catch(() => {});
+}
+
+// --- ブラウザ内蔵音声（フォールバック） ---
 let viVoice = null;
+
+// ベトナム語音声のうち、より自然なものを選ぶ（ニューラル／オンライン音声を優先）
+function voiceScore(v) {
+  const name = v.name.toLowerCase();
+  let score = 0;
+  if (/natural|neural|online/.test(name)) score += 40; // Edge: Microsoft HoaiMy/NamMinh Online (Natural)
+  if (/google/.test(name)) score += 30; // Chrome: Google Tiếng Việt
+  if (/premium|enhanced|nâng cao/.test(name)) score += 20; // macOS/iOS の高品質版
+  if (/compact/.test(name)) score -= 10;
+  if (v.lang.toLowerCase().replace("_", "-") === "vi-vn") score += 5;
+  return score;
+}
 
 function pickVietnameseVoice() {
   if (!("speechSynthesis" in window)) return;
-  const voices = speechSynthesis.getVoices();
-  viVoice =
-    voices.find((v) => v.lang.toLowerCase().replace("_", "-").startsWith("vi")) || null;
+  const voices = speechSynthesis
+    .getVoices()
+    .filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith("vi"));
+  voices.sort((a, b) => voiceScore(b) - voiceScore(a));
+  viVoice = voices[0] || null;
 }
 if ("speechSynthesis" in window) {
   pickVietnameseVoice();
@@ -8599,15 +8663,13 @@ if ("speechSynthesis" in window) {
 }
 
 // 再生速度の設定（全ての音声で共通・localStorageに保存）
-// 注意：ブラウザ内蔵のベトナム語音声（macOSのLinh等）は遅い側のrateを強く
-// 圧縮するため、0.65/0.85/1.05では3段階がほぼ同じ速さに聞こえてしまう。
-// 実測（同一文の再生時間）に基づき、聞き分けられる差が出る値にしている：
-//   0.2 → 普通の約1.36倍の長さ／1.5 → 約0.64倍（旧値では1.10倍／0.88倍）
-// rateは音声側の対応範囲に自動でクランプされるため、極端な値でも安全。
+// audioRate：ニューラル音声ファイルの再生倍率（音程は保ったまま速さだけ変える）
+// ttsRate：ブラウザ内蔵音声のrate。macOSのLinh等は遅い側のrateを強く圧縮するため、
+//   実測（同一文の再生時間）で聞き分けられる差が出る値にしている（#47）。
 const SPEED_OPTIONS = [
-  { key: "slow", label: "遅い", rate: 0.2 },
-  { key: "normal", label: "普通", rate: 0.9 },
-  { key: "fast", label: "速い", rate: 1.5 },
+  { key: "slow", label: "遅い", audioRate: 0.7, ttsRate: 0.2 },
+  { key: "normal", label: "普通", audioRate: 1, ttsRate: 0.9 },
+  { key: "fast", label: "速い", audioRate: 1.3, ttsRate: 1.5 },
 ];
 
 function currentSpeedKey() {
@@ -8615,8 +8677,8 @@ function currentSpeedKey() {
     ? store.speechSpeed
     : "normal";
 }
-function currentRate() {
-  return SPEED_OPTIONS.find((o) => o.key === currentSpeedKey()).rate;
+function currentSpeed() {
+  return SPEED_OPTIONS.find((o) => o.key === currentSpeedKey());
 }
 
 // ページ内すべての速度切り替えUI（[data-speed-control]）を描画・同期する
@@ -8637,20 +8699,79 @@ document.addEventListener("click", (e) => {
   renderSpeedControls();
 });
 
+// 再生中の音声（次の再生・停止のために保持する）
+const speechState = { audio: null, utterance: null, button: null, token: 0 };
+
+function stopSpeech() {
+  speechState.token++;
+  if (speechState.audio) {
+    speechState.audio.onended = speechState.audio.onerror = null;
+    speechState.audio.pause();
+    speechState.audio = null;
+  }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  speechState.utterance = null;
+  if (speechState.button) speechState.button.classList.remove("speaking");
+  speechState.button = null;
+}
+
 // テキストを読み上げる。button指定時は再生中の見た目に切り替える。
 function speak(text, button) {
-  if (!("speechSynthesis" in window) || !text) return;
-  speechSynthesis.cancel();
+  const clean = speechText(text);
+  if (!clean) return;
+  stopSpeech();
+  const token = speechState.token;
+  speechState.button = button || null;
+  if (button) button.classList.add("speaking");
+  const done = () => {
+    if (token !== speechState.token) return;
+    if (button) button.classList.remove("speaking");
+    speechState.audio = null;
+    speechState.utterance = null;
+    speechState.button = null;
+  };
+
+  const key = audioKey(clean);
+  const hasFile = audioIndex ? audioIndex.keys.has(key) : typeof Audio === "function";
+  if (!hasFile) {
+    speakWithBrowserVoice(clean, token, done);
+    return;
+  }
+
+  const audio = new Audio(`${AUDIO_BASE}${key}.mp3${audioIndex ? `?v=${audioIndex.version}` : ""}`);
+  audio.preservesPitch = true;
+  audio.playbackRate = currentSpeed().audioRate;
+  speechState.audio = audio;
+  let fellBack = false;
+  const fallback = () => {
+    if (fellBack || token !== speechState.token) return;
+    fellBack = true;
+    speechState.audio = null;
+    speakWithBrowserVoice(clean, token, done);
+  };
+  audio.onended = done;
+  audio.onerror = fallback; // ファイルが無い・読み込めない場合
+  const played = audio.play();
+  if (played && typeof played.catch === "function") played.catch(fallback);
+}
+
+function speakWithBrowserVoice(text, token, done) {
+  if (!("speechSynthesis" in window)) {
+    done();
+    return;
+  }
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "vi-VN";
-  if (viVoice) utterance.voice = viVoice;
-  utterance.rate = currentRate(); // 速度切り替え（遅い/普通/速い）に連動
-  if (button) {
-    button.classList.add("speaking");
-    const done = () => button.classList.remove("speaking");
-    utterance.onend = done;
-    utterance.onerror = done;
+  if (viVoice) {
+    utterance.voice = viVoice;
+    utterance.lang = viVoice.lang;
   }
+  utterance.rate = currentSpeed().ttsRate;
+  utterance.onend = done;
+  utterance.onerror = done;
+  // Chromeは参照の無いutteranceをGCしてonendが呼ばれないことがあるため保持する
+  speechState.utterance = utterance;
+  if (token !== speechState.token) return;
   speechSynthesis.speak(utterance);
 }
 

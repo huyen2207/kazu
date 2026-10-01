@@ -1,0 +1,3 @@
+{
+  "_説明": "読み間違いがあった語だけを書く。キーはアプリに表示される表記（大文字小文字は区別しない）。say＝実際に音声化する文字列、voice＝声（vi-VN-HoaiMyNeural / vi-VN-NamMinhNeural）、rate＝速さ（例 -20%）。変更した語は generate.py が自動で作り直す"
+}

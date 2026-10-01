@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>発音チェック</title>
+  <!--
+    生成した音声を1件ずつ聞いて、読み間違いに印をつけるためのページ（開発用）。
+    リポジトリ直下で静的サーバーを立て、/tools/audio/review.html を開く。
+    印は localStorage に保存され、「印をつけた語をコピー」で一覧を取り出せる。
+  -->
+  <style>
+    :root { --bg: #f7f7f5; --card: #fff; --text: #1f2328; --muted: #6b7280; --line: #e5e7eb; --primary: #2563eb; --bad: #dc2626; --bad-bg: #fef2f2; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111418; --card: #1b1f24; --text: #e6e6e6; --muted: #9aa3ad; --line: #2c323a; --primary: #60a5fa; --bad: #f87171; --bad-bg: #2a1616; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 "Be Vietnam Pro", "Noto Sans", system-ui, sans-serif; }
+    header { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; z-index: 1; }
+    h1 { font-size: 16px; margin: 0 8px 0 0; }
+    select, input, button { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+    input[type="search"] { flex: 1; min-width: 140px; }
+    button { cursor: pointer; }
+    .stats { color: var(--muted); font-size: 13px; width: 100%; }
+    main { max-width: 860px; margin: 0 auto; padding: 8px 16px 40px; }
+    .row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: 1px solid var(--line); background: var(--card); }
+    .row.bad { background: var(--bad-bg); }
+    .row.current { outline: 2px solid var(--primary); outline-offset: -2px; }
+    .text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .heard { display: block; color: var(--muted); font-size: 13px; }
+    .play { width: 40px; flex: none; }
+    .mark { flex: none; }
+    .row.bad .mark { color: var(--bad); border-color: var(--bad); }
+    .help { color: var(--muted); font-size: 13px; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>発音チェック</h1>
+    <select id="kind">
+      <option value="all">すべて</option>
+      <option value="word">語</option>
+      <option value="sentence">文</option>
+      <option value="flagged">音声認識で食い違い</option>
+      <option value="bad">印をつけたもの</option>
+    </select>
+    <input id="q" type="search" placeholder="検索" />
+    <select id="rate">
+      <option value="0.7">0.7×</option>
+      <option value="1" selected>1×</option>
+    </select>
+    <button id="copy" type="button">印をつけた語をコピー</button>
+    <div class="stats" id="stats"></div>
+  </header>
+  <main>
+    <p class="help">↑↓：移動して再生　Space：もう一度　X：誤りの印をつける／外す</p>
+    <div id="list"></div>
+  </main>
+  <script>
+    const STORE_KEY = "kazu-audio-review-bad";
+    const loadBad = () => { try { return new Set(JSON.parse(localStorage.getItem(STORE_KEY) || "[]")); } catch { return new Set(); } };
+    const bad = loadBad();
+    const saveBad = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify([...bad])); } catch {} };
+    let items = [];
+    let shown = [];
+    let current = -1;
+    const audio = new Audio();
+    audio.preservesPitch = true;
+
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+    async function load() {
+      const texts = await fetch("texts.json", { cache: "no-store" }).then((r) => r.json());
+      const report = await fetch("verify-report.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : [])).catch(() => []);
+      const heard = new Map(report.map((r) => [r.key, r]));
+      items = texts.map((t) => ({ ...t, report: heard.get(t.key) || null }));
+      render();
+    }
+
+    function render() {
+      const kind = document.getElementById("kind").value;
+      const q = document.getElementById("q").value.trim().toLowerCase();
+      shown = items.filter((i) => {
+        if (kind === "word" || kind === "sentence") { if (i.kind !== kind) return false; }
+        if (kind === "flagged" && !i.report) return false;
+        if (kind === "bad" && !bad.has(i.key)) return false;
+        return !q || i.text.toLowerCase().includes(q);
+      });
+      if (kind === "flagged") shown.sort((a, b) => b.report.error - a.report.error);
+      document.getElementById("list").innerHTML = shown
+        .map((i, n) => `<div class="row ${bad.has(i.key) ? "bad" : ""}" data-n="${n}">
+            <button class="play" type="button" data-play="${n}" aria-label="再生">▶</button>
+            <span class="text">${esc(i.text)}${i.report ? `<span class="heard">認識：${esc(i.report.heard || "（ファイルなし）")}</span>` : ""}</span>
+            <button class="mark" type="button" data-mark="${n}">${bad.has(i.key) ? "誤り" : "印"}</button>
+          </div>`)
+        .join("");
+      document.getElementById("stats").textContent = `${shown.length}件表示／全${items.length}件・印 ${bad.size}件`;
+      current = -1;
+    }
+
+    function play(n) {
+      const item = shown[n];
+      if (!item) return;
+      document.querySelectorAll(".row.current").forEach((r) => r.classList.remove("current"));
+      const row = document.querySelector(`.row[data-n="${n}"]`);
+      if (row) { row.classList.add("current"); row.scrollIntoView({ block: "nearest" }); }
+      current = n;
+      audio.src = `../../audio/vi/${item.key}.mp3`;
+      audio.playbackRate = Number(document.getElementById("rate").value);
+      audio.play().catch(() => {});
+    }
+
+    function toggle(n) {
+      const item = shown[n];
+      if (!item) return;
+      if (bad.has(item.key)) bad.delete(item.key); else bad.add(item.key);
+      saveBad();
+      const row = document.querySelector(`.row[data-n="${n}"]`);
+      row.classList.toggle("bad", bad.has(item.key));
+      row.querySelector(".mark").textContent = bad.has(item.key) ? "誤り" : "印";
+      document.getElementById("stats").textContent = `${shown.length}件表示／全${items.length}件・印 ${bad.size}件`;
+    }
+
+    document.getElementById("list").addEventListener("click", (e) => {
+      const p = e.target.closest("[data-play]");
+      if (p) play(Number(p.dataset.play));
+      const m = e.target.closest("[data-mark]");
+      if (m) toggle(Number(m.dataset.mark));
+    });
+    document.getElementById("kind").addEventListener("change", render);
+    document.getElementById("q").addEventListener("input", render);
+    document.getElementById("copy").addEventListener("click", async () => {
+      const lines = items.filter((i) => bad.has(i.key)).map((i) => i.text).join("\n");
+      try { await navigator.clipboard.writeText(lines); alert(`${bad.size}件をコピーしました`); }
+      catch { prompt("コピーしてください", lines); }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.target.matches("input, select")) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); play(Math.min(current + 1, shown.length - 1)); }
+      if (e.key === "ArrowUp") { e.preventDefault(); play(Math.max(current - 1, 0)); }
+      if (e.key === " ") { e.preventDefault(); play(Math.max(current, 0)); }
+      if (e.key.toLowerCase() === "x" && current >= 0) toggle(current);
+    });
+    load();
+  </script>
+</body>
+</html>

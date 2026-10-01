@@ -28,3 +28,9 @@ data/*.db
 data/*.db-journal
 data/*.db-wal
 data/*.db-shm
+
+# 音声生成の作業ファイル（tools/audio/README.md）
+/.venv/
+/tools/audio/texts.json
+/tools/audio/verify-report.json
+/audio/vi/*.tmp
