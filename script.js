@@ -8954,7 +8954,7 @@ function renderStatPanel() {
       </li>`).join("")}</ul>`
     : `<p class="hint">今日復習する語はありません。</p>`;
   const all = due.length ? `<button type="button" id="sp-review-all" class="btn btn-primary btn-block">${due.length}語をまとめて復習</button>` : "";
-  panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">今日の復習</h3><p class="sub">期限が来ている語です</p>${list}${all}</div>`;
+  panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">復習待ち</h3><p class="sub">期限が来ている語です</p>${list}${all}</div>`;
 }
 
 const VOCAB_STATUS_LABELS = {
@@ -9711,9 +9711,11 @@ const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", 
 //   status === "mastered" は条件（スコア80以上・3連続正解）を満たした定着語。
 //   後者は期限が来れば通常のデッキにも出るため、ここでは「学び直せる語」としてまとめて扱う。
 function learnedWords() {
+  // 最後に復習してから時間がたった語を先に並べる（忘れていそうな語から出すため）。
+  // 「30語だけ」を選んだときに先頭30語を採るので、この順番がそのまま選び方になる。
   return Object.values(store.vocab)
     .filter((v) => v.nextReviewAt === "" || v.status === "mastered")
-    .sort((a, b) => (b.lastReviewedAt || "").localeCompare(a.lastReviewedAt || ""));
+    .sort((a, b) => (a.lastReviewedAt || "").localeCompare(b.lastReviewedAt || ""));
 }
 
 // 復習対象の語をすべてデッキにする（枚数の上限は設けない）。
@@ -9760,7 +9762,7 @@ function openDeck(deck) {
 }
 
 // デッキが多いときは「30語だけ／すべて」を選ばせる。30語以下ならそのまま始める。
-function openDeckWithChoice(deck, label) {
+function openDeckWithChoice(deck, label, note) {
   if (deck.length <= FC_SESSION_LIMIT) {
     openDeck(deck);
     return;
@@ -9774,12 +9776,17 @@ function openDeckWithChoice(deck, label) {
   $("fc-learned").classList.add("hidden");
   $("fc-chooser").classList.remove("hidden");
   $("fc-chooser-label").textContent = label;
+  $("fc-chooser-note").textContent = note;
   $("fc-chooser-total").textContent = deck.length;
   $("fc-choose-all-count").textContent = deck.length;
 }
 
 function startFlashcards() {
-  openDeckWithChoice(buildDeck(), "今日の復習");
+  openDeckWithChoice(
+    buildDeck(),
+    "今日の復習",
+    "「30語」は、覚えていない語・あやふやな語・間違いの多い語から優先して選びます",
+  );
   renderLearnedCard();
 }
 
@@ -9789,7 +9796,11 @@ function startFlashcards() {
 function startLearnedReview() {
   const deck = learnedWords().map((v) => ({ v, bucket: "learned" }));
   if (deck.length === 0) return;
-  openDeckWithChoice(deck, "覚えた語の復習");
+  openDeckWithChoice(
+    deck,
+    "覚えた語の復習",
+    "「30語」は、最後に復習してから時間がたった語から選びます",
+  );
 }
 
 // 「覚えた語：N語」の表示。カードを開始している最中は出さない。

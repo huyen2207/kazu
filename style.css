@@ -481,7 +481,7 @@ h1 { font-size: 22px; font-weight: 700; }
 }
 
 /* Flash Card：覚えた語の件数と学び直し */
-.fc-learned { margin-bottom: 12px; }
+#fc-learned { margin-bottom: 12px; }
 .fc-learned-head { font-size: 14px; font-weight: 600; }
 .fc-learned-head strong { font-size: 18px; color: var(--primary); margin: 0 2px; }
 .fc-learned-note { text-align: left; color: var(--muted); margin: 6px 0 12px; }
