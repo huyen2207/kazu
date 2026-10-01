@@ -8913,6 +8913,24 @@ function renderStatPanel() {
     return;
   }
 
+  if (statPanelKey === "newtoday" || statPanelKey === "reviewedtoday") {
+    const isNew = statPanelKey === "newtoday";
+    const words = isNew ? newWordsToday() : reviewedWordsToday();
+    const title = isNew ? "今日はじめて出てきた語" : "今日 復習した語";
+    const lead = isNew
+      ? "今日のクイズや練習ではじめて登場した語です"
+      : "今日、クイズで答えたりFlash Cardで評価した語です";
+    const list = words.length
+      ? `<ul class="sp-list">${words.map((v) => `<li class="sp-row">
+          <span class="sp-meta"><span class="sp-type">${VOCAB_STATUS_LABELS[v.status] || v.status}</span></span>
+          <span class="sp-label"><span class="word tap-word" data-word="${escapeHtml(v.word)}">${escapeHtml(v.word)}</span>${v.meaningJP ? `<span class="muted">（${escapeHtml(v.meaningJP)}）</span>` : ""}</span>
+          <button type="button" class="sp-redo" data-fc-word="${escapeHtml(v.word)}">カードで復習</button>
+        </li>`).join("")}</ul>`
+      : `<p class="hint">${isNew ? "今日はまだ新しい語が出ていません。" : "今日はまだ語彙の復習をしていません。"}</p>`;
+    panel.innerHTML = `<div class="card sp-card"><h3 class="sp-title">${title}（${words.length}語）</h3><p class="sub">${lead}</p>${list}</div>`;
+    return;
+  }
+
   if (statPanelKey === "vocab") {
     const words = Object.values(store.vocab).sort((a, b) => (b.firstSeenAt || "").localeCompare(a.firstSeenAt || ""));
     const list = words.length
@@ -8968,12 +8986,27 @@ $("stat-panel").addEventListener("click", (e) => {
   if (span) openWordPopup(span.dataset.word);
 });
 
+// 今日はじめて出会った語（firstSeenAt が今日）
+function newWordsToday() {
+  const today = todayStr();
+  return Object.values(store.vocab).filter((v) => (v.firstSeenAt || "").slice(0, 10) === today);
+}
+
+// 今日ふれた語（クイズの解答・Flash Cardの評価で lastReviewedAt が更新された語）
+function reviewedWordsToday() {
+  const today = todayStr();
+  return Object.values(store.vocab).filter((v) => (v.lastReviewedAt || "").slice(0, 10) === today);
+}
+
 function renderHome() {
   const today = store.days[todayStr()] || { questions: 0, correct: 0 };
   $("stat-today-questions").textContent = today.questions + "問";
   $("stat-today-accuracy").textContent =
     today.questions > 0 ? Math.round((today.correct / today.questions) * 100) + "%" : "—";
   $("stat-vocab-total").textContent = Object.keys(store.vocab).length + "語";
+
+  $("stat-new-today").textContent = newWordsToday().length + "語";
+  $("stat-reviewed-today").textContent = reviewedWordsToday().length + "語";
 
   const due = dueVocabList().length;
   $("stat-due").textContent = due + "語";
@@ -9671,7 +9704,17 @@ $("btn-review-all-wrong").addEventListener("click", () => {
 // pending：「30語／すべて」の選択待ちのあいだ、候補のデッキを持っておく
 const fc = { deck: [], index: 0, flipped: false, results: { forgotten: 0, unsure: 0, remembered: 0 }, retry: [], pending: null };
 
-const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規", wrong: "間違えた語" };
+const BUCKET_LABEL = { forgotten: "覚えていない", unsure: "あやふや", due: "復習期限", new: "新規", wrong: "間違えた語", learned: "覚えた語" };
+
+// 「覚えた語」＝ふだんの復習から外れている語。
+//   nextReviewAt === "" は #38 で入れた「覚えたと評価したので出さない」印。
+//   status === "mastered" は条件（スコア80以上・3連続正解）を満たした定着語。
+//   後者は期限が来れば通常のデッキにも出るため、ここでは「学び直せる語」としてまとめて扱う。
+function learnedWords() {
+  return Object.values(store.vocab)
+    .filter((v) => v.nextReviewAt === "" || v.status === "mastered")
+    .sort((a, b) => (b.lastReviewedAt || "").localeCompare(a.lastReviewedAt || ""));
+}
 
 // 復習対象の語をすべてデッキにする（枚数の上限は設けない）。
 // ユーザーが追加した語を全部並べ、覚えるまで自分のペースで回すのが目的。
@@ -9698,6 +9741,7 @@ const FC_SESSION_LIMIT = 30;
 // どの語をデッキに入れるかは呼び出し側が決め、ここでは順番だけを混ぜる。
 function openDeck(deck) {
   $("fc-chooser").classList.add("hidden");
+  $("fc-learned").classList.add("hidden");
   $("screen-flashcards").classList.remove("choosing");
   fc.pending = null;
   fc.deck = shuffle(deck);
@@ -9708,12 +9752,13 @@ function openDeck(deck) {
   showScreen("flashcards");
   $("fc-empty").classList.toggle("hidden", fc.deck.length > 0);
   $("fc-deck").classList.toggle("hidden", fc.deck.length === 0);
+  // 復習する語が無いときは、代わりに「覚えた語」から学び直せることを見せる
+  if (fc.deck.length === 0) renderLearnedCard();
   if (fc.deck.length > 0) renderCard();
 }
 
-// 復習対象が多いときは「30語だけ／すべて」を選ばせる。30語以下ならそのまま始める。
-function startFlashcards() {
-  const deck = buildDeck();
+// デッキが多いときは「30語だけ／すべて」を選ばせる。30語以下ならそのまま始める。
+function openDeckWithChoice(deck, label) {
   if (deck.length <= FC_SESSION_LIMIT) {
     openDeck(deck);
     return;
@@ -9724,10 +9769,36 @@ function startFlashcards() {
   $("screen-flashcards").classList.add("choosing");
   $("fc-empty").classList.add("hidden");
   $("fc-deck").classList.add("hidden");
+  $("fc-learned").classList.add("hidden");
   $("fc-chooser").classList.remove("hidden");
+  $("fc-chooser-label").textContent = label;
   $("fc-chooser-total").textContent = deck.length;
   $("fc-choose-all-count").textContent = deck.length;
 }
+
+function startFlashcards() {
+  openDeckWithChoice(buildDeck(), "今日の復習");
+  renderLearnedCard();
+}
+
+// 覚えた語だけのデッキ（忘れたときの学び直し）。
+// 「覚えていない」と答えれば applyVocabEvent が status と次回予定を戻すので、
+// その語はふだんの復習に自然に復帰する（#38のロジックはそのまま）。
+function startLearnedReview() {
+  const deck = learnedWords().map((v) => ({ v, bucket: "learned" }));
+  if (deck.length === 0) return;
+  openDeckWithChoice(deck, "覚えた語の復習");
+}
+
+// 「覚えた語：N語」の表示。カードを開始している最中は出さない。
+function renderLearnedCard() {
+  const count = learnedWords().length;
+  const onCards = !$("fc-deck").classList.contains("hidden");
+  $("fc-learned-count").textContent = count;
+  $("fc-learned").classList.toggle("hidden", count === 0 || onCards);
+}
+
+$("fc-review-learned").addEventListener("click", startLearnedReview);
 
 // 「30語だけ」：buildDeck の優先順（覚えていない→あやふや→期限、間違いの多い順）で
 // どの30語にするかを決め、出す順番は openDeck でランダムにする
