@@ -249,6 +249,29 @@ function todayStr(offset = 0) {
   return new Date(Date.now() - offset * DAY_MS).toISOString().slice(0, 10);
 }
 function nowIso() { return new Date().toISOString(); }
+
+/* --- Flash Card の日別記録 ---
+   days[日付].fc = { reviews: 評価した回数, words: { 語キー: その日最後の評価 } }。
+   クイズを解かずFlash Cardだけ学習した日も「学習した日」として学習履歴とストリークに出す。
+   fc は後から足した任意フィールドで、無い日（導入前・クイズだけの日）は0語として読む。 */
+function dayFlashcards(rec) {
+  const fc = rec && isPlainObject(rec.fc) ? rec.fc : {};
+  const words = isPlainObject(fc.words) ? fc.words : {};
+  const counts = { remembered: 0, unsure: 0, forgotten: 0 };
+  for (const rate of Object.values(words)) if (rate in counts) counts[rate]++;
+  return { reviews: Math.max(0, numOr(fc.reviews, 0)), words: Object.keys(words).length, ...counts };
+}
+
+function recordFlashcardDay(word, rate) {
+  const date = todayStr();
+  const day = store.days[date] || { questions: 0, correct: 0 };
+  const fc = isPlainObject(day.fc) ? day.fc : {};
+  day.fc = {
+    reviews: Math.max(0, numOr(fc.reviews, 0)) + 1,
+    words: { ...(isPlainObject(fc.words) ? fc.words : {}), [norm(word)]: rate },
+  };
+  store.days[date] = day;
+}
 function norm(word) { return word.trim().toLowerCase().normalize("NFC"); }
 
 /* ---------------------------------------------------------------------------
@@ -9511,6 +9534,7 @@ function dailyProgressData(days) {
       questions,
       correct,
       accuracy: questions > 0 ? Math.round((correct / questions) * 100) : null,
+      cards: dayFlashcards(rec),
     });
   }
 
@@ -9624,7 +9648,9 @@ function renderDailyLevelTable(rows) {
       : `<td class="dp-cell"><span class="dp-q">${total}問</span><span class="dp-a">${acc === null ? "—" : acc + "%"}</span></td>`;
 
   // 期間内で「その他」（レベルを割り出せない＝聴解など）があるときだけ列を出す
-  const studied = rows.filter((r) => r.questions > 0);
+  // Flash Cardだけ学習した日も行に出す（「今日も学習した」が分かるように）
+  const studied = rows.filter((r) => r.questions > 0 || r.cards.words > 0);
+  const hasCards = studied.some((r) => r.cards.words > 0);
   let hasOther = false;
   const dayCells = studied.map((r) => {
     const entries = byDate.get(r.date) || [];
@@ -9637,7 +9663,7 @@ function renderDailyLevelTable(rows) {
     return { r, entries, perLevel };
   });
 
-  const header = `<tr><th>日付</th><th>問題数</th>${LEVELS.map((l) => `<th>${l}</th>`).join("")}${hasOther ? "<th>その他</th>" : ""}</tr>`;
+  const header = `<tr><th>日付</th><th>問題数</th>${LEVELS.map((l) => `<th>${l}</th>`).join("")}${hasOther ? "<th>その他</th>" : ""}${hasCards ? "<th>Flash Card</th>" : ""}</tr>`;
   // 新しい日が上に来るように逆順で並べる
   const body = dayCells
     .slice()
@@ -9647,23 +9673,74 @@ function renderDailyLevelTable(rows) {
       const totalCell = cellHtml(cellStats(entries));
       const levelCells = LEVELS.map((l) => cellHtml(cellStats(perLevel[l]))).join("");
       const otherCell = hasOther ? cellHtml(cellStats(perLevel.other)) : "";
-      return `<tr><th class="dp-date-cell">${Number(m)}/${Number(d)}</th>${totalCell}${levelCells}${otherCell}</tr>`;
+      const cardCell = hasCards ? flashcardCellHtml(r.cards) : "";
+      return `<tr><th class="dp-date-cell">${Number(m)}/${Number(d)}</th>${totalCell}${levelCells}${otherCell}${cardCell}</tr>`;
     })
     .join("");
 
   $("dp-level-table").innerHTML = header + body;
+  $("dp-levels-note-cards").classList.toggle("hidden", !hasCards);
   $("dp-levels").classList.toggle("hidden", studied.length === 0);
+}
+
+// 表のFlash Card列：語数と、その日の最後の評価の内訳
+function flashcardCellHtml(c) {
+  if (c.words === 0) return '<td class="dp-cell empty">—</td>';
+  const title = `覚えた ${c.remembered}・あやふや ${c.unsure}・覚えていない ${c.forgotten}（評価 ${c.reviews}回）`;
+  return `<td class="dp-cell" title="${title}"><span class="dp-q">${c.words}語</span><span class="dp-a">覚えた ${c.remembered}</span></td>`;
+}
+
+// Flash Card で復習した語数の棒グラフ（期間内の最大値を100%とする）
+function renderFlashcardChart(rows, days) {
+  const studied = rows.filter((r) => r.cards.words > 0);
+  $("dp-fc").classList.toggle("hidden", studied.length === 0);
+  if (studied.length === 0) {
+    $("dp-fc-chart").innerHTML = "";
+    return;
+  }
+  const total = studied.reduce((sum, r) => sum + r.cards.words, 0);
+  const remembered = studied.reduce((sum, r) => sum + r.cards.remembered, 0);
+  const today = rows[rows.length - 1].cards;
+  $("dp-fc-summary").textContent =
+    (today.words > 0
+      ? `今日：${today.words}語を復習（覚えた ${today.remembered}・あやふや ${today.unsure}・覚えていない ${today.forgotten}）。`
+      : "今日はまだ Flash Card で復習していません。") +
+    `直近${days}日：のべ${total}語（覚えた ${remembered}語・学習${studied.length}日）`;
+
+  const max = Math.max(...studied.map((r) => r.cards.words));
+  const labelEvery = days <= 7 ? 1 : days <= 14 ? 2 : 5;
+  $("dp-fc-chart").classList.toggle("dense", days > 14);
+  $("dp-fc-chart").innerHTML = rows
+    .map((row, i) => {
+      const [, m, d] = row.date.split("-");
+      const label = i % labelEvery === 0 || i === rows.length - 1 ? `${Number(m)}/${Number(d)}` : "";
+      const c = row.cards;
+      if (c.words === 0) {
+        return `<div class="dp-col" title="${row.date}：Flash Cardなし">
+          <div class="dp-bar-area"><div class="dp-bar none"></div></div>
+          <span class="dp-date">${label}</span>
+        </div>`;
+      }
+      return `<div class="dp-col" title="${row.date}：${c.words}語（覚えた ${c.remembered}・あやふや ${c.unsure}・覚えていない ${c.forgotten}）">
+        <div class="dp-bar-area"><div class="dp-bar cards" style="height:${Math.max(8, Math.round((c.words / max) * 100))}%"><span class="dp-count">${c.words}</span></div></div>
+        <span class="dp-date">${label}</span>
+      </div>`;
+    })
+    .join("");
 }
 
 function renderDailyProgress() {
   const days = dpRangeDays;
   const rows = dailyProgressData(days);
-  const hasData = rows.some((r) => r.questions > 0);
+  const hasQuiz = rows.some((r) => r.questions > 0);
+  const hasData = hasQuiz || rows.some((r) => r.cards.words > 0);
 
   $("dp-empty").classList.toggle("hidden", hasData);
-  $("dp-chart").classList.toggle("hidden", !hasData);
-  $("dp-summary").classList.toggle("hidden", !hasData);
+  $("dp-chart").classList.toggle("hidden", !hasQuiz);
+  $("dp-legend").classList.toggle("hidden", !hasQuiz);
+  $("dp-summary").classList.toggle("hidden", !hasQuiz);
   if (!hasData) $("dp-levels").classList.add("hidden");
+  renderFlashcardChart(rows, days);
 
   for (const btn of document.querySelectorAll("#dp-range button")) {
     btn.classList.toggle("active", Number(btn.dataset.days) === days);
@@ -9671,6 +9748,12 @@ function renderDailyProgress() {
 
   if (!hasData) {
     $("dp-chart").innerHTML = "";
+    return;
+  }
+  if (!hasQuiz) {
+    // Flash Cardだけの期間：正答率のグラフは出さず、内訳表（Flash Card列）だけ出す
+    $("dp-chart").innerHTML = "";
+    renderDailyLevelTable(rows);
     return;
   }
 
@@ -10003,6 +10086,7 @@ $("fc-controls").addEventListener("click", (e) => {
   // 「覚えていない」「あやふや」はstatusがそのままデッキ対象なので、次回も残る。
   // 覚えた語は、あとで＋カードで追加し直すか、クイズで間違えると再びデッキに戻る。
   if (rate === "remembered") card.v.nextReviewAt = "";
+  recordFlashcardDay(card.v.word, rate);
   saveStore();
   fc.results[rate]++;
   // まだ覚えていない語は「もう一度」の対象に残す
@@ -13370,10 +13454,22 @@ function mergeStores(base, incoming) {
   }
 
   merged.days = { ...base.days };
+  // Flash Cardの日別記録：評価回数は足し、語は両方を合わせる（同じ語は取り込む側の評価）
+  const mergeDayFlashcards = (cur, inc) => {
+    if (!isPlainObject(cur.fc) && !isPlainObject(inc.fc)) return {};
+    const a = isPlainObject(cur.fc) ? cur.fc : {};
+    const b = isPlainObject(inc.fc) ? inc.fc : {};
+    return {
+      fc: {
+        reviews: numOr(a.reviews, 0) + numOr(b.reviews, 0),
+        words: { ...(isPlainObject(a.words) ? a.words : {}), ...(isPlainObject(b.words) ? b.words : {}) },
+      },
+    };
+  };
   for (const [day, inc] of Object.entries(incoming.days)) {
     const cur = merged.days[day];
     merged.days[day] = cur
-      ? { ...cur, questions: cur.questions + inc.questions, correct: cur.correct + inc.correct }
+      ? { ...cur, questions: cur.questions + inc.questions, correct: cur.correct + inc.correct, ...mergeDayFlashcards(cur, inc) }
       : inc;
   }
 

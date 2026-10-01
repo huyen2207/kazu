@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KAZU — ベトナム語 語彙クイズ</title>
   <!-- ?v= はキャッシュ対策のバージョン番号。style.css / script.js を更新したら数字を上げること -->
-  <link rel="stylesheet" href="style.css?v=41" />
+  <link rel="stylesheet" href="style.css?v=42" />
 </head>
 <body>
   <header class="site-header">
@@ -181,18 +181,25 @@
         </div>
         <p id="dp-summary" class="sub"></p>
         <div id="dp-chart" class="dp-chart"></div>
-        <p id="dp-empty" class="hint hidden">まだ記録がありません。クイズを解くと、その日の正答率がここに並びます。</p>
-        <p class="dp-legend">
+        <p id="dp-empty" class="hint hidden">まだ記録がありません。クイズを解いたりFlash Cardで復習したりすると、その日の学習がここに並びます。</p>
+        <p id="dp-legend" class="dp-legend">
           <span><span class="dp-key up"></span>前より上がった</span>
           <span><span class="dp-key down"></span>下がった</span>
           <span><span class="dp-key flat"></span>変わらない・初回</span>
           <span><span class="dp-key none"></span>学習なし</span>
         </p>
-        <!-- 日ごとのレベル別内訳（問題数と正答率） -->
+        <!-- Flash Cardで復習した語数（クイズを解かなかった日も「学習した」と分かるように） -->
+        <div id="dp-fc" class="hidden">
+          <h3 class="dp-levels-title">Flash Card で復習した語</h3>
+          <p id="dp-fc-summary" class="sub dp-fc-summary"></p>
+          <div id="dp-fc-chart" class="dp-chart"></div>
+        </div>
+        <!-- 日ごとの内訳（レベル別の問題数と正答率・Flash Card） -->
         <div id="dp-levels" class="hidden">
-          <h3 class="dp-levels-title">レベル別の内訳</h3>
+          <h3 class="dp-levels-title">日ごとの内訳</h3>
           <div class="dp-table-wrap"><table class="dp-table" id="dp-level-table"></table></div>
           <p class="hint dp-levels-note">解答ログ（1問ごとの記録）に基づく集計です。記録導入前に解いた分は正答率が「—」になります。</p>
+          <p id="dp-levels-note-cards" class="hint dp-levels-note hidden">Flash Card は、その日に評価した語の数（同じ語は1語）と、そのうち最後に「覚えた」と評価した語の数です。</p>
         </div>
       </div>
 
@@ -720,6 +727,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=41"></script>
+  <script src="script.js?v=42"></script>
 </body>
 </html>

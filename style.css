@@ -549,6 +549,9 @@ h1 { font-size: 22px; font-weight: 700; }
 .dp-bar.flat { background: #b8860b; }
 /* 学習しなかった日：トラックと見分けがつくよう、薄いグレーの棒を置く */
 .dp-bar.none { background: var(--muted); opacity: 0.75; height: 4px; }
+/* Flash Cardの語数（正答率の上下とは別の意味なので、テーマの主色で塗る） */
+.dp-bar.cards { background: var(--primary); }
+.dp-fc-summary { margin-top: 4px; }
 .dp-count { position: absolute; top: -14px; left: 0; right: 0; text-align: center; font-size: 9px; color: var(--muted); }
 .dp-chart.dense .dp-count { display: none; }
 .dp-delta { font-size: 10px; font-weight: 600; height: 14px; line-height: 14px; white-space: nowrap; }
